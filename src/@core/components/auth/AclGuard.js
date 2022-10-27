@@ -19,7 +19,7 @@ import { useAuth } from 'src/hooks/useAuth'
 
 const AclGuard = props => {
   // ** Props
-  const { aclAbilities, children, guestGuard } = props
+  const { aclAbilities, children, guestGuard, anonymGuard } = props
   const [ability, setAbility] = useState(undefined)
 
   // ** Hooks
@@ -27,7 +27,7 @@ const AclGuard = props => {
   const router = useRouter()
 
   // If guestGuard is true and user is not logged in or its an error page, render the page without checking access
-  if (guestGuard || router.route === '/404' || router.route === '/500' || router.route === '/') {
+  if (guestGuard || router.route === '/404' || router.route === '/500' || router.route === '/' || router.route === '/verify-business') {
     return <>{children}</>
   }
 

@@ -257,9 +257,9 @@ const NoResult = ({ value, setOpenDialog }) => {
       </Typography>
 
       <Typography variant='body2' sx={{ mb: 2.5, color: 'text.disabled' }}>
-        Try searching for
+        Try with another keyword...
       </Typography>
-      <List sx={{ py: 0 }}>
+      {/* <List sx={{ py: 0 }}>
         <ListItem sx={{ py: 2 }} disablePadding onClick={() => setOpenDialog(false)}>
           <Link passHref href='/dashboards/crm/'>
             <Box
@@ -314,7 +314,7 @@ const NoResult = ({ value, setOpenDialog }) => {
             </Box>
           </Link>
         </ListItem>
-      </List>
+      </List> */}
     </Box>
   )
 }
@@ -322,7 +322,10 @@ const NoResult = ({ value, setOpenDialog }) => {
 const DefaultSuggestions = ({ setOpenDialog }) => {
   return (
     <Grid container spacing={6} sx={{ ml: 0 }}>
-      {defaultSuggestionsData.map((item, index) => (
+      <Typography component='p' variant='overline' sx={{ lineHeight: 1.25, color: 'text.disabled' }}>
+            Search a Broker or Carrier
+      </Typography>
+      {/* {defaultSuggestionsData.map((item, index) => (
         <Grid item xs={12} sm={6} key={index}>
           <Typography component='p' variant='overline' sx={{ lineHeight: 1.25, color: 'text.disabled' }}>
             {item.category}
@@ -351,7 +354,7 @@ const DefaultSuggestions = ({ setOpenDialog }) => {
             ))}
           </List>
         </Grid>
-      ))}
+      ))} */}
     </Grid>
   )
 }

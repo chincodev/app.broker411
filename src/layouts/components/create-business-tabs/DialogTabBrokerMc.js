@@ -17,7 +17,7 @@ import BriefcaseOutline from 'mdi-material-ui/BriefcaseOutline'
 // ** Custom Avatar Component
 import CustomAvatar from 'src/@core/components/mui/avatar'
 
-const TabDetails = (props) => {
+const DialogTabBrokerMc = (props) => {
 
 
   const handleValues = (name, value) => {
@@ -27,11 +27,11 @@ const TabDetails = (props) => {
   return (
     <Box>
       <Typography variant='h6' sx={{ mb: 4 }}>
-        Carrier's DOT Number
+        Broker's MC Number
       </Typography>
-      <TextField value={props.businessData.us_dot_number} onChange={(e) => handleValues('us_dot_number', e.target.value)} fullWidth sx={{ mb: 4 }} label='DOT Number' placeholder='DOT Number' />
+      <TextField value={props.businessData.mc_number} onChange={(e) => handleValues('mc_number', e.target.value)} fullWidth sx={{ mb: 4 }} label='MC Number' placeholder='MC Number' />
     </Box>
   )
 }
 
-export default TabDetails
+export default DialogTabBrokerMc

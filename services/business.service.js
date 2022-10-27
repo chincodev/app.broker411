@@ -6,6 +6,7 @@ export const businessService = {
     find,
     find_in_fmcsa,
     create,
+    verify,
     update,
     resendVerification,
     delete: _delete
@@ -14,6 +15,10 @@ export const businessService = {
 
 function list(query = '') {
     return fetchWrapper.get(`${baseUrl}businesses${query}`);
+}
+
+function verify(token) {
+    return fetchWrapper.get(`${baseUrl}businesses/verify/${token}`);
 }
 
 function find(_id) {

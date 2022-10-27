@@ -21,7 +21,8 @@ import FormHelperText from '@mui/material/FormHelperText'
 import InputAdornment from '@mui/material/InputAdornment'
 import Typography from '@mui/material/Typography'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
-
+import CircularProgress from '@mui/material/CircularProgress'
+import { green } from '@mui/material/colors';
 // ** Icons Imports
 import Google from 'mdi-material-ui/Google'
 import Github from 'mdi-material-ui/Github'
@@ -110,6 +111,8 @@ const Register = () => {
   // ** States
   const [showPassword, setShowPassword] = useState(false)
 
+  const [actionsLoading, setActionsLoading] = useState(false)
+
   // ** Hooks
   const theme = useTheme()
   const { register } = useAuth()
@@ -141,7 +144,7 @@ const Register = () => {
 
   const onSubmit = data => {
     const { email, username, password } = data
-
+    setActionsLoading(true)
     register({ email, username, password }, err => {
       let _errors = []
 
@@ -156,6 +159,7 @@ const Register = () => {
         }
       })
       setGeneralErrors(_errors)
+      setActionsLoading(false)
     })
   }
   const imageSource = skin === 'bordered' ? 'auth-v2-register-illustration-bordered' : 'auth-v2-register-illustration'
@@ -397,7 +401,20 @@ const Register = () => {
                   <FormHelperText sx={{ mt: 0, color: 'error.main' }}>{errors.terms.message}</FormHelperText>
                 )}
               </FormControl>
-              <Button fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
+              <Button fullWidth size='large' disabled={actionsLoading} type='submit' variant='contained' sx={{ mb: 7 }}>
+                {
+                  actionsLoading && <CircularProgress
+                    size={24}
+                    sx={{
+                      color: green[500],
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      marginTop: '-12px',
+                      marginLeft: '-12px',
+                    }}
+                  />
+                }
                 Sign up
               </Button>
               <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>

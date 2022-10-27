@@ -22,6 +22,7 @@ import FormHelperText from '@mui/material/FormHelperText'
 import InputAdornment from '@mui/material/InputAdornment'
 import Typography from '@mui/material/Typography'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
+import { green } from '@mui/material/colors';
 
 // ** Icons Imports
 import Google from 'mdi-material-ui/Google'
@@ -49,6 +50,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
+import { CircularProgress } from '@mui/material'
 
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)(({ theme }) => ({
@@ -124,7 +126,7 @@ const LoginPage = () => {
   const { skin } = settings
 
   const [ generalErrors, setGeneralErrors ] = useState([])
-
+  const [actionsLoading, setActionsLoading] = useState(false)
   const {
     control,
     setError,
@@ -137,6 +139,7 @@ const LoginPage = () => {
   })
 
   const onSubmit = data => {
+    setActionsLoading(true)
     setGeneralErrors([])
     const { email, password } = data
     auth.login({ email, password }, (err) => {
@@ -152,6 +155,7 @@ const LoginPage = () => {
         }
       })
       setGeneralErrors(_errors)
+      setActionsLoading(false)
     })
   }
   const imageSource = skin === 'bordered' ? 'auth-v2-login-illustration-bordered' : 'auth-v2-login-illustration'
@@ -344,7 +348,20 @@ const LoginPage = () => {
                   </Typography>
                 </Link>
               </Box>
-              <Button fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
+              <Button fullWidth size='large' disabled={actionsLoading} type='submit' variant='contained' sx={{ mb: 7 }}>
+                {
+                  actionsLoading && <CircularProgress
+                    size={24}
+                    sx={{
+                      color: green[500],
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      marginTop: '-12px',
+                      marginLeft: '-12px',
+                    }}
+                  />
+                }
                 Login
               </Button>
               <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>

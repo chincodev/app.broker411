@@ -26,18 +26,22 @@ import CrmProjectTimeline from 'src/views/dashboards/crm/CrmProjectTimeline'
 import CrmMeetingSchedule from 'src/views/dashboards/crm/CrmMeetingSchedule'
 import CrmSocialNetworkVisits from 'src/views/dashboards/crm/CrmSocialNetworkVisits'
 import CrmMostSalesInCountries from 'src/views/dashboards/crm/CrmMostSalesInCountries'
-import { Button, Typography } from '@mui/material'
+import { Button, CardContent, CardMedia, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import Link from 'next/link'
 import { styled } from '@mui/material/styles'
-import DialogCreateBusiness from 'src/layouts/AddBusinessDialog'
+import AddCarrierDialog from 'src/layouts/AddCarrierDialog'
 import { useAuth } from 'src/hooks/useAuth'
 import { isEmpty } from 'lodash'
 import VerifyBusinessDialog from 'src/layouts/VerifyBusinessDialog'
+import { useState } from 'react'
+import AddBrokerDialog from 'src/layouts/AddBrokerDialog'
 
 const CrmDashboard = () => {
 
   const auth = useAuth()
+
+  const [verify, setVerify] = useState(false)
 
   const Img = styled('img')(({ theme }) => ({
     marginTop: theme.spacing(5),
@@ -54,13 +58,29 @@ const CrmDashboard = () => {
 
   return (
     <Box className='content-center'>
-      {
-        (!isEmpty(auth.user.business)) ? (
+     {  
+        verify ? (
           <VerifyBusinessDialog />
         ) : (
-          <DialogCreateBusiness />
+          (!isEmpty(auth.user.business)) ? (
+              !auth.user.business.is_verified ? (
+                <VerifyBusinessDialog />
+              ) : (
+                <h1>Verified</h1>
+              )
+            ) : ( 
+              <Grid container spacing={4}>
+                <Grid item xs={12} sm={6} lg={4}>
+                  <AddBrokerDialog setVerify={setVerify} />
+                </Grid>
+                <Grid item xs={12} sm={6} lg={4}>
+                  <AddCarrierDialog setVerify={setVerify} />
+                </Grid>
+              </Grid>
+            )
         )
-      }
+        
+      } 
     </Box>
   )
 }

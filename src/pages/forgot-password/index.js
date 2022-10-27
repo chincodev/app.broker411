@@ -24,6 +24,12 @@ import { useSettings } from 'src/@core/hooks/useSettings'
 
 // ** Demo Imports
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
+import { ClockDigital } from 'mdi-material-ui'
+import { authService } from 'services/auth.service'
+import toast from 'react-hot-toast'
+import { useState } from 'react'
+import { CircularProgress } from '@mui/material'
+import { green } from '@mui/material/colors'
 
 // Styled Components
 const ForgotPasswordIllustrationWrapper = styled(Box)(({ theme }) => ({
@@ -77,9 +83,35 @@ const ForgotPassword = () => {
   const { skin } = settings
   const hidden = useMediaQuery(theme.breakpoints.down('md'))
 
-  const handleSubmit = e => {
+  const [ actionsLoading, setActionsLoading ] = useState(false)
+  const [ sent, setSent ] = useState(false)
+  const [ email, setEmail ] = useState('')
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    try {
+      setActionsLoading(true)
+      await authService.forgotPassword({email})
+      setActionsLoading(false)
+      setSent(true)
+      toast.success('If the email is registered, you will receive the instructions to reset your password. You will be redirected in 5 seconds...')
+      setTimeout(() => {
+        window.location.replace('/')
+      }, 5000);
+    } catch (er) {
+      setActionsLoading(false)
+      er.errors && Array.isArray(er.errors) && er.errors.map(x => {
+        if(x.path){
+            x.path.map(y => setError(y, {
+                message: x.message
+            }))
+        } else {
+            toast.error(x.message)
+        }
+      })
+    }
   }
+
 
   const imageSource =
     skin === 'bordered' ? 'auth-v2-forgot-password-illustration-bordered' : 'auth-v2-forgot-password-illustration'
@@ -200,9 +232,25 @@ const ForgotPassword = () => {
               </Typography>
             </Box>
             <form noValidate autoComplete='off' onSubmit={handleSubmit}>
-              <TextField autoFocus type='email' label='Email' sx={{ display: 'flex', mb: 4 }} />
-              <Button fullWidth size='large' type='submit' variant='contained' sx={{ mb: 5.25 }}>
-                Send reset link
+              <TextField autoFocus type='email' onChange={(e)=>setEmail(e.target.value)} value={email} label='Email' sx={{ display: 'flex', mb: 4 }} />
+              <Button disabled={actionsLoading || sent} fullWidth size='large' type='submit' variant='contained' sx={{ mb: 5.25 }}>
+                {
+                  actionsLoading && <CircularProgress
+                    size={24}
+                    sx={{
+                      color: green[500],
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      marginTop: '-12px',
+                      marginLeft: '-12px',
+                    }}
+                  />
+                }
+                {
+                  !sent ? 'Send reset link' : 'Done!'
+                }
+                
               </Button>
               <Typography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Link passHref href='/login'>

@@ -39,7 +39,7 @@ function verifyEmail(token) {
 }
 
 function forgotPassword(email) {
-    return fetchWrapper.post(`${baseUrl}auth/forgot-password`, email );
+    return fetchWrapper.post(`${baseUrl}passwords/forgot`, email );
 }
 
 function validatePasswordResetToken(token) {
@@ -47,7 +47,7 @@ function validatePasswordResetToken(token) {
 }
 
 function resetPassword(body) {
-    return fetchWrapper.post(`${baseUrl}auth/reset-password`, body);
+    return fetchWrapper.post(`${baseUrl}passwords/reset`, body);
 }
 
 function getToken() {

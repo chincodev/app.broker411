@@ -37,8 +37,9 @@ import DialogTabBilling from 'src/layouts/components/create-business-tabs/Dialog
 import DialogTabDatabase from 'src/layouts/components/create-business-tabs/DialogTabDatabase'
 import DialogTabFramework from 'src/layouts/components/create-business-tabs/DialogTabFramework'
 import { styled } from '@mui/material/styles'
-import { CardHeader, Divider } from '@mui/material'
+import { CardHeader, CardMedia, Divider } from '@mui/material'
 import { businessService } from 'services/business.service'
+import { ViewListOutline } from 'mdi-material-ui'
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} {...props} />
@@ -84,13 +85,15 @@ const TabLabel = props => {
 }
 const tabsArr = ['detailsTab', 'frameworkTab', 'submitTab']
 
-const DialogCreateBusiness = () => {
+const AddCarrierDialog = (props) => {
   // ** States
   const [show, setShow] = useState(false)
   const [activeTab, setActiveTab] = useState('detailsTab')
   const [ actionsLoading, setActionsLoading ] = useState(false)
 
-  const [ businessData, setBusinessData ] = useState({})
+  const [ businessData, setBusinessData ] = useState({
+    type:'carrier'
+  })
 
   // ** Hook
   const { settings } = useSettings()
@@ -99,10 +102,17 @@ const DialogCreateBusiness = () => {
   const { direction } = settings
 
   const handleClose = async () => {
+      setShow(false)
+      setActionsLoading(false)
+      setActiveTab('detailsTab')
+  }
+
+  const handleSubmit = async () => {
     try {
       setActionsLoading(true)
       await businessService.create(businessData)
       toast.success('A verification link was sent to your email inbox...')
+      props.setVerify(true)
       setShow(false)
       setActionsLoading(false)
       setActiveTab('detailsTab')
@@ -112,10 +122,8 @@ const DialogCreateBusiness = () => {
       setActionsLoading(false)
       setActiveTab('detailsTab')
     }
-
-
-
   }
+
   const NextArrow = direction === 'ltr' ? ArrowRight : ArrowLeft
   const PreviousArrow = direction === 'ltr' ? ArrowLeft : ArrowRight
 
@@ -144,7 +152,7 @@ const DialogCreateBusiness = () => {
             if (activeTab !== 'submitTab') {
               setActiveTab(nextTab)
             } else {
-              handleClose()
+              handleSubmit()
             }
           }}
         >
@@ -156,18 +164,20 @@ const DialogCreateBusiness = () => {
 
   return (
     <Card>
-      {console.log(businessData)}
-      <CardHeader sx={{ textAlign: 'center', fontWeight:'900' }} title='Welcome to Broker411' titleTypographyProps={{ variant: 'h6' }} />
-      <CardContent sx={{ textAlign: 'center' }}>
-        <Img alt='error-illustration' src='/images/cards/illustration-upgrade-account.png' />
-        <Typography sx={{ mb: 3 }}>
-          Provide application data with this form to create the Business.
+ 
+      <CardMedia sx={{ height: 140 }} image='/images/cards/carrier.jpg' />
+      <CardContent sx={{ p: theme => `${theme.spacing(4, 5)} !important` }}>
+        <Typography variant='h6' sx={{ mb: 2 }}>
+          Carrier
         </Typography>
-        <Divider sx={{ m: 0 }} />
-        <Button sx={{mt: 4}} variant='contained' onClick={() => setShow(true)}>
-          Add Business
-        </Button>
+        <Typography sx={{ mb: 2 }}>Nice Text</Typography>
+        <Typography variant='body2'>
+          A cool text here.
+        </Typography>
       </CardContent>
+      <Button size='large' onClick={() => setShow(true)} variant='contained' sx={{ width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
+        Register as Carrier
+      </Button>
       <Dialog
         fullWidth
         open={show}
@@ -191,7 +201,7 @@ const DialogCreateBusiness = () => {
           </IconButton>
           <Box sx={{ mb: 3, textAlign: 'center' }}>
             <Typography variant='h5' sx={{ mb: 8, lineHeight: '2rem' }}>
-              Add Business
+              Add Carrier
             </Typography>
             {/* <Typography variant='body2'>Provide data with this form to add your business.</Typography> */}
           </Box>
@@ -219,8 +229,8 @@ const DialogCreateBusiness = () => {
                   value='detailsTab'
                   label={
                     <TabLabel
-                      title='Details'
-                      subtitle='Enter Details'
+                      title='DOT'
+                      subtitle='DOT Number'
                       icon={<ClipboardOutline />}
                       active={activeTab === 'detailsTab'}
                     />
@@ -232,43 +242,19 @@ const DialogCreateBusiness = () => {
                   value='frameworkTab'
                   label={
                     <TabLabel
-                      title='Frameworks'
-                      icon={<StarOutline />}
-                      subtitle='Select Framework'
+                      title='Details'
+                      icon={<ViewListOutline />}
+                      subtitle='Carrier Details'
                       active={activeTab === 'frameworkTab'}
                     />
                   }
                 />
-                {/* <Tab
-                  disableRipple
-                  value='DatabaseTab'
-                  label={
-                    <TabLabel
-                      title='Database'
-                      active={activeTab === 'DatabaseTab'}
-                      subtitle='Select Database'
-                      icon={<ChartDonut />}
-                    />
-                  }
-                />
-                <Tab
-                  disableRipple
-                  value='paymentTab'
-                  label={
-                    <TabLabel
-                      title='Billing'
-                      active={activeTab === 'paymentTab'}
-                      subtitle='Payment details'
-                      icon={<CreditCardOutline />}
-                    />
-                  }
-                /> */}
                 <Tab
                   disabled={true}
                   disableRipple
                   value='submitTab'
                   label={
-                    <TabLabel title='Submit' subtitle='Submit' active={activeTab === 'submitTab'} icon={<Check />} />
+                    <TabLabel title='Submit' subtitle='Submit Request' active={activeTab === 'submitTab'} icon={<Check />} />
                   }
                 />
               </TabList>
@@ -288,14 +274,7 @@ const DialogCreateBusiness = () => {
                 />
                 {renderTabFooter()}
               </TabPanel>
-              {/* <TabPanel value='DatabaseTab' sx={{ flexGrow: 1 }}>
-                <DialogTabDatabase />
-                {renderTabFooter()}
-              </TabPanel>
-              <TabPanel value='paymentTab' sx={{ flexGrow: 1 }}>
-                <DialogTabBilling />
-                {renderTabFooter()}
-              </TabPanel> */}
+
               <TabPanel value='submitTab' sx={{ flexGrow: 1 }}>
                 <Box sx={{ textAlign: 'center' }}>
                   {
@@ -327,4 +306,4 @@ const DialogCreateBusiness = () => {
   )
 }
 
-export default DialogCreateBusiness
+export default AddCarrierDialog
