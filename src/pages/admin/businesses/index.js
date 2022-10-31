@@ -255,8 +255,8 @@ const UserList = () => {
   const [status, setStatus] = useState('')
   const [page_size, set_page_size] = useState(12)
   const [page_number, set_page_number] = useState(0)
-  const [sort_field, set_sort_field] = useState('legal_name')
-  const [sort_order, set_sort_order] = useState('desc')
+  const [sort_field, set_sort_field] = useState('')
+  const [sort_order, set_sort_order] = useState('')
   const [addUserOpen, setAddUserOpen] = useState(false)
   const [ debounced_search ] = useDebounce(search, 1000);
 

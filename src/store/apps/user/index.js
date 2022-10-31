@@ -10,7 +10,7 @@ import { businessService } from 'services/business.service'
 export const fetchData = createAsyncThunk('appUsers/fetchData', async (params, { getState, dispatch }) => {
   try {
     await dispatch(setLoading())
-    const response = await businessService.get('?'+new URLSearchParams(omitBy(params, isEmpty)).toString())
+    const response = await businessService.get('?'+new URLSearchParams(Object.entries(params).reduce((a,[k,v]) => (v ? (a[k]=v, a) : a), {})).toString())
     return response
   } catch (er){
     er.errors && er.errors.map(x => toast.error(x.message))
