@@ -41,33 +41,33 @@ const VerifyBusiness = () => {
   const [ error, setError ] = useState(false)
   
   const [ actionsLoading, setActionsLoading ] = useState(true)
-  // const handleSubmit = e => {
-  //   e.preventDefault()
-  // }
+  const handleSubmit = e => {
+    e.preventDefault()
+  }
 
-  // const verifyBusiness = async () => {
-  //   try {
-  //     setActionsLoading(true)
-  //     const params = new URLSearchParams(window.location.search);
-  //     let token = params.get('token')
-  //     if(!token){
-  //       setNoToken(true)
-  //     }
-  //     await businessService.verify(token)
-  //     setActionsLoading(false)
-  //     setTimeout(() => {
-  //       window.location.replace('/')
-  //     }, 5000);
-  //   } catch (er) {
-  //     if(er.errors && er.errors.length > 0 && er.errors[0]['message'])
-  //     setError(er.errors[0]['message'])
-  //     setActionsLoading(false)
-  //   }
-  // }
+  const verifyBusiness = async () => {
+    try {
+      setActionsLoading(true)
+      const params = new URLSearchParams(window.location.search);
+      let token = params.get('token')
+      if(!token){
+        setNoToken(true)
+      }
+      await businessService.verify(token)
+      setActionsLoading(false)
+      setTimeout(() => {
+        window.location.replace('/')
+      }, 5000);
+    } catch (er) {
+      if(er.errors && er.errors.length > 0 && er.errors[0]['message'])
+      setError(er.errors[0]['message'])
+      setActionsLoading(false)
+    }
+  }
 
-  // useEffect(() => {
-  //   verifyBusiness()
-  // }, [])
+  useEffect(() => {
+    verifyBusiness()
+  }, [])
   
 
   return (
