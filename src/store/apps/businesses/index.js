@@ -2,19 +2,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 // ** Axios Imports
 import axios from 'axios'
-import { isEmpty, omitBy } from 'lodash'
-import toast from 'react-hot-toast'
 import { businessService } from 'services/business.service'
 
 // ** Fetch Users
-export const fetchData = createAsyncThunk('appUsers/fetchData', async (params, { getState, dispatch }) => {
-  try {
-    await dispatch(setLoading())
-    const response = await businessService.get('?'+new URLSearchParams(omitBy(params, isEmpty)).toString())
-    return response
-  } catch (er){
-    er.errors && er.errors.map(x => toast.error(x.message))
-  }
+export const fetchData = createAsyncThunk('appUsers/fetchData', async params => {
+  const response = await businessService.get('')
+  return response.data
 })
 
 // ** Add User
@@ -27,7 +20,7 @@ export const addUser = createAsyncThunk('appUsers/addUser', async (data, { getSt
   return response.data
 })
 
-
+// ** Delete User
 export const deleteUser = createAsyncThunk('appUsers/deleteUser', async (id, { getState, dispatch }) => {
   const response = await axios.delete('/apps/users/delete', {
     data: id
@@ -37,15 +30,10 @@ export const deleteUser = createAsyncThunk('appUsers/deleteUser', async (id, { g
   return response.data
 })
 
-export const setLoading = createAsyncThunk('appUsers/setLoading', async (id, { dispatch }) => {
-  return true
-})
-
 export const appUsersSlice = createSlice({
-  name: 'appUsers',
+  name: 'adminBusinesses',
   initialState: {
     data: [],
-    loading: false,
     total: 1,
     params: {},
     allData: []
@@ -61,9 +49,6 @@ export const appUsersSlice = createSlice({
       } else {
         state.loading = false
       }
-    }),
-    builder.addCase(setLoading.fulfilled, (state, action) => {
-      state.loading = true
     })
   }
 })

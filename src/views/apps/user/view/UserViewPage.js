@@ -15,46 +15,32 @@ import axios from 'axios'
 import UserViewLeft from 'src/views/apps/user/view/UserViewLeft'
 import UserViewRight from 'src/views/apps/user/view/UserViewRight'
 
-const UserView = ({ id, invoiceData }) => {
-  // ** State
-  const [error, setError] = useState(false)
-  const [data, setData] = useState(null)
-  useEffect(() => {
-    axios
-      .get('/apps/user', { params: { id } })
-      .then(response => {
-        setData(response.data)
-        setError(false)
-      })
-      .catch(() => {
-        setData(null)
-        setError(true)
-      })
-  }, [id])
-  if (data) {
-    return (
-      <Grid container spacing={6}>
-        <Grid item xs={12} md={5} lg={4}>
-          <UserViewLeft data={data} />
-        </Grid>
-        <Grid item xs={12} md={7} lg={8}>
-          <UserViewRight invoiceData={invoiceData} />
-        </Grid>
-      </Grid>
-    )
-  } else if (error) {
+const UserView = ({ id, data, code }) => {
+
+  const [ business_data, set_business_data ] = useState(data)
+
+  if(code === 404){
     return (
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Alert severity='error'>
             User with the id: {id} does not exist. Please check the list of users:{' '}
-            <Link href='/apps/user/list'>User List</Link>
+            <Link href='/admin/businesses'>User List</Link>
           </Alert>
         </Grid>
       </Grid>
     )
   } else {
-    return null
+    return (
+      <Grid container spacing={6}>
+        <Grid item xs={12} md={5} lg={4}>
+          <UserViewLeft data={business_data} set_data={set_business_data} />
+        </Grid>
+        <Grid item xs={12} md={7} lg={8}>
+          <UserViewRight data={business_data} set_business_data={set_business_data} />
+        </Grid>
+      </Grid>
+    )
   }
 }
 

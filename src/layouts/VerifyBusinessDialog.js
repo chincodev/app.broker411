@@ -48,6 +48,9 @@ const VerifyBusinessDialog = () => {
         <Typography sx={{ mb: 3 }}>
           Please check your email inbox to verify your business. If you didn't receive it, try to resend.
         </Typography>
+        <Typography sx={{ mb: 3 }}>
+          If you signed up as a broker, you must wait until an administrator review your information before you receive the verification.
+        </Typography>
         <Divider sx={{ m: 0 }} />
         <Button disabled={sending} onClick={()=>resendVerificationMail()} sx={{mt: 4}} variant='contained' >
           Resend Mail

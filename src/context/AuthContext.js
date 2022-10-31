@@ -52,6 +52,7 @@ const AuthProvider = ({ children }) => {
 						localStorage.removeItem('userData')
 						localStorage.removeItem('refreshToken')
 						localStorage.removeItem('accessToken')
+						Cookies.remove('accessToken')
 						setUser(null)
 						setLoading(false)
 					})
@@ -66,6 +67,7 @@ const AuthProvider = ({ children }) => {
 		authService.login(params)
 		.then(async res => {
 			await localStorage.setItem('accessToken', res.data.accessToken)
+			await Cookies.set('accessToken', res.data.accessToken)
 		})
 		.then(() => {
 

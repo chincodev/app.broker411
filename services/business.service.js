@@ -2,18 +2,19 @@ import { fetchWrapper } from '../utils/fetchWrapper'
 const baseUrl = process.env.NEXT_PUBLIC_API_URI;
 
 export const businessService = {
-    list,
+    get,
     find,
     find_in_fmcsa,
     create,
     verify,
     update,
     resendVerification,
+    resetVerification,
     delete: _delete
 };
 
 
-function list(query = '') {
+function get(query = '') {
     return fetchWrapper.get(`${baseUrl}businesses${query}`);
 }
 
@@ -21,8 +22,8 @@ function verify(token) {
     return fetchWrapper.get(`${baseUrl}businesses/verify/${token}`);
 }
 
-function find(_id) {
-    return fetchWrapper.get(`${baseUrl}businesses/${_id}`);
+function find(id, token) {
+    return fetchWrapper.get(`${baseUrl}businesses/${id}`, token);
 }
 
 function create(params) {
@@ -44,4 +45,8 @@ function find_in_fmcsa(dot) {
 function resendVerification(params) {
   return fetchWrapper.post(`${baseUrl}businesses/resend_verification/`, params);
 }
+
+function resetVerification(id) {
+    return fetchWrapper.post(`${baseUrl}businesses/reset_verification/${id}`);
+  }
 

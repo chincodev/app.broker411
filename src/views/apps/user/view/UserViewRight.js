@@ -15,13 +15,13 @@ import BellOutline from 'mdi-material-ui/BellOutline'
 import LinkVariant from 'mdi-material-ui/LinkVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import BookmarkOutline from 'mdi-material-ui/BookmarkOutline'
-
 // ** Demo Components Imports
 import UserViewBilling from 'src/views/apps/user/view/UserViewBilling'
 import UserViewOverview from 'src/views/apps/user/view/UserViewOverview'
 import UserViewSecurity from 'src/views/apps/user/view/UserViewSecurity'
 import UserViewConnection from 'src/views/apps/user/view/UserViewConnection'
 import UserViewNotification from 'src/views/apps/user/view/UserViewNotification'
+import { BowlMixOutline, StarOutline, ZipBoxOutline } from 'mdi-material-ui'
 
 // ** Styled Tab component
 const Tab = styled(MuiTab)(({ theme }) => ({
@@ -50,11 +50,11 @@ const UserViewRight = ({ invoiceData }) => {
         aria-label='forced scroll tabs example'
         sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
       >
-        <Tab value='overview' label='Overview' icon={<AccountOutline sx={{ fontSize: '18px' }} />} />
-        <Tab value='security' label='Security' icon={<LockOutline sx={{ fontSize: '18px' }} />} />
-        <Tab value='billing-plan' label='Billing & Plan' icon={<BookmarkOutline sx={{ fontSize: '18px' }} />} />
-        <Tab value='notification' label='Notification' icon={<BellOutline sx={{ fontSize: '18px' }} />} />
-        <Tab value='connection' label='Connection' icon={<LinkVariant sx={{ fontSize: '18px' }} />} />
+        <Tab value='overview' label='Reviews' icon={<StarOutline sx={{ fontSize: '18px' }} />} />
+        <Tab value='security' label='Loads' icon={<ZipBoxOutline sx={{ fontSize: '18px' }} />} />
+        {/* <Tab value='billing-plan' label='Billing & Plan' icon={<BookmarkOutline sx={{ fontSize: '18px' }} />} /> */}
+        {/* <Tab value='notification' label='Notification' icon={<BellOutline sx={{ fontSize: '18px' }} />} />
+        <Tab value='connection' label='Connection' icon={<LinkVariant sx={{ fontSize: '18px' }} />} /> */}
       </TabList>
       <Box sx={{ mt: 3 }}>
         <TabPanel sx={{ p: 0 }} value='overview'>
@@ -63,15 +63,15 @@ const UserViewRight = ({ invoiceData }) => {
         <TabPanel sx={{ p: 0 }} value='security'>
           <UserViewSecurity />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='billing-plan'>
+        {/* <TabPanel sx={{ p: 0 }} value='billing-plan'>
           <UserViewBilling />
-        </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='notification'>
+        </TabPanel> */}
+        {/* <TabPanel sx={{ p: 0 }} value='notification'>
           <UserViewNotification />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='connection'>
           <UserViewConnection />
-        </TabPanel>
+        </TabPanel> */}
       </Box>
     </TabContext>
   )

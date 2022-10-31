@@ -8,10 +8,13 @@ export const fetchWrapper = {
     delete: _delete,
 }
 
-function get(url) {
+function get(url, token) {
     const requestOptions = {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json',  ...authHeader() },
+        headers: { 
+            'Content-Type': 'application/json',  
+            ...(token ? { Authorization: `Bearer ${token}` } : {...authHeader()})
+        }
     };
     return fetch(url, requestOptions).then(handleResponse);
 }
@@ -45,7 +48,6 @@ function _delete(url) {
 }
 
 function authHeader() {
-
     const accessToken = authService.getToken();
     const isLoggedIn = accessToken ? true : false;
     if (isLoggedIn) {

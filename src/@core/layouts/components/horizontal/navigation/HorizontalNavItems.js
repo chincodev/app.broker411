@@ -12,7 +12,7 @@ const HorizontalNavItems = props => {
   const RenderMenuItems = props.horizontalNavItems?.map((item, index) => {
     const TagName = resolveComponent(item)
 
-    return <TagName {...props} key={index} item={item} />
+    return <TagName settings={{skin:'bordered', direction:'rtl'}} key={index} item={item} />
   })
 
   return <>{RenderMenuItems}</>
