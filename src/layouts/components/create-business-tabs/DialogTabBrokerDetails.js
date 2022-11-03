@@ -20,12 +20,15 @@ import axios from 'axios'
 import CardSnippet from 'src/@core/components/card-snippet'
 import Grid from '@mui/material/Grid'
 import toast from 'react-hot-toast'
-import { Button, CardContent, Divider, FormControl, FormHelperText, InputAdornment, TextField } from '@mui/material'
-import { AccountOutline, Email, EmailOutline, LocationEnter, Map, Marker, MessageOutline, Phone, Pin } from 'mdi-material-ui'
+import { Button, CardContent, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, FormHelperText, InputAdornment, Rating, TextField } from '@mui/material'
+import { AccountOutline, Email, EmailOutline, FaceAgent, LocationEnter, Map, Marker, MessageOutline, OfficeBuildingOutline, Phone, Pin } from 'mdi-material-ui'
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup'
 import { green } from '@mui/material/colors'
+
+
+import useBgColor from 'src/@core/hooks/useBgColor'
 
 const schema = yup.object().shape({
   type: yup.string().required().oneOf(['broker']),
@@ -41,6 +44,9 @@ const schema = yup.object().shape({
 
 const DialogTabBrokerDetails = (props) => {
 
+
+  const bgClasses = useBgColor()
+  
   const [ actionsLoading, setActionsLoading ] = useState(false)
 
   const defaultValues = {
@@ -93,56 +99,74 @@ const DialogTabBrokerDetails = (props) => {
         <form onSubmit={handleSubmit(submitData)}>
           <Grid container>
           <Grid item xs={12} style={{marginBottom:'2rem'}}>
-              <FormControl fullWidth>
-                <Controller
-                  name='mc_number'
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      value={value}
-                      label='MC Number'
-                      onChange={onChange}
-                      placeholder='123123'
-                      type={'number'}
-                      error={Boolean(errors.name)}
-                      aria-describedby='mc_number'
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position='start'>
-                            <AccountOutline />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                  )}
-                />
-                {errors.mc_number && (
-                  <FormHelperText sx={{ color: 'error.main' }} id='mc_number'>
-                    {errors.mc_number.message}
-                  </FormHelperText>
-                )}
-              </FormControl>
+          <Box
+            
+                sx={{
+                  py: 3,
+                  px: 4,
+                  mb: 4,
+                  borderRadius: 1,
+                  border: theme =>
+                    `1px solid whitesmoke`,
+                    
+                }}
+              >
+                <Box sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
+                  <OfficeBuildingOutline sx={{ mr: 2 }} />
+                  <Typography variant='h6' sx={{ mb: 0}}>
+                    Brokerage Name
+                  </Typography>
+                </Box>
+                <Typography>
+                  <strong>Broker Broker Broker</strong>
+                </Typography>
+              </Box>
+
+              <Box
+            
+                sx={{
+                  py: 3,
+                  px: 4,
+                  
+                  borderRadius: 1,
+                  border: theme =>
+                    `1px solid whitesmoke`,
+                }}
+              >
+                <Box sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
+                  <FaceAgent sx={{ mr: 2 }} />
+                  <Typography variant='h6' sx={{ mb: 0}}>
+                    Brokerage Representative
+                  </Typography>
+                </Box>
+                <Typography>
+                  <strong>Broker Broker Broker</strong>
+                </Typography>
+              </Box>
+
             </Grid>
             <Grid item xs={12} style={{marginBottom:'2rem'}}>
               <FormControl fullWidth>
                 <Controller
-                  name='registration_date'
+                  name='body'
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange } }) => (
                     <TextField
                       value={value}
-                      label='Registration Date'
+                      label='Body'
                       onChange={onChange}
-                      placeholder='123123'
-                      type={'date'}
+                      placeholder='Describe your experience in 100 words.'
+                      fullWidth
+                      multiline
+                      sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
+                      minRows={3}
                       error={Boolean(errors.registration_date)}
                       aria-describedby='registration_date'
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position='start'>
-                            <AccountOutline />
+                            <MessageOutline />
                           </InputAdornment>
                         )
                       }}
@@ -157,159 +181,60 @@ const DialogTabBrokerDetails = (props) => {
               </FormControl>
             </Grid>
             <Grid item xs={12} style={{marginBottom:'2rem'}}>
-              <FormControl fullWidth>
-                <Controller
-                  name='legal_name'
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      value={value}
-                      label='Name'
-                      onChange={onChange}
-                      placeholder='AI Logistics Inc'
-                      error={Boolean(errors.legal_name)}
-                      aria-describedby='legal_name'
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position='start'>
-                            <AccountOutline />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                  )}
-                />
-                {errors.legal_name && (
-                  <FormHelperText sx={{ color: 'error.main' }} id='legal_name'>
-                    {errors.legal_name.message}
-                  </FormHelperText>
-                )}
-              </FormControl>
+              <Typography variant='h6' >Check the box if any applies to you:</Typography>
+            <FormGroup>
+          <FormControlLabel
+            label='No detention Pay'
+            control={<Checkbox  name='gilad' />}
+          />
+          <FormControlLabel
+            label='Cancels Load Before Pickup'
+            control={<Checkbox  name='jason' />}
+          />
+          <FormControlLabel
+            label='Double Booked'
+            control={<Checkbox  name='antoine' />}
+          />
+          <FormControlLabel
+            label='Rude or Disrespectful Broker Agent'
+            control={<Checkbox  name='antoine' />}
+          />
+          <FormControlLabel
+            label='Change of terms during transit'
+            control={<Checkbox  name='antoine' />}
+          />
+          <FormControlLabel
+            label='Gives wrong delivery or pickup times'
+            control={<Checkbox  name='antoine' />}
+          />
+          <FormControlLabel
+            label='Unresponsive after giving you the load'
+            control={<Checkbox  name='antoine' />}
+          />
+          <FormControlLabel
+            label='Leaves false reviews on other platforms '
+            control={<Checkbox  name='antoine' />}
+          />
+        </FormGroup>
             </Grid>
+            
             <Grid item xs={12} style={{marginBottom:'2rem'}}>
-              <FormControl fullWidth>
-                <Controller
-                  name='email'
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      value={value}
-                      label='Email'
-                      onChange={onChange}
-                      placeholder='ailogistics@example.com'
-                      error={Boolean(errors.email)}
-                      aria-describedby='email'
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position='start'>
-                            <Email />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                  )}
-                />
-                {errors.email && (
-                  <FormHelperText sx={{ color: 'error.main' }} id='email'>
-                    {errors.email.message}
-                  </FormHelperText>
-                )}
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} style={{marginBottom:'2rem'}}>
-              <FormControl fullWidth>
-                <Controller
-                  name='phone'
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      value={value}
-                      label='Phone'
-                      onChange={onChange}
-                      placeholder='(123) 456-8790'
-                      error={Boolean(errors.phone)}
-                      aria-describedby='phone'
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position='start'>
-                            <Phone />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                  )}
-                />
-                {errors.phone && (
-                  <FormHelperText sx={{ color: 'error.main' }} id='phone'>
-                    {errors.phone.message}
-                  </FormHelperText>
-                )}
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} style={{marginBottom:'0.5rem'}}>
-              <FormControl fullWidth>
-                <Controller
-                  name='address'
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      value={value}
-                      label='Address'
-                      placeholder='123022 Ashwood St'
-                      onChange={onChange}
-                      error={Boolean(errors.address)}
-                      aria-describedby='address'
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position='start'>
-                            <Pin />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                  )}
-                />
-                {errors.address && (
-                  <FormHelperText sx={{ color: 'error.main' }} id='address'>
-                    {errors.address.message}
-                  </FormHelperText>
-                )}
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} style={{marginBottom:'0.5rem'}}>
-              <FormControl fullWidth>
-                <Controller
-                  name='address_line_2'
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      value={value}
-                      label=''
-                      placeholder='Kannapolis NC 28081'
-                      onChange={onChange}
-                      error={Boolean(errors.address_line_2)}
-                      aria-describedby='address_line_2'
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position='start'>
-                            <Pin />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                  )}
-                />
-                {errors.address_line_2 && (
-                  <FormHelperText sx={{ color: 'error.main' }} id='address_line_2'>
-                    {errors.address_line_2.message}
-                  </FormHelperText>
-                )}
-              </FormControl>
+            <Box sx={{ mb: 3 }}>
+        <Typography sx={{ fontWeight: 500 }}>Your experience</Typography>
+        <Rating size="large" max={10} value={1} name='simple-controlled' onChange={(event, newValue) => console.log(newValue)} />
+      </Box>
+      <Box sx={{ mb: 3 }}>
+        <Typography sx={{ fontWeight: 500 }}>Payment Speed</Typography>
+        <Rating size="large" max={10} value={1} name='simple-controlled' onChange={(event, newValue) => console.log(newValue)} />
+      </Box>
+      <Box sx={{ mb: 3 }}>
+        <Typography sx={{ fontWeight: 500 }}>Load was as described</Typography>
+        <Rating size="large" max={10} value={1} name='simple-controlled' onChange={(event, newValue) => console.log(newValue)} />
+      </Box>
+      <Box sx={{ mb: 3 }}>
+        <Typography sx={{ fontWeight: 500 }}>Would you work with this company again</Typography>
+        <Rating  size="large" max={10} value={1} name='simple-controlled' onChange={(event, newValue) => console.log(newValue)} />
+      </Box>
             </Grid>
            
             <Grid item xs={12} style={{textAlign:'end', paddingTop:'1em'}}>

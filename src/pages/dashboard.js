@@ -36,6 +36,7 @@ import { isEmpty } from 'lodash'
 import VerifyBusinessDialog from 'src/layouts/VerifyBusinessDialog'
 import { useState } from 'react'
 import AddBrokerDialog from 'src/layouts/AddBrokerDialog'
+import CardUser from 'src/views/ui/cards/basic/CardUser'
 
 const CrmDashboard = () => {
 
@@ -66,7 +67,30 @@ const CrmDashboard = () => {
               !auth.user.business.is_verified ? (
                 <VerifyBusinessDialog />
               ) : (
-                <h1>Verified</h1>
+                
+                
+
+
+                <Grid container spacing={6} className='match-height'>
+                  <Grid item xs={12} md={3}>
+                    <CardUser />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    asdasdasdasdasdasdasdasdasdasdasdasd
+                  </Grid>
+                  <Grid item xs={12} md={3}>
+                  asdasdasdasdasdasdasdasdasdasdasdasd
+                  </Grid>
+                </Grid>
+
+
+
+
+
+
+
+
+
               )
             ) : ( 
               <Grid container spacing={4}>

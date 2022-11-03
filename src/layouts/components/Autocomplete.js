@@ -42,6 +42,8 @@ import ChartTimelineVariant from 'mdi-material-ui/ChartTimelineVariant'
 import SubdirectoryArrowLeft from 'mdi-material-ui/SubdirectoryArrowLeft'
 import FormatTextVariantOutline from 'mdi-material-ui/FormatTextVariantOutline'
 import CardBulletedSettingsOutline from 'mdi-material-ui/CardBulletedSettingsOutline'
+import CircularProgress from '@mui/material/CircularProgress'
+import { useDebounce } from 'use-debounce'
 
 // ** Third Party Imports
 import axios from 'axios'
@@ -54,6 +56,8 @@ import UserIcon from 'src/layouts/components/UserIcon'
 
 // ** API Icon Import with object
 import { autocompleteIconObj } from './autocompleteIconObj'
+import { businessService } from 'services/business.service'
+import { Laptop } from 'mdi-material-ui'
 
 const defaultSuggestionsData = [
   {
@@ -259,62 +263,6 @@ const NoResult = ({ value, setOpenDialog }) => {
       <Typography variant='body2' sx={{ mb: 2.5, color: 'text.disabled' }}>
         Try with another keyword...
       </Typography>
-      {/* <List sx={{ py: 0 }}>
-        <ListItem sx={{ py: 2 }} disablePadding onClick={() => setOpenDialog(false)}>
-          <Link passHref href='/dashboards/crm/'>
-            <Box
-              component='a'
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                textDecoration: 'none',
-                '&:hover > *': { color: 'primary.main' }
-              }}
-            >
-              <ChartDonut fontSize='small' sx={{ mr: 2.5, color: 'text.primary' }} />
-              <Typography variant='body2' sx={{ color: 'text.primary' }}>
-                CRM Dashboard
-              </Typography>
-            </Box>
-          </Link>
-        </ListItem>
-        <ListItem sx={{ py: 2 }} disablePadding onClick={() => setOpenDialog(false)}>
-          <Link passHref href='/apps/user/view/2/'>
-            <Box
-              component='a'
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                textDecoration: 'none',
-                '&:hover > *': { color: 'primary.main' }
-              }}
-            >
-              <AccountOutline fontSize='small' sx={{ mr: 2.5, color: 'text.primary' }} />
-              <Typography variant='body2' sx={{ color: 'text.primary' }}>
-                User View
-              </Typography>
-            </Box>
-          </Link>
-        </ListItem>
-        <ListItem sx={{ py: 2 }} disablePadding onClick={() => setOpenDialog(false)}>
-          <Link passHref href='/pages/account-settings/'>
-            <Box
-              component='a'
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                textDecoration: 'none',
-                '&:hover > *': { color: 'primary.main' }
-              }}
-            >
-              <AccountCogOutline fontSize='small' sx={{ mr: 2.5, color: 'text.primary' }} />
-              <Typography variant='body2' sx={{ color: 'text.primary' }}>
-                Account Settings
-              </Typography>
-            </Box>
-          </Link>
-        </ListItem>
-      </List> */}
     </Box>
   )
 }
@@ -325,36 +273,6 @@ const DefaultSuggestions = ({ setOpenDialog }) => {
       <Typography component='p' variant='overline' sx={{ lineHeight: 1.25, color: 'text.disabled' }}>
             Search a Broker or Carrier
       </Typography>
-      {/* {defaultSuggestionsData.map((item, index) => (
-        <Grid item xs={12} sm={6} key={index}>
-          <Typography component='p' variant='overline' sx={{ lineHeight: 1.25, color: 'text.disabled' }}>
-            {item.category}
-          </Typography>
-          <List sx={{ py: 2.5 }}>
-            {item.suggestions.map((suggestionItem, index2) => (
-              <ListItem key={index2} sx={{ py: 2 }} disablePadding>
-                <Link passHref href={suggestionItem.link}>
-                  <Box
-                    component='a'
-                    onClick={() => setOpenDialog(false)}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      textDecoration: 'none',
-                      '&:hover > *': { color: 'primary.main' }
-                    }}
-                  >
-                    {suggestionItem.icon}
-                    <Typography variant='body2' sx={{ color: 'text.primary' }}>
-                      {suggestionItem.suggestion}
-                    </Typography>
-                  </Box>
-                </Link>
-              </ListItem>
-            ))}
-          </List>
-        </Grid>
-      ))} */}
     </Grid>
   )
 }
@@ -365,6 +283,7 @@ const AutocompleteComponent = ({ hidden, settings }) => {
   const [searchValue, setSearchValue] = useState('')
   const [openDialog, setOpenDialog] = useState(false)
   const [options, setOptions] = useState([])
+  const [ debounced_search ] = useDebounce(searchValue, 1000);
 
   // ** Hooks & Vars
   const theme = useTheme()
@@ -372,21 +291,32 @@ const AutocompleteComponent = ({ hidden, settings }) => {
   const { layout } = settings
   const wrapper = useRef(null)
   const fullScreenDialog = useMediaQuery(theme.breakpoints.down('sm'))
+  
+  const [ loading, setLoading ] = useState(false)
+  const [ searched, setSearched ] = useState(false)
+
+  const getBrokers = async (debounced_search) => {
+    try {
+      setLoading(true)
+      setOptions([])
+      const response = await businessService.get('?page_size=10&search='+debounced_search)
+      setOptions(response.data)
+      setLoading(false)
+      setSearched(true)
+    } catch (er) {
+      console.log(er)
+    }
+  }
 
   // Get all data using API
   useEffect(() => {
-    axios
-      .get('/app-bar/search', {
-        params: { q: searchValue }
-      })
-      .then(response => {
-        if (response.data && response.data.length) {
-          setOptions(response.data)
-        } else {
-          setOptions([])
-        }
-      })
-  }, [searchValue])
+  
+    if(debounced_search.length > 0){
+      getBrokers(debounced_search)
+    }
+      
+  }, [debounced_search])
+
   useEffect(() => {
     setIsMounted(true)
 
@@ -397,9 +327,7 @@ const AutocompleteComponent = ({ hidden, settings }) => {
   const handleOptionClick = obj => {
     setSearchValue('')
     setOpenDialog(false)
-    if (obj.url) {
-      router.push(obj.url)
-    }
+    router.push('/brokers/[id]', '/brokers/'+obj.id)
   }
 
   // Handle ESC & shortcut keys keydown events
@@ -454,12 +382,24 @@ const AutocompleteComponent = ({ hidden, settings }) => {
               disablePortal
               options={options}
               id='appBar-search'
+              loading={loading}
+              loadingText={<Box style={{
+                display:'flex', 
+                alignItems:'center', 
+                justifyContent:'center',
+                height:'100%'
+              }}>
+                <CircularProgress />
+              </Box>}
               isOptionEqualToValue={() => true}
-              onInputChange={(event, value) => setSearchValue(value)}
+              onInputChange={(event, value) => {
+                setSearched(false)
+                setSearchValue(value)
+              }}
               onChange={(event, obj) => handleOptionClick(obj)}
-              noOptionsText={<NoResult value={searchValue} setOpenDialog={setOpenDialog} />}
-              getOptionLabel={option => option.title}
-              groupBy={option => (searchValue.length ? categoryTitle[option.category] : '')}
+              noOptionsText={searchValue.length > 0 && searched && <NoResult value={searchValue} setOpenDialog={setOpenDialog} />}
+              getOptionLabel={option => option.legal_name}
+              // groupBy={option => (searchValue.length ? categoryTitle[option.category] : '')}
               sx={{
                 '& + .MuiAutocomplete-popper': {
                   ...(searchValue.length && {
@@ -474,6 +414,7 @@ const AutocompleteComponent = ({ hidden, settings }) => {
                   <TextField
                     {...params}
                     value={searchValue}
+                    disabled={loading}
                     onChange={event => setSearchValue(event.target.value)}
                     inputRef={input => {
                       if (input) {
@@ -514,7 +455,7 @@ const AutocompleteComponent = ({ hidden, settings }) => {
                 return searchValue.length ? (
                   <ListItem
                     {...props}
-                    key={option.title}
+                    key={option.legal_name}
                     className={`suggestion ${props.className}`}
                     onClick={() => handleOptionClick(option)}
                     secondaryAction={
@@ -522,13 +463,9 @@ const AutocompleteComponent = ({ hidden, settings }) => {
                     }
                   >
                     <ListItemButton sx={{ py: 2.5, px: ` ${theme.spacing(6)} !important` }}>
-                      <UserIcon
-                        icon={IconTag}
-                        componentType='search'
-                        iconProps={{ fontSize: 'small', sx: { mr: 2.5, color: 'text.primary' } }}
-                      />
+                      
                       <Typography variant='body2' sx={{ color: 'text.primary' }}>
-                        {option.title}
+                        {option.legal_name}
                       </Typography>
                     </ListItemButton>
                   </ListItem>
@@ -536,21 +473,23 @@ const AutocompleteComponent = ({ hidden, settings }) => {
               }}
             />
           </Box>
-          {searchValue.length === 0 ? (
-            <Box
-              sx={{
-                p: 10,
-                display: 'grid',
-                overflow: 'auto',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderTop: `1px solid ${theme.palette.divider}`,
-                height: fullScreenDialog ? 'calc(100vh - 69px)' : '100%'
-              }}
-            >
-              <DefaultSuggestions setOpenDialog={setOpenDialog} />
-            </Box>
-          ) : null}
+          {
+           searchValue.length === 0 && options.length === 0 ? (
+              <Box
+                  sx={{
+                    p: 10,
+                    display: 'grid',
+                    overflow: 'auto',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderTop: `1px solid ${theme.palette.divider}`,
+                    height: fullScreenDialog ? 'calc(100vh - 69px)' : '100%'
+                  }}
+                >
+                <DefaultSuggestions setOpenDialog={setOpenDialog} />
+              </Box>
+              ) : null
+          }
         </Dialog>
       </Box>
     )

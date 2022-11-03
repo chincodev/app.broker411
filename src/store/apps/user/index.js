@@ -7,10 +7,10 @@ import toast from 'react-hot-toast'
 import { businessService } from 'services/business.service'
 
 // ** Fetch Users
-export const fetchData = createAsyncThunk('appUsers/fetchData', async (params, { getState, dispatch }) => {
+export const fetchData = createAsyncThunk('appUsers/fetchData', async (params = '', { getState, dispatch }) => {
   try {
     await dispatch(setLoading())
-    const response = await businessService.get('?'+new URLSearchParams(Object.entries(params).reduce((a,[k,v]) => (v ? (a[k]=v, a) : a), {})).toString())
+    const response = await businessService.get('?'+params)
     return response
   } catch (er){
     er.errors && er.errors.map(x => toast.error(x.message))
@@ -45,10 +45,12 @@ export const appUsersSlice = createSlice({
   name: 'appUsers',
   initialState: {
     data: [],
-    loading: false,
-    total: 1,
+    loading: true,
+    total: null,
     params: {},
-    allData: []
+    allData: [],
+    current_page:-1,
+    page_size: 24
   },
   reducers: {},
   extraReducers: builder => {
@@ -57,6 +59,8 @@ export const appUsersSlice = createSlice({
         state.data = action.payload.data
         state.total = action.payload.total
         state.params = action.payload.params
+        state.current_page = action.payload.current_page
+        state.page_size = action.payload.page_size
         state.loading = false
       } else {
         state.loading = false

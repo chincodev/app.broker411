@@ -38,6 +38,9 @@ import CustomAvatar from 'src/@core/components/mui/avatar'
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
 import { businessService } from 'services/business.service'
+import { useAuth } from 'src/hooks/useAuth'
+import AddBrokerDialog from 'src/layouts/AddBrokerDialog'
+import AddReviewDialog from 'src/layouts/AddReviewDialog'
 
 // ** Styled <sup> component
 const Sup = styled('sup')(({ theme }) => ({
@@ -65,6 +68,33 @@ const statusColors = {
   false: 'warning',
 }
 
+
+const admin_fields = [
+  {
+    label: 'dba_name',
+    values: ['dba_name']
+  },{
+    label: 'dba_name',
+    values: ['dba_name']
+  },{
+    label: 'dba_name',
+    values: ['dba_name']
+  },{
+    label: 'dba_name',
+    values: ['dba_name']
+  },{
+    label: 'dba_name',
+    values: ['dba_name']
+  },{
+    label: 'dba_name',
+    values: ['dba_name']
+  },{
+    label: 'dba_name',
+    values: ['dba_name']
+  }
+]
+
+
 const UserViewLeft = ({ data, set_data }) => {
   // ** States
   const [openEdit, setOpenEdit] = useState(false)
@@ -79,6 +109,8 @@ const UserViewLeft = ({ data, set_data }) => {
   const handlePlansClose = () => setOpenPlans(false)
 
   const [loading, set_loading] = useState(false)
+
+  const auth = useAuth()
 
   const handleStatus = async (value) => {
     if (window.confirm(`Do you really want to ${value ? 'disable' : 'enable'} ${data.legal_name}`)) {
@@ -280,7 +312,14 @@ const UserViewLeft = ({ data, set_data }) => {
               </Box>
             </CardContent>
 
-            <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+            {
+              ['owner', 'representative'].includes(auth.user.role.name) ? (
+                <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <AddReviewDialog />
+                  
+                </CardActions>
+              ) : auth.user.role.name === 'administrator' && (
+                <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
               {/* <Button variant='contained' sx={{ mr: 2 }} onClick={handleEditClickOpen}>
                 Edit
               </Button> */}
@@ -312,6 +351,8 @@ const UserViewLeft = ({ data, set_data }) => {
               
               
             </CardActions>
+              )
+            }
 
             <Dialog
               open={openEdit}

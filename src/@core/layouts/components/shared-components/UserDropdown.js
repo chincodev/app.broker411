@@ -81,7 +81,7 @@ const UserDropdown = props => {
 
   return (
     <Fragment>
-      {console.log(auth)}
+      
       <Badge
         overlap='circular'
         onClick={handleDropdownOpen}
@@ -117,12 +117,13 @@ const UserDropdown = props => {
                 horizontal: 'right'
               }}
             >
+              {console.log(auth.user)}
               <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
             </Badge>
             <Box sx={{ display: 'flex', ml: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
               <Typography sx={{ fontWeight: 600 }}>{auth.user.username}</Typography>
               <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
-                {auth.user.username.business ? auth.user.username.business.name : 'No Business'}
+                {auth.user.role.name}
               </Typography>
             </Box>
           </Box>

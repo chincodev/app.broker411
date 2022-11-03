@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 
 // ** Next Import
 import Link from 'next/link'
@@ -18,6 +18,7 @@ import CardHeader from '@mui/material/CardHeader'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import CardContent from '@mui/material/CardContent'
+import urlManager from '../../../../utils/urlManager'
 import Select from '@mui/material/Select'
 
 // ** Icons Imports
@@ -48,6 +49,7 @@ import TableHeader from 'src/views/apps/user/list/TableHeader'
 import AddUserDrawer from 'src/views/apps/user/list/AddUserDrawer'
 import { TextField, Tooltip } from '@mui/material'
 import { useDebounce } from 'use-debounce';
+import { useRouter } from 'next/router'
 
 // ** Vars
 const userRoleObj = {
@@ -251,7 +253,7 @@ const UserList = () => {
   // ** State
   const [role, setRole] = useState('')
   const [plan, setPlan] = useState('')
-  const [search, set_search] = useState('')
+  const [search, set_search] = useState(new URLSearchParams(window.location.search).get('search') || '')
   const [status, setStatus] = useState('')
   const [page_size, set_page_size] = useState(12)
   const [page_number, set_page_number] = useState(0)
@@ -264,16 +266,32 @@ const UserList = () => {
   const dispatch = useDispatch()
   const store = useSelector(state => state.user)
   useEffect(() => {
-    dispatch(
-      fetchData({
-        page_size,
-        page_number,
-        sort_field,
-        sort_order,
-        search: debounced_search
-      })
-    )
-  }, [dispatch, page_number, page_size, sort_field, sort_order, debounced_search])
+    if(!store.total){
+      dispatch(fetchData(window.location.search.replace('?', '')))
+    }
+  }, [])
+
+  const isFirstRun = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
+    urlManager([
+      {
+        key: 'search',
+        value: debounced_search,
+        type: debounced_search.length === 0 ? 'remove' : 'replace'
+      },
+      {
+        key: 'page_number',
+        value: '',
+        type: 'remove'
+      }
+    ])
+  }, [debounced_search])
+  
 
   const handleFilter = useCallback(val => {
     set_search(val)
@@ -291,6 +309,42 @@ const UserList = () => {
     setStatus(e.target.value)
   }, [])
   const toggleAddUserDrawer = () => setAddUserOpen(!addUserOpen)
+
+  const router = useRouter()
+
+  const urlManager = (values) => {
+    console.log(values)
+    let currentUrlParams = new URLSearchParams(window.location.search)
+    
+
+      values && values.length > 0 && values.map(x => {
+        if(x.type === 'replace'){
+          currentUrlParams.set(x.key, x.value)
+        }
+        if(x.type === 'remove'){
+          currentUrlParams.delete(x.key)
+        }
+      })
+
+      console.log(currentUrlParams.toString())
+    
+    router.push('?'+currentUrlParams.toString(), undefined, { shallow: true })
+  }
+
+  useEffect(() => {
+    const handleRouteChange = (url, { shallow }) => {
+      shallow && dispatch(
+        fetchData(url.split('?')[1])
+      )
+    }
+
+    router.events.on('routeChangeStart', handleRouteChange)
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange)
+    }
+  }, [])
+  
 
   return (
     <Grid container spacing={6}>
@@ -384,10 +438,23 @@ const UserList = () => {
                 value={search}
                 sx={{ mr: 6, mb: 2 }}
                 placeholder='Search Business'
-                onChange={e => handleFilter(e.target.value)}
+                onChange={(e)=>set_search(e.target.value)}
+                // onChange={e => urlManager([
+                //   {
+                //     key: 'search',
+                //     value: e.target.value + 1,
+                //     type: 'replace'
+                //   },
+                //   {
+                //     key: 'page_number',
+                //     value: '',
+                //     type: 'remove'
+                //   }
+                // ])}
               />
             </Box>
           </Box>
+          {console.log(store)}
           <DataGrid
             autoHeight
             disableSelectionOnClick
@@ -395,23 +462,65 @@ const UserList = () => {
             rows={store.data}
             rowCount={store.total}
             loading={store.loading}
+            page={store.current_page - 1}
             rowsPerPageOptions={[2, 12, 24, 48]}
             pagination
-            page={page_number}
-            pageSize={page_size}
+            pageSize={store.page_size}
+            initialState={
+              (new URLSearchParams(window.location.search).get('sort_field') && new URLSearchParams(window.location.search).get('sort_field')) ? (
+                {
+                  sorting: {
+                    sortModel: [{ field: new URLSearchParams(window.location.search).get('sort_field'), sort: new URLSearchParams(window.location.search).get('sort_order') }],
+                  }
+                }
+              ) : {
+              }
+            }
             sortingMode={'server'}
             paginationMode="server"
             onSortModelChange={(e)=>{
               if(e['0']){
-                set_sort_field(e['0']['field'])
-                set_sort_order(e['0']['sort'])
+                urlManager([
+                  {
+                    key: 'sort_field',
+                    value: e['0']['field'],
+                    type: 'replace'
+                  },{
+                    key: 'sort_order',
+                    value: e['0']['sort'],
+                    type: 'replace'
+                  }
+                ])
               } else {
-                set_sort_field(null)
-                set_sort_order(null)
+                urlManager([
+                  {
+                    key: 'sort_field',
+                    value: '',
+                    type: 'remove'
+                  },{
+                    key: 'sort_order',
+                    value: '',
+                    type: 'remove'
+                  }
+                ])
               }
             }}
-            onPageChange={(newPage) => set_page_number(newPage)}
-            onPageSizeChange={(newPageSize) => set_page_size(newPageSize)}
+            onPageChange={(newPage) => urlManager([
+              {
+                key: 'page_number',
+                value: newPage + 1,
+                type: 'replace'
+              }
+            ])}
+            onPageSizeChange={
+              (newPageSize) => urlManager([
+                {
+                  key: 'page_size',
+                  value: newPageSize,
+                  type: 'replace'
+                }
+              ])
+            }
             columns={columns}
             sx={{ '& .MuiDataGrid-columnHeaders': { borderRadius: 0 } }}
           /> 
