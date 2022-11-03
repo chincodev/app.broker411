@@ -172,11 +172,11 @@ const AddCarrierDialog = (props) => {
         </Typography>
         <Typography sx={{ mb: 2 }}>Nice Text</Typography>
         <Typography variant='body2'>
-          A cool text here.
+        Get Started For Free
         </Typography>
       </CardContent>
       <Button size='large' onClick={() => setShow(true)} variant='contained' sx={{ width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
-        Register as Carrier
+        Sign Up & Get Started Today
       </Button>
       <Dialog
         fullWidth

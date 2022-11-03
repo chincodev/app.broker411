@@ -80,9 +80,9 @@ const AddBrokerDialog = (props) => {
         <Typography variant='h6' sx={{ mb: 2 }}>
           Broker
         </Typography>
-        <Typography sx={{ mb: 2 }}>Nice Text</Typography>
+        <Typography sx={{ mb: 2 }}>Get Started For $9.99/Month</Typography>
         <Typography variant='body2'>
-          A cool text here.
+        Sign Up & Get Started Today
         </Typography>
       </CardContent>
       <Button size='large' onClick={() => setShow(true)} variant='contained' sx={{ width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
