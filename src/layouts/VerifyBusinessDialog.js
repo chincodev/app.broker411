@@ -7,6 +7,7 @@ import { styled } from '@mui/material/styles'
 import { CardHeader, Divider } from '@mui/material'
 import { businessService } from 'services/business.service'
 import toast from 'react-hot-toast'
+import { useAuth } from 'src/hooks/useAuth'
 
 const Img = styled('img')(({ theme }) => ({
   marginTop: theme.spacing(5),
@@ -22,7 +23,7 @@ const Img = styled('img')(({ theme }) => ({
 }))
 
 
-const VerifyBusinessDialog = () => {
+const VerifyBusinessDialog = (props) => {
 
   const [sending, setSending] = useState(false)
 
@@ -40,21 +41,39 @@ const VerifyBusinessDialog = () => {
     }
   }
 
+  const auth = useAuth()
+
   return (
     <Card>
-      <CardHeader sx={{ textAlign: 'center', fontWeight:'900' }} title='Business Verification Pending' titleTypographyProps={{ variant: 'h6' }} />
+      <CardHeader sx={{ textAlign: 'center', fontWeight:'900' }} title='Verification Pending' titleTypographyProps={{ variant: 'h6' }} />
       <CardContent sx={{ textAlign: 'center' }}>
         <Img alt='error-illustration' src='/images/pages/kb-personalization.png' />
-        <Typography sx={{ mb: 3 }}>
-          Please check your email inbox to verify your business. If you didn't receive it, try to resend.
-        </Typography>
-        <Typography sx={{ mb: 3 }}>
+        {
+          props.verifyType === 'broker' ||( auth.user.request_business && auth.user.request_business.type === 'broker') ? <Typography sx={{ mb: 3 }}>
+          Your request to sign as broker at <strong>{auth.user.request_business.legal_name}</strong>  is pending<br />We will let you know when the verification is complete
+        </Typography> : ''
+        }
+
+{
+          props.verifyType === 'carrier' || (auth.user.business && auth.user.business.type === 'carrier') ? <Typography sx={{ mb: 3 }}>
           If you signed up as a broker, you must wait until an administrator review your information before you receive the verification.
+        </Typography> : ''
+        }
+        
+        <Typography sx={{ mb: 3 }}>
+          
         </Typography>
-        <Divider sx={{ m: 0 }} />
-        <Button disabled={sending} onClick={()=>resendVerificationMail()} sx={{mt: 4}} variant='contained' >
-          Resend Mail
-        </Button>
+        {
+          props.verifyType === 'carrier' || (auth.user.business && auth.user.business.type === 'carrier') && (
+            <>
+              <Divider sx={{ m: 0 }} />
+              <Button disabled={sending} onClick={()=>resendVerificationMail()} sx={{mt: 4}} variant='contained' >
+                Resend Mail
+              </Button>
+            </>
+          )
+        }
+        
       </CardContent>
     </Card>
   )

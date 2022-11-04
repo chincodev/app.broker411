@@ -113,6 +113,7 @@ const AddCarrierDialog = (props) => {
       await businessService.create(businessData)
       toast.success('A verification link was sent to your email inbox...')
       props.setVerify(true)
+      props.setVerifyType('carrier')
       setShow(false)
       setActionsLoading(false)
       setActiveTab('detailsTab')
@@ -170,13 +171,13 @@ const AddCarrierDialog = (props) => {
         <Typography variant='h6' sx={{ mb: 2 }}>
           Carrier
         </Typography>
-        <Typography sx={{ mb: 2 }}>Nice Text</Typography>
+        <Typography sx={{ mb: 2 }}>Sign Up & Get Started Today</Typography>
         <Typography variant='body2'>
         Get Started For Free
         </Typography>
       </CardContent>
       <Button size='large' onClick={() => setShow(true)} variant='contained' sx={{ width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
-        Sign Up & Get Started Today
+        REGISTER AS CARRIER
       </Button>
       <Dialog
         fullWidth
@@ -201,7 +202,7 @@ const AddCarrierDialog = (props) => {
           </IconButton>
           <Box sx={{ mb: 3, textAlign: 'center' }}>
             <Typography variant='h5' sx={{ mb: 8, lineHeight: '2rem' }}>
-              Add Carrier
+              Sign up as Carrier
             </Typography>
             {/* <Typography variant='body2'>Provide data with this form to add your business.</Typography> */}
           </Box>
@@ -260,6 +261,7 @@ const AddCarrierDialog = (props) => {
               </TabList>
               <TabPanel value='detailsTab' sx={{ flexGrow: 1 }}>
                 <DialogTabDetails
+                  title={'Carrier DOT Number'}
                   setActiveTab={setActiveTab}
                   businessData={businessData}
                   setBusinessData={setBusinessData}

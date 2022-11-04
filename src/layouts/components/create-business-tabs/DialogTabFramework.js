@@ -29,6 +29,9 @@ const labels = {
   us_dot_number: 'DOT Number',
   address: 'Address',
   address_line_2: 'Address Line 2',
+  operating_status: 'Operating Status',
+  mailing_address: 'Address',
+  mailing_address_line_2: 'Address Line 2',
   phone: 'Phone',
   fax: 'Fax',
   email: 'Email Address',
@@ -43,7 +46,10 @@ const labels = {
   household_goods: 'HG',
   new_entrant: 'New Entrant',
   registration_date: 'Registration Date',
-  type:'Type'
+  type:'Type',
+  mc_mx_ff_numbers: 'MC/MX/FF Numbers',
+  mcs_150_form_date: 'MCS-150 Form Date',
+
 }
 
 const TabFramework = (props) => {
@@ -52,9 +58,12 @@ const TabFramework = (props) => {
 
   const getFmcsaData = async () => {
     try {
+      console.log(props)
       setActionsLoading(true)
-      let response = await businessService.find_in_fmcsa(props.businessData.us_dot_number)
-      props.setBusinessData(Object.assign({}, response.record, props.businessData))
+      let response = props.businessData.type === 'carrier' 
+        ? await businessService.find_carrier_in_fmcsa(props.businessData.us_dot_number)
+        : await businessService.find_broker_in_fmcsa(props.businessData.us_dot_number)
+      props.setBusinessData(Object.assign({}, response, props.businessData))
       setActionsLoading(false)
     } catch (er) {
       props.setActiveTab('detailsTab')
@@ -63,8 +72,7 @@ const TabFramework = (props) => {
   }
 
   useEffect(() => {
-    console.log( Object.keys(props.businessData).length)
-    Object.keys(props.businessData).length < 3 && getFmcsaData()
+    getFmcsaData()
   }, [])
 
   return (

@@ -58,6 +58,8 @@ import UserIcon from 'src/layouts/components/UserIcon'
 import { autocompleteIconObj } from './autocompleteIconObj'
 import { businessService } from 'services/business.service'
 import { Laptop } from 'mdi-material-ui'
+import toast from 'react-hot-toast'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 
 const defaultSuggestionsData = [
   {
@@ -236,18 +238,18 @@ const Autocomplete = styled(MuiAutocomplete)(({ theme }) => ({
 }))
 
 // ** Styled Dialog component
-const Dialog = styled(MuiDialog)({
-  '& .MuiBackdrop-root': {
-    backdropFilter: 'blur(4px)'
-  },
-  '& .MuiDialog-paper': {
-    overflow: 'hidden',
-    '&:not(.MuiDialog-paperFullScreen)': {
-      height: '100%',
-      maxHeight: 550
-    }
-  }
-})
+// const Dialog = styled(MuiDialog)({
+//   '& .MuiBackdrop-root': {
+//     backdropFilter: 'blur(4px)'
+//   },
+//   '& .MuiDialog-paper': {
+//     overflow: 'hidden',
+//     '&:not(.MuiDialog-paperFullScreen)': {
+//       height: '100%',
+//       maxHeight: 550
+//     }
+//   }
+// })
 
 const NoResult = ({ value, setOpenDialog }) => {
   return (
@@ -285,6 +287,8 @@ const AutocompleteComponent = ({ hidden, settings }) => {
   const [options, setOptions] = useState([])
   const [ debounced_search ] = useDebounce(searchValue, 1000);
 
+  const [dotSearch, setDotSeach] = useState('')
+
   // ** Hooks & Vars
   const theme = useTheme()
   const router = useRouter()
@@ -305,6 +309,24 @@ const AutocompleteComponent = ({ hidden, settings }) => {
       setSearched(true)
     } catch (er) {
       console.log(er)
+    }
+  }
+
+  const showDialog = () => {
+    let sign = prompt("Type the DOT Number here:");
+    if(sign === ''){
+      alert('Please write the DOT Number')
+      showDialog()
+    }
+    if(sign){
+      let isnum = /^\d+$/.test(sign);
+      if(!isnum){
+        alert('Only numbers accepted')
+        showDialog()
+      } else {
+        router.push('/brokers/[id]', '/brokers/'+sign)
+      }
+      
     }
   }
 
@@ -366,6 +388,7 @@ const AutocompleteComponent = ({ hidden, settings }) => {
     return (
       <Box
         ref={wrapper}
+        //onClick={() => showDialog()}
         onClick={() => !openDialog && setOpenDialog(true)}
         sx={{ display: 'flex', cursor: 'pointer', alignItems: 'center' }}
       >
@@ -375,7 +398,23 @@ const AutocompleteComponent = ({ hidden, settings }) => {
         {!hidden && layout === 'vertical' ? (
           <Typography sx={{ color: 'text.disabled' }}>Search (Ctrl+/)</Typography>
         ) : null}
-        <Dialog fullWidth open={openDialog} fullScreen={fullScreenDialog} onClose={() => setOpenDialog(false)}>
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)} style={{height:''}} aria-labelledby='form-dialog-title'>
+        <DialogTitle id='form-dialog-title'>Search</DialogTitle>
+        <DialogContent>
+          <DialogContentText sx={{ mb: 3 }}>
+            Enter the DOT number of the broker you want to search
+          </DialogContentText>
+          <TextField value={dotSearch} onChange={(e)=>setDotSeach(e.target.value)} id='name' autoFocus fullWidth type='number' label='DOT Number' />
+        </DialogContent>
+        <DialogActions className='dialog-actions-dense'>
+          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+          <Button disabled={!!!dotSearch} onClick={(e)=>{
+            router.push('/brokers/[id]', '/brokers/'+dotSearch)
+            setOpenDialog(false)
+          }}>Search</Button>
+        </DialogActions>
+      </Dialog>
+        {/* <Dialog fullWidth open={openDialog} fullScreen={fullScreenDialog} onClose={() => setOpenDialog(false)}>
           <Box sx={{ top: 0, width: '100%', position: 'sticky' }}>
             <Autocomplete
               autoHighlight
@@ -490,7 +529,7 @@ const AutocompleteComponent = ({ hidden, settings }) => {
               </Box>
               ) : null
           }
-        </Dialog>
+        </Dialog> */}
       </Box>
     )
   }

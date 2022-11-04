@@ -23,6 +23,7 @@ import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
 
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
+import { useAuth } from 'src/hooks/useAuth'
 
 const HorizontalLayoutWrapper = styled('div')({
   display: 'flex',
@@ -69,6 +70,8 @@ const HorizontalLayout = props => {
   // ** Vars
   const { skin, appBar, navHidden, appBarBlur, contentWidth } = settings
 
+  const auth = useAuth()
+
   return (
     <HorizontalLayoutWrapper className='layout-wrapper'>
       <AppBar
@@ -112,7 +115,8 @@ const HorizontalLayout = props => {
         </Box>
 
         {navHidden ? null : (
-          <Box className='layout-horizontal-nav' sx={{ width: '100%' }}>
+          
+          auth.user.business === 'administrator' && <Box className='layout-horizontal-nav' sx={{ width: '100%' }}>
             <Toolbar
               className='horizontal-nav-content-container'
               sx={{
@@ -124,6 +128,7 @@ const HorizontalLayout = props => {
               {(userHorizontalNavMenuContent && userHorizontalNavMenuContent(props)) || <Navigation {...props} />}
             </Toolbar>
           </Box>
+          
         )}
       </AppBar>
 

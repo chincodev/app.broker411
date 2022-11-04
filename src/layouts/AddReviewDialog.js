@@ -41,7 +41,7 @@ import { CardHeader, CardMedia, Divider } from '@mui/material'
 import { businessService } from 'services/business.service'
 import { ViewListOutline } from 'mdi-material-ui'
 import DialogTabBrokerMc from './components/create-business-tabs/DialogTabBrokerMc'
-import DialogTabBrokerDetails from './components/create-business-tabs/DialogTabBrokerDetails'
+import DialogTabBrokerDetails from './components/create-business-tabs/DialogReviewForm'
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} {...props} />

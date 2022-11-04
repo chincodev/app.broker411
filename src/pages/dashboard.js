@@ -43,6 +43,7 @@ const CrmDashboard = () => {
   const auth = useAuth()
 
   const [verify, setVerify] = useState(false)
+  const [verifyType, setVerifyType] = useState('')
 
   const Img = styled('img')(({ theme }) => ({
     marginTop: theme.spacing(5),
@@ -59,19 +60,60 @@ const CrmDashboard = () => {
 
   return (
     <Box className='content-center'>
-     {  
-        verify ? (
-          <VerifyBusinessDialog />
-        ) : (
-          (!isEmpty(auth.user.business)) ? (
+
+     {
+       verify ? (
+        <VerifyBusinessDialog verifyType={verifyType} />
+      ) : (
+        
+    
+            (auth.user.business && auth.user.business.type === 'carrier') ? (
+
+
+
               !auth.user.business.is_verified ? (
-                <VerifyBusinessDialog />
+                <VerifyBusinessDialog verifyType={verifyType} />
               ) : (
-                
-                
+                panel()
+              )
 
 
-                <Grid container spacing={6} className='match-height'>
+
+
+            ) : ((auth.user.business && auth.user.business.type === 'broker'))) ? (
+              panel()
+            ) : (auth.user.request_business) ? (
+              <VerifyBusinessDialog verifyType={verifyType} />
+            ) : (isEmpty(auth.user.business) && isEmpty(auth.user.request_business)) && (
+              <Grid container spacing={4}>
+                <Grid item xs={12} sm={6} lg={4}>
+                  <AddBrokerDialog setVerify={setVerify} setVerifyType={setVerifyType} />
+                </Grid>
+                <Grid item xs={12} sm={6} lg={4}>
+                  <AddCarrierDialog setVerify={setVerify} setVerifyType={setVerifyType} />
+                </Grid>
+              </Grid>
+            )
+
+
+
+              
+
+
+      }
+      
+    
+    </Box>
+  )
+}
+
+export default CrmDashboard
+
+
+const panel = () => {
+
+  return (
+    <Grid container spacing={6} className='match-height'>
                   <Grid item xs={12} md={3}>
                     <CardUser />
                   </Grid>
@@ -82,31 +124,5 @@ const CrmDashboard = () => {
                   asdasdasdasdasdasdasdasdasdasdasdasd
                   </Grid>
                 </Grid>
-
-
-
-
-
-
-
-
-
-              )
-            ) : ( 
-              <Grid container spacing={4}>
-                <Grid item xs={12} sm={6} lg={4}>
-                  <AddBrokerDialog setVerify={setVerify} />
-                </Grid>
-                <Grid item xs={12} sm={6} lg={4}>
-                  <AddCarrierDialog setVerify={setVerify} />
-                </Grid>
-              </Grid>
-            )
-        )
-        
-      } 
-    </Box>
   )
 }
-
-export default CrmDashboard

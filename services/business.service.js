@@ -4,7 +4,8 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URI;
 export const businessService = {
     get,
     find,
-    find_in_fmcsa,
+    find_broker_in_fmcsa,
+    find_carrier_in_fmcsa,
     create,
     verify,
     update,
@@ -38,8 +39,12 @@ function update(id, params) {
     return fetchWrapper.put(`${baseUrl}businesses/${id}`, params);
 }
 
-function find_in_fmcsa(dot) {
-    return fetchWrapper.get(`${baseUrl}businesses/fmcsa/${dot}`);
+function find_broker_in_fmcsa(dot, token) {
+    return fetchWrapper.get(`${baseUrl}businesses/broker_fmcsa/${dot}`, token);
+}
+
+function find_carrier_in_fmcsa(dot) {
+    return fetchWrapper.get(`${baseUrl}businesses/carrier_fmcsa/${dot}`);
 }
 
 function resendVerification(params) {

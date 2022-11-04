@@ -40,23 +40,60 @@ import { styled } from '@mui/material/styles'
 import { CardHeader, CardMedia, Divider } from '@mui/material'
 import { businessService } from 'services/business.service'
 import { ViewListOutline } from 'mdi-material-ui'
-import DialogTabBrokerMc from './components/create-business-tabs/DialogTabBrokerMc'
-import DialogTabBrokerDetails from './components/create-business-tabs/DialogTabBrokerDetails'
+import { userService } from 'services/user.service'
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} {...props} />
 })
 
+const Img = styled('img')(({ theme }) => ({
+  marginTop: theme.spacing(5),
+  marginBottom: theme.spacing(5),
+  [theme.breakpoints.down('lg')]: {
+    height: 450,
+    marginTop: theme.spacing(5),
+    marginBottom: theme.spacing(5)
+  },
+  [theme.breakpoints.down('md')]: {
+    height: 400
+  }
+}))
 
+const TabLabel = props => {
+  const { icon, title, subtitle, active } = props
 
+  return (
+    <Box>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Avatar
+          variant='rounded'
+          sx={{
+            mr: 3.5,
+            ...(active ? { color: 'common.white', backgroundColor: 'primary.main' } : { color: 'text.primary' })
+          }}
+        >
+          {icon}
+        </Avatar>
+        <Box sx={{ textAlign: 'left' }}>
+          <Typography variant='body2'>{title}</Typography>
+          <Typography variant='caption' sx={{ color: 'text.disabled', textTransform: 'none' }}>
+            {subtitle}
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
+  )
+}
+const tabsArr = ['detailsTab', 'frameworkTab', 'submitTab']
 
 const AddBrokerDialog = (props) => {
   // ** States
   const [show, setShow] = useState(false)
+  const [activeTab, setActiveTab] = useState('detailsTab')
   const [ actionsLoading, setActionsLoading ] = useState(false)
 
   const [ businessData, setBusinessData ] = useState({
-    type:'carrier'
+    type:'broker'
   })
 
   // ** Hook
@@ -68,13 +105,70 @@ const AddBrokerDialog = (props) => {
   const handleClose = async () => {
       setShow(false)
       setActionsLoading(false)
+      setActiveTab('detailsTab')
   }
 
- 
+  const handleSubmit = async () => {
+    try {
+      setActionsLoading(true)
+      console.log(businessData)
+      await userService.update_me({request_business_id: businessData.id})
+      toast.success('Wait until an administrator review your request...')
+      props.setVerify(true)
+      props.setVerifyType('broker')
+      setShow(false)
+      setActionsLoading(false)
+      setActiveTab('detailsTab')
+    } catch (er) {
+      toast.error(er.errors[0].message)
+      setShow(false)
+      setActionsLoading(false)
+      setActiveTab('detailsTab')
+    }
+  }
 
+  const NextArrow = direction === 'ltr' ? ArrowRight : ArrowLeft
+  const PreviousArrow = direction === 'ltr' ? ArrowLeft : ArrowRight
+
+  const renderTabFooter = () => {
+    const prevTab = tabsArr[tabsArr.indexOf(activeTab) - 1]
+    const nextTab = tabsArr[tabsArr.indexOf(activeTab) + 1]
+
+    return (
+      <Box sx={{ mt: 8.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Button
+          variant='outlined'
+          disabled={actionsLoading}
+          color='secondary'
+          startIcon={<PreviousArrow />}
+          disabled={activeTab === 'detailsTab'}
+          onClick={() => setActiveTab(prevTab)}
+        >
+          Previous
+        </Button>
+        <Button
+          variant='contained'
+          disabled={actionsLoading}
+          endIcon={activeTab === 'submitTab' ? <Check /> : <NextArrow />}
+          color={activeTab === 'submitTab' ? 'success' : 'primary'}
+          onClick={() => {
+            if (activeTab !== 'submitTab') {
+              setActiveTab(nextTab)
+            } else {
+              handleSubmit()
+            }
+          }}
+        >
+          {activeTab === 'submitTab' ? 'Submit' : 'Next'}
+        </Button>
+      </Box>
+    )
+  }
 
   return (
     <Card>
+ 
+     
       <CardMedia sx={{ height: 140 }} image='/images/cards/broker.png' />
       <CardContent sx={{ p: theme => `${theme.spacing(4, 5)} !important` }}>
         <Typography variant='h6' sx={{ mb: 2 }}>
@@ -88,6 +182,7 @@ const AddBrokerDialog = (props) => {
       <Button size='large' onClick={() => setShow(true)} variant='contained' sx={{ width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
         Register as Broker
       </Button>
+
       <Dialog
         fullWidth
         open={show}
@@ -111,18 +206,105 @@ const AddBrokerDialog = (props) => {
           </IconButton>
           <Box sx={{ mb: 3, textAlign: 'center' }}>
             <Typography variant='h5' sx={{ mb: 8, lineHeight: '2rem' }}>
-              Add Broker
+              Sign up as Broker
             </Typography>
             {/* <Typography variant='body2'>Provide data with this form to add your business.</Typography> */}
           </Box>
           <Box sx={{ display: 'flex', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
-           
-          <DialogTabBrokerDetails
+            <TabContext value={activeTab}>
+              <TabList
+                orientation='vertical'
+                onChange={(e, newValue) => setActiveTab(newValue)}
+                sx={{
+                  border: 0,
+                  minWidth: 200,
+                  '& .MuiTabs-indicator': { display: 'none' },
+                  '& .MuiTabs-flexContainer': {
+                    alignItems: 'flex-start',
+                    '& .MuiTab-root': {
+                      width: '100%',
+                      alignItems: 'flex-start'
+                    }
+                  }
+                }}
+              >
+                <Tab
+                  disabled={true}
+                  disableRipple
+                  value='detailsTab'
+                  label={
+                    <TabLabel
+                      title='DOT'
+                      subtitle='DOT Number'
+                      icon={<ClipboardOutline />}
+                      active={activeTab === 'detailsTab'}
+                    />
+                  }
+                />
+                <Tab
+                  disabled={true}
+                  disableRipple
+                  value='frameworkTab'
+                  label={
+                    <TabLabel
+                      title='Details'
+                      icon={<ViewListOutline />}
+                      subtitle='Broker Details'
+                      active={activeTab === 'frameworkTab'}
+                    />
+                  }
+                />
+                <Tab
+                  disabled={true}
+                  disableRipple
+                  value='submitTab'
+                  label={
+                    <TabLabel title='Submit' subtitle='Submit Request' active={activeTab === 'submitTab'} icon={<Check />} />
+                  }
+                />
+              </TabList>
+              <TabPanel value='detailsTab' sx={{ flexGrow: 1 }}>
+                <DialogTabDetails
+                  title='Brokerage DOT Number'
+                  setActiveTab={setActiveTab}
                   businessData={businessData}
                   setBusinessData={setBusinessData}
-                  handleClose={handleClose}
-                  setVerify={props.setVerify}
                 />
+                {renderTabFooter()}
+              </TabPanel>
+              <TabPanel value='frameworkTab' sx={{ flexGrow: 1 }}>
+                <DialogTabFramework
+                  setActiveTab={setActiveTab}
+                  businessData={businessData}
+                  setBusinessData={setBusinessData}
+                />
+                {renderTabFooter()}
+              </TabPanel>
+
+              <TabPanel value='submitTab' sx={{ flexGrow: 1 }}>
+                <Box sx={{ textAlign: 'center' }}>
+                  {
+                    actionsLoading ? (
+                      <Box sx={{ textAlign: 'center', marginTop:'4rem', marginBottom:'4rem' }}>
+                        <CircularProgress />
+                      </Box>
+
+                    ) : (
+                      <>
+                        <Typography variant='h6'>Submit Request</Typography>
+                        <Typography variant='body2'>A Broker411 Administrator will review the information soon...</Typography>
+
+                        <Box sx={{ mt: 5, display: 'flex', justifyContent: 'center' }}>
+                          <img alt='submit-img' src={`/images/pages/kb-api.png`} />
+                        </Box>
+                      </>
+                    )
+                  }
+
+                </Box>
+                {renderTabFooter()}
+              </TabPanel>
+            </TabContext>
           </Box>
         </DialogContent>
       </Dialog>

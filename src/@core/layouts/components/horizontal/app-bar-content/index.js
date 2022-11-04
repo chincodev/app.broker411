@@ -42,6 +42,9 @@ const AppBarContent = props => {
             <Button style={{marginLeft:'0.5rem'}} variant='filled' aria-label='capture screenshot'>
               Home
             </Button>
+            <Button style={{marginLeft:'0.5rem'}} variant='filled' aria-label='capture screenshot'>
+              Brokers
+            </Button>
             {/* <Button style={{marginLeft:'0.5rem'}} aria-label='capture screenshot'>
               Hello
             </Button>

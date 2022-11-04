@@ -27,7 +27,7 @@ const TabDetails = (props) => {
   return (
     <Box>
       <Typography variant='h6' sx={{ mb: 4 }}>
-        Carrier's DOT Number
+        {props.title}
       </Typography>
       <TextField value={props.businessData.us_dot_number} onChange={(e) => handleValues('us_dot_number', e.target.value)} fullWidth sx={{ mb: 4 }} label='DOT Number' placeholder='DOT Number' />
     </Box>

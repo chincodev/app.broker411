@@ -19,7 +19,7 @@ export async function getServerSideProps(context){
     const userToken = tokenServer(context)
 
     try {
-        const data = await businessService.find(id, userToken)
+        const data = await businessService.find_broker_in_fmcsa(id, userToken)
         return {
             props: {
                 data,

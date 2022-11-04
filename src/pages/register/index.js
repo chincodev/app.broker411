@@ -147,7 +147,7 @@ const Register = () => {
     setActionsLoading(true)
     register({ email, username, password }, err => {
       let _errors = []
-
+      console.log(err)
       err.errors && err.errors.length > 0 && err.errors.map(x => {
         if(x.path && Array.isArray(x.path) && x.path.length > 0){
           x.path.map(y => setError(y, {
