@@ -46,32 +46,32 @@ const menuItemsArr = [
   {
     name: 'Ross Geller',
     value: 'ross',
-    src: '/images/avatars/1.png'
+    src: 'https://avatars.dicebear.com/api/adventurer-neutral/1.png'
   },
   {
     name: 'Pheobe Buffay',
     value: 'pheobe',
-    src: '/images/avatars/2.png'
+    src: 'https://avatars.dicebear.com/api/adventurer-neutral/2.png'
   },
   {
     name: 'Joey Tribbiani',
     value: 'joey',
-    src: '/images/avatars/3.png'
+    src: 'https://avatars.dicebear.com/api/adventurer-neutral/3.png'
   },
   {
     name: 'Rachel Green',
     value: 'rachel',
-    src: '/images/avatars/4.png'
+    src: 'https://avatars.dicebear.com/api/adventurer-neutral/4.png'
   },
   {
     name: 'Chandler Bing',
     value: 'chandler',
-    src: '/images/avatars/5.png'
+    src: 'https://avatars.dicebear.com/api/adventurer-neutral/5.png'
   },
   {
     name: 'Monica Geller',
     value: 'monica',
-    src: '/images/avatars/8.png'
+    src: 'https://avatars.dicebear.com/api/adventurer-neutral/8.png'
   }
 ]
 const filter = createFilterOptions()

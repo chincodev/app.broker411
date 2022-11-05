@@ -230,7 +230,7 @@ const UserViewOverview = ({ invoiceData }) => {
                   React Project meeting with John @10:15am
                 </Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar alt='Avatar' src='/images/avatars/1.png' sx={{ width: 34, height: 34, mr: 4 }} />
+                  <Avatar alt='Avatar' src='https://avatars.dicebear.com/api/adventurer-neutral/1.png' sx={{ width: 34, height: 34, mr: 4 }} />
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <Typography variant='body2' sx={{ fontWeight: 600, color: 'text.primary' }}>
                       John Doe (Client)
@@ -265,12 +265,12 @@ const UserViewOverview = ({ invoiceData }) => {
                 </Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <AvatarGroup max={4}>
-                    <Avatar src='/images/avatars/1.png' alt='John Doe' />
-                    <Avatar src='/images/avatars/4.png' alt='Olivia Sparks' />
-                    <Avatar src='/images/avatars/5.png' alt='Howard Lloyd' />
-                    <Avatar src='/images/avatars/6.png' alt='Hallie Richards' />
-                    <Avatar src='/images/avatars/8.png' alt='Alice Cobb' />
-                    <Avatar src='/images/avatars/7.png' alt='Jeffery Warner' />
+                    <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/1.png' alt='John Doe' />
+                    <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/4.png' alt='Olivia Sparks' />
+                    <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/5.png' alt='Howard Lloyd' />
+                    <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/6.png' alt='Hallie Richards' />
+                    <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/8.png' alt='Alice Cobb' />
+                    <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/7.png' alt='Jeffery Warner' />
                   </AvatarGroup>
                   <Box sx={{ ml: 4, display: 'flex', flexDirection: 'column' }}>
                     <Typography variant='body2' sx={{ fontWeight: 600, color: 'text.primary' }}>

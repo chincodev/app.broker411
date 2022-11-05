@@ -19,42 +19,42 @@ const data = [
     chipText: 'Business',
     chipColor: 'primary',
     title: 'Call with Woods',
-    src: '/images/avatars/4.png',
+    src: 'https://avatars.dicebear.com/api/adventurer-neutral/4.png',
     subtitle: '21 Jul | 08:20-10:30'
   },
   {
     chipText: 'Dinner',
     chipColor: 'warning',
     title: 'Conference call',
-    src: '/images/avatars/5.png',
+    src: 'https://avatars.dicebear.com/api/adventurer-neutral/5.png',
     subtitle: '28 Jul | 05:00-6:45'
   },
   {
     chipText: 'Meetup',
     chipColor: 'secondary',
     title: 'Meeting with Mark',
-    src: '/images/avatars/3.png',
+    src: 'https://avatars.dicebear.com/api/adventurer-neutral/3.png',
     subtitle: '03 Aug | 07:00-8:30'
   },
   {
     chipText: 'Dinner',
     chipColor: 'error',
     title: 'Meeting in Oakland',
-    src: '/images/avatars/2.png',
+    src: 'https://avatars.dicebear.com/api/adventurer-neutral/2.png',
     subtitle: '14 Feb | 04:15-05:30'
   },
   {
     chipColor: 'success',
     chipText: 'Meditation',
     title: 'Call with Hilda',
-    src: '/images/avatars/8.png',
+    src: 'https://avatars.dicebear.com/api/adventurer-neutral/8.png',
     subtitle: '24 Jul | 11:30-12:00'
   },
   {
     chipText: 'Business',
     chipColor: 'primary',
     title: 'Meeting with Carl',
-    src: '/images/avatars/7.png',
+    src: 'https://avatars.dicebear.com/api/adventurer-neutral/7.png',
     subtitle: '05 Oct | 10:00-12:45'
   }
 ]

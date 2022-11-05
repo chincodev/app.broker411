@@ -8,11 +8,11 @@ import Avatar from '@mui/material/Avatar'
 const ChipsArray = () => {
   // ** State
   const [chipData, setChipData] = useState([
-    { key: 0, avatar: '/images/avatars/1.png', avatarAlt: 'User Avatar', label: 'Norman Santiago' },
-    { key: 1, avatar: '/images/avatars/2.png', avatarAlt: 'User Avatar', label: 'Cecelia Tucker' },
+    { key: 0, avatar: 'https://avatars.dicebear.com/api/adventurer-neutral/1.png', avatarAlt: 'User Avatar', label: 'Norman Santiago' },
+    { key: 1, avatar: 'https://avatars.dicebear.com/api/adventurer-neutral/2.png', avatarAlt: 'User Avatar', label: 'Cecelia Tucker' },
     { key: 2, label: 'Max Burns' },
-    { key: 3, avatar: '/images/avatars/4.png', avatarAlt: 'User Avatar', label: 'Ellen Nguyen' },
-    { key: 4, avatar: '/images/avatars/5.png', avatarAlt: 'User Avatar', label: 'Edward Francis' }
+    { key: 3, avatar: 'https://avatars.dicebear.com/api/adventurer-neutral/4.png', avatarAlt: 'User Avatar', label: 'Ellen Nguyen' },
+    { key: 4, avatar: 'https://avatars.dicebear.com/api/adventurer-neutral/5.png', avatarAlt: 'User Avatar', label: 'Edward Francis' }
   ])
 
   const handleDelete = chipToDelete => () => {

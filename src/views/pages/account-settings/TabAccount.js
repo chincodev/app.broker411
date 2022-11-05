@@ -48,7 +48,7 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
 const TabAccount = () => {
   // ** State
   const [openAlert, setOpenAlert] = useState(true)
-  const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
+  const [imgSrc, setImgSrc] = useState('https://avatars.dicebear.com/api/adventurer-neutral/1.png')
 
   const onChange = file => {
     const reader = new FileReader()
@@ -77,7 +77,7 @@ const TabAccount = () => {
                     id='account-settings-upload-image'
                   />
                 </ButtonStyled>
-                <ResetButtonStyled color='error' variant='outlined' onClick={() => setImgSrc('/images/avatars/1.png')}>
+                <ResetButtonStyled color='error' variant='outlined' onClick={() => setImgSrc('https://avatars.dicebear.com/api/adventurer-neutral/1.png')}>
                   Reset
                 </ResetButtonStyled>
                 <Typography sx={{ mt: 4 }} component='p' variant='caption'>

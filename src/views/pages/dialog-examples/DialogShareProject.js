@@ -199,7 +199,7 @@ const DialogShareProject = () => {
             renderOption={(props, option) => (
               <ListItem {...props}>
                 <ListItemAvatar>
-                  <Avatar src={`/images/avatars/${option.avatar}`} alt={option.name} sx={{ height: 28, width: 28 }} />
+                  <Avatar src={`https://avatars.dicebear.com/api/adventurer-neutral/${option.avatar}`} alt={option.name} sx={{ height: 28, width: 28 }} />
                 </ListItemAvatar>
                 <ListItemText primary={option.name} />
               </ListItem>
@@ -219,7 +219,7 @@ const DialogShareProject = () => {
                   }}
                 >
                   <ListItemAvatar>
-                    <Avatar src={`/images/avatars/${member.avatar}`} alt={member.name} />
+                    <Avatar src={`https://avatars.dicebear.com/api/adventurer-neutral/${member.avatar}`} alt={member.name} />
                   </ListItemAvatar>
                   <ListItemText
                     primary={member.name}

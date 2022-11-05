@@ -50,7 +50,7 @@ const rows = [
     name: 'Jordan Stevenson',
     username: '@jstevenson5c',
     email: 'susanna.Lind57@gmail.com',
-    avatarSrc: '/images/avatars/1.png'
+    avatarSrc: 'https://avatars.dicebear.com/api/adventurer-neutral/1.png'
   },
   {
     id: 2,
@@ -58,7 +58,7 @@ const rows = [
     status: 'active',
     name: 'Robert Crawford',
     username: '@rcrawford1d',
-    avatarSrc: '/images/avatars/3.png',
+    avatarSrc: 'https://avatars.dicebear.com/api/adventurer-neutral/3.png',
     email: 'estelle.Bailey10@gmail.com'
   },
   {
@@ -68,7 +68,7 @@ const rows = [
     name: 'Lydia Reese',
     username: '@lreese3b',
     email: 'milo86@hotmail.com',
-    avatarSrc: '/images/avatars/2.png'
+    avatarSrc: 'https://avatars.dicebear.com/api/adventurer-neutral/2.png'
   },
   {
     id: 4,
@@ -77,7 +77,7 @@ const rows = [
     name: 'Richard Sims',
     username: '@rsims6f',
     email: 'lonnie35@hotmail.com',
-    avatarSrc: '/images/avatars/5.png'
+    avatarSrc: 'https://avatars.dicebear.com/api/adventurer-neutral/5.png'
   },
   {
     id: 5,
@@ -86,7 +86,7 @@ const rows = [
     name: 'Lucile Young',
     username: '@lyoung4a',
     email: 'ahmad_Collins@yahoo.com',
-    avatarSrc: '/images/avatars/4.png'
+    avatarSrc: 'https://avatars.dicebear.com/api/adventurer-neutral/4.png'
   },
   {
     id: 6,
@@ -94,7 +94,7 @@ const rows = [
     status: 'pending',
     name: 'Francis Frank',
     username: '@ffrank7e',
-    avatarSrc: '/images/avatars/7.png',
+    avatarSrc: 'https://avatars.dicebear.com/api/adventurer-neutral/7.png',
     email: 'tillman.Gleason68@hotmail.com'
   },
   {
@@ -104,7 +104,7 @@ const rows = [
     name: 'Phoebe Patterson',
     email: 'otho21@gmail.com',
     username: '@ppatterson2g',
-    avatarSrc: '/images/avatars/8.png'
+    avatarSrc: 'https://avatars.dicebear.com/api/adventurer-neutral/8.png'
   }
 ]
 

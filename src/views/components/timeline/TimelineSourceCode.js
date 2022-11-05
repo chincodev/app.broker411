@@ -119,7 +119,7 @@ const TimelineCenter = () => {
           <Divider sx={{ my: 3 }} />
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box sx={{ display: 'flex' }}>
-              <Avatar src='/images/avatars/2.png' sx={{ width: '2rem', height: '2rem', mr: 2 }} />
+              <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/2.png' sx={{ width: '2rem', height: '2rem', mr: 2 }} />
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography variant='body2' sx={{ fontWeight: 600 }}>
                   Rebecca Godman
@@ -210,7 +210,7 @@ const TimelineCenter = () => {
             Weekly review of freshly prepared design for our new application.
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Avatar src='/images/avatars/1.png' sx={{ width: '2rem', height: '2rem', mr: 2 }} />
+            <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/1.png' sx={{ width: '2rem', height: '2rem', mr: 2 }} />
             <Typography variant='subtitle2' sx={{ fontWeight: 600 }}>
               John Doe (Client)
             </Typography>
@@ -405,7 +405,7 @@ const TimelineRight = () => {
           <Divider sx={{ my: 3 }} />
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box sx={{ display: 'flex' }}>
-              <Avatar src='/images/avatars/2.png' sx={{ width: '2rem', height: '2rem', mr: 2 }} />
+              <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/2.png' sx={{ width: '2rem', height: '2rem', mr: 2 }} />
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography variant='body2' sx={{ fontWeight: 600 }}>
                   Rebecca Godman
@@ -492,7 +492,7 @@ const TimelineRight = () => {
             Weekly review of freshly prepared design for our new application.
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Avatar src='/images/avatars/1.png' sx={{ width: '2rem', height: '2rem', mr: 2 }} />
+            <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/1.png' sx={{ width: '2rem', height: '2rem', mr: 2 }} />
             <Typography variant='subtitle2' sx={{ fontWeight: 600 }}>
               John Doe (Client)
             </Typography>
@@ -594,7 +594,7 @@ const TimelineLeft = () => {
           <Divider sx={{ my: 3 }} />
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box sx={{ display: 'flex' }}>
-              <Avatar src='/images/avatars/2.png' sx={{ width: '2rem', height: '2rem', mr: 2 }} />
+              <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/2.png' sx={{ width: '2rem', height: '2rem', mr: 2 }} />
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography variant='body2' sx={{ fontWeight: 600 }}>
                   Rebecca Godman
@@ -689,7 +689,7 @@ const TimelineLeft = () => {
             Weekly review of freshly prepared design for our new application.
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Avatar src='/images/avatars/1.png' sx={{ width: '2rem', height: '2rem', mr: 2 }} />
+            <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/1.png' sx={{ width: '2rem', height: '2rem', mr: 2 }} />
             <Typography variant='subtitle2' sx={{ fontWeight: 600 }}>
               John Doe (Client)
             </Typography>
