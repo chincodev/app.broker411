@@ -9,33 +9,49 @@ import Typography from '@mui/material/Typography'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import { useDispatch, useSelector } from 'react-redux'
 import CustomChip from 'src/@core/components/mui/chip'
-import { fetchData, deleteBusiness } from 'src/store/apps/business'
+import { fetchData, deleteUser } from 'src/store/apps/user'
 import AddUserDrawer from 'src/views/apps/user/list/AddUserDrawer'
 import { TextField, Tooltip } from '@mui/material'
 import { useDebounce } from 'use-debounce';
 import { useRouter } from 'next/router'
+import styled from '@emotion/styled'
+import { isEmpty } from 'lodash'
 
 
 
-const userStatusObj = {
-  carrier: 'success',
-  broker: 'primary'
+const businessMemberTypes = {
+  none: 'secondary',
+  pending: 'warning',
+  confirmed: 'primary',
+}
+
+const userTypes = {
+  administrator: 'primary',
+  owner: 'success',
+  representative: 'secondary',
 }
 
 
+function CustomNoRowsOverlay() {
+  return (
+    <Box sx={{ mb: 10, mt: 10 }}>
+      <h3 style={{textAlign: 'center'}}>No Data Found.</h3>
+    </Box>
+  );
+}
 
 const defaultColumns = [
   {
     flex: 0.2,
     minWidth: 230,
-    field: 'legal_name',
-    headerName: 'Legal Name',
+    field: 'username',
+    headerName: 'Username',
     renderCell: ({ row }) => {
       const { id, fullName, username } = row
 
       return (
         <Typography noWrap variant='body2'>
-          {row.legal_name}
+          @{row.username}
         </Typography>
       )
     }
@@ -54,22 +70,53 @@ const defaultColumns = [
     }
   },
   {
-    flex: 0.15,
-    field: 'type',
-    minWidth: 150,
-    headerName: 'Type',
+    flex: 0.2,
+    minWidth: 250,
+    field: 'business.legal_name',
+    headerName: 'Business',
     renderCell: ({ row }) => {
       return (
-        <CustomChip
-          skin='light'
-          size='small'
-          label={row.type}
-          color={userStatusObj[row.type]}
-          sx={{ textTransform: 'capitalize', '& .MuiChip-label': { lineHeight: '18px' } }}
-        />
+        <Typography noWrap variant='body2'>
+          {row.business ? row.business.legal_name : row.request_business ? row.request_business.legal_name : 'None'}
+        </Typography>
       )
     }
-  }
+  },
+  {
+    flex: 0.2,
+    minWidth: 250,
+    field: 'business',
+    headerName: 'Membership status',
+    renderCell: ({ row }) => {
+      return (
+          <CustomChip
+            skin='light'
+            size='small'
+            label={row.request_business_id ? 'Pending' : row.business_id && !isEmpty(row.business) ? 'Confirmed' : 'None'}
+            color={businessMemberTypes[row.request_business_id ? 'pending' : row.business_id && !isEmpty(row.business) ? 'confirmed' : 'none']}
+            sx={{ textTransform: 'capitalize', '& .MuiChip-label': { lineHeight: '18px' } }}
+          />
+     
+      )
+    }
+  },{
+    flex: 0.2,
+    minWidth: 250,
+    field: 'role',
+    headerName: 'Role',
+    renderCell: ({ row }) => {
+      return (
+          <CustomChip
+            skin='light'
+            size='small'
+            label={row.role.name}
+            color={userTypes[row.role.name.toLowerCase()]}
+            sx={{ textTransform: 'capitalize', '& .MuiChip-label': { lineHeight: '18px' } }}
+          />
+     
+      )
+    }
+  },
 ]
 
 const columns = [
@@ -85,7 +132,7 @@ const columns = [
         
         <Tooltip title='View Business'>
           <Box>
-            <Link href={`/admin/businesses/${row.id}`} passHref>
+            <Link href={`/admin/users/${row.id}`} passHref>
               <IconButton size='small' component='a' sx={{ textDecoration: 'none', mr: 0.5 }}>
                 <EyeOutline />
               </IconButton>
@@ -102,15 +149,14 @@ const columns = [
   }
 ]
 
-const BusinessList = () => {
+const UserList = () => {
   // ** State
   const [search, set_search] = useState(new URLSearchParams(window.location.search).get('search') || '')
-  const [addUserOpen, setAddUserOpen] = useState(false)
   const [ debounced_search ] = useDebounce(search, 1000);
 
   // ** Hooks
   const dispatch = useDispatch()
-  const store = useSelector(state => state.business)
+  const store = useSelector(state => state.user)
   useEffect(() => {
     if(!store.total){
       dispatch(fetchData(window.location.search.replace('?', '')))
@@ -139,15 +185,12 @@ const BusinessList = () => {
   }, [debounced_search])
   
 
-  const toggleAddUserDrawer = () => setAddUserOpen(!addUserOpen)
-
   const router = useRouter()
 
   const urlManager = (values) => {
 
     let currentUrlParams = new URLSearchParams(window.location.search)
-    
-
+  
       values && values.length > 0 && values.map(x => {
         if(x.type === 'replace'){
           currentUrlParams.set(x.key, x.value)
@@ -168,9 +211,7 @@ const BusinessList = () => {
         fetchData(url.split('?')[1])
       )
     }
-
     router.events.on('routeChangeStart', handleRouteChange)
-
     return () => {
       router.events.off('routeChangeStart', handleRouteChange)
     }
@@ -179,87 +220,6 @@ const BusinessList = () => {
 
   return (
     <Grid container spacing={6}>
-      {/* <Grid item xs={12}>
-        <Card>
-          <CardHeader title='Search Filters' sx={{ pb: 4, '& .MuiCardHeader-title': { letterSpacing: '.15px' } }} />
-          <CardContent>
-            <Grid container spacing={6}>
-              <Grid item sm={3} xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel id='role-select'>Select Role</InputLabel>
-                  <Select
-                    fullWidth
-                    value={role}
-                    id='select-role'
-                    label='Select Role'
-                    labelId='role-select'
-                    onChange={handleRoleChange}
-                    inputProps={{ placeholder: 'Select Role' }}
-                  >
-                    <MenuItem value=''>Select Type</MenuItem>
-                    <MenuItem value='admin'>Broker</MenuItem>
-                    <MenuItem value='author'>Carrier</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item sm={3} xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel id='plan-select'>Select Verification</InputLabel>
-                  <Select
-                    fullWidth
-                    value={plan}
-                    id='select-plan'
-                    label='Select Plan'
-                    labelId='plan-select'
-                    onChange={handlePlanChange}
-                    inputProps={{ placeholder: 'Select Plan' }}
-                  >
-                    <MenuItem value=''>Select Verification</MenuItem>
-                    <MenuItem value='basic'>Verified</MenuItem>
-                    <MenuItem value='company'>Unverified</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item sm={3} xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel id='plan-select'>Select Status</InputLabel>
-                  <Select
-                    fullWidth
-                    value={plan}
-                    id='select-plan'
-                    label='Select Plan'
-                    labelId='plan-select'
-                    onChange={handlePlanChange}
-                    inputProps={{ placeholder: 'Select Plan' }}
-                  >
-                    <MenuItem value=''>Select Status</MenuItem>
-                    <MenuItem value='basic'>Enabled</MenuItem>
-                    <MenuItem value='company'>Disabled</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item sm={3} xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel id='status-select'>Select Visibility</InputLabel>
-                  <Select
-                    fullWidth
-                    value={status}
-                    id='select-status'
-                    label='Select Status'
-                    labelId='status-select'
-                    onChange={handleStatusChange}
-                    inputProps={{ placeholder: 'Select Role' }}
-                  >
-                    <MenuItem value=''>Select Visibility</MenuItem>
-                    <MenuItem value='pending'>Published</MenuItem>
-                    <MenuItem value='active'>Unpublished</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
-      </Grid> */}
       <Grid item xs={12}>
         <Card>
           <Box sx={{ p: 5, pb: 3, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -268,23 +228,22 @@ const BusinessList = () => {
                 size='small'
                 value={search}
                 sx={{ mr: 6, mb: 2 }}
-                placeholder='Search Business'
+                placeholder='Search by Username'
                 onChange={(e)=>set_search(e.target.value)}
               />
             </Box>
           </Box>
-          {console.log(store)}
           <DataGrid
             autoHeight
             disableSelectionOnClick
             disableColumnMenu
-            rows={store.data}
-            rowCount={store.total}
+            rows={store.data.length > 0 ? store.data : []}
+            rowCount={store.total || 0}
             loading={store.loading}
-            page={store.current_page - 1}
+            page={store.current_page - 1 > 0 ? store.current_page - 1 : 0 }
             rowsPerPageOptions={[2, 12, 24, 48]}
             pagination
-            pageSize={store.page_size}
+            pageSize={store.data.length != 0 ? store.page_size : 1}
             initialState={
               (new URLSearchParams(window.location.search).get('sort_field') && new URLSearchParams(window.location.search).get('sort_field')) ? (
                 {
@@ -342,13 +301,14 @@ const BusinessList = () => {
             }
             columns={columns}
             sx={{ '& .MuiDataGrid-columnHeaders': { borderRadius: 0 } }}
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+            }}
           /> 
         </Card>
       </Grid>
-
-      <AddUserDrawer open={addUserOpen} toggle={toggleAddUserDrawer} />
     </Grid>
   )
 }
-BusinessList.authGuard = true
-export default BusinessList
+UserList.authGuard = true
+export default UserList

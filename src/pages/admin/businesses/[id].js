@@ -3,10 +3,10 @@ import axios from 'axios'
 import { businessService } from 'services/business.service'
 import tokenServer from '../../../../utils/tokenServer'
 // ** Demo Components Imports
-import UserViewPage from 'src/views/apps/user/view/UserViewPage'
+import BusinessViewPage from 'src/views/apps/business/view/BusinessViewPage'
 
 const UserView = ({ id, data, code }) => {
-    return <UserViewPage id={id} data={data} code={code} />
+    return <BusinessViewPage id={id} data={data} code={code} />
 }
 
 export async function getServerSideProps(context){

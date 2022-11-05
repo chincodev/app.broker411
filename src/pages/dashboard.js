@@ -60,7 +60,7 @@ const CrmDashboard = () => {
 
   return (
     <Box className='content-center'>
-
+      {console.log(auth)}
      {
        verify ? (
         <VerifyBusinessDialog verifyType={verifyType} />

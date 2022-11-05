@@ -4,28 +4,45 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { isEmpty, omitBy } from 'lodash'
 import toast from 'react-hot-toast'
-import { userService } from 'services/user.service'
+import { businessService } from 'services/business.service'
 
-// ** Fetch Users
-export const fetchData = createAsyncThunk('appUsers/fetchData', async (params = '', { getState, dispatch }) => {
+// ** Fetch Businesses
+export const fetchData = createAsyncThunk('appBusinesses/fetchData', async (params = '', { getState, dispatch }) => {
   try {
     await dispatch(setLoading())
-    const response = await userService.get('?'+params)
-    console.log(response)
+    const response = await businessService.get('?'+params)
     return response
   } catch (er){
-    console.log(er)
     er.errors && er.errors.map(x => toast.error(x.message))
   }
 })
 
+// ** Add Business
+export const addBusiness = createAsyncThunk('appBusinesses/addBusiness', async (data, { getState, dispatch }) => {
+  const response = await axios.post('/apps/businesss/add-business', {
+    data
+  })
+  dispatch(fetchData(getState().business.params))
 
-export const setLoading = createAsyncThunk('appUsers/setLoading', async (id, { dispatch }) => {
+  return response.data
+})
+
+
+export const deleteBusiness = createAsyncThunk('appBusinesses/deleteBusiness', async (id, { getState, dispatch }) => {
+  const response = await axios.delete('/apps/businesss/delete', {
+    data: id
+  })
+  dispatch(fetchData(getState().business.params))
+
+  return response.data
+})
+
+export const setLoading = createAsyncThunk('appBusinesses/setLoading', async (id, { dispatch }) => {
   return true
 })
 
-export const appUsersSlice = createSlice({
-  name: 'appUsers',
+export const appBusinessesSlice = createSlice({
+  name: 'appBusinesses',
   initialState: {
     data: [],
     loading: true,
@@ -55,4 +72,4 @@ export const appUsersSlice = createSlice({
   }
 })
 
-export default appUsersSlice.reducer
+export default appBusinessesSlice.reducer

@@ -41,13 +41,6 @@ import { businessService } from 'services/business.service'
 import { useAuth } from 'src/hooks/useAuth'
 import AddBrokerDialog from 'src/layouts/AddBrokerDialog'
 import AddReviewDialog from 'src/layouts/AddReviewDialog'
-import { isEmpty } from 'lodash'
-import Link from 'next/link'
-import { userService } from 'services/user.service'
-import FallbackSpinner from 'src/@core/components/spinner'
-import { CircularProgress } from '@mui/material'
-import { green } from '@mui/material/colors'
-import { clockPickerClasses } from '@mui/lab'
 
 // ** Styled <sup> component
 const Sup = styled('sup')(({ theme }) => ({
@@ -66,14 +59,13 @@ const Sub = styled('sub')({
 })
 
 const typeColors = {
-  owner: 'success',
-  representative: 'primary'
+  carrier: 'success',
+  broker: 'primary'
 }
 
 const statusColors = {
   true: 'success',
   false: 'warning',
-  none: '',
 }
 
 
@@ -102,20 +94,12 @@ const admin_fields = [
   }
 ]
 
-const StyledLink = styled('a')(({ theme }) => ({
-  color: theme.palette.primary.main,
-  fontSize: '0.875rem',
-  cursor:'pointer'
-}))
-
-
-
-
 
 const UserViewLeft = ({ data, set_data }) => {
   // ** States
   const [openEdit, setOpenEdit] = useState(false)
   const [openPlans, setOpenPlans] = useState(false)
+
   // Handle Edit dialog
   const handleEditClickOpen = () => setOpenEdit(true)
   const handleEditClose = () => setOpenEdit(false)
@@ -126,25 +110,52 @@ const UserViewLeft = ({ data, set_data }) => {
 
   const [loading, set_loading] = useState(false)
 
-  const approveReq = async () => {
-    if (window.confirm(`Confirm membership of @${data.username} in ${data.request_business.legal_name}?`)) {
+  const auth = useAuth()
+
+  const handleStatus = async (value) => {
+    if (window.confirm(`Do you really want to ${value ? 'disable' : 'enable'} ${data.legal_name}`)) {
       try {
         set_loading(true)
-        await userService.confirm_membership(data.id, {request_business_id: null, business_id: data.request_business_id})
-        set_data(Object.assign(data, {request_business_id: null, business_id: data.request_business_id}))
+        await businessService.update(data.id, {is_enabled: !value})
+        set_data(Object.assign(data, {is_enabled: !value}))
         set_loading(false)
       } catch (er) {
-        console.log(er)
-        alert('Error...')
         set_loading(false)
       }
     }
   }
+
+  const handlePublish = async (value) => {
+    if (window.confirm(`Do you really want to ${value ? 'unpublish' : 'publish'} ${data.legal_name}`)) {
+      try {
+        set_loading(true)
+        await businessService.update(data.id, {is_published: !value})
+        set_data(Object.assign(data, {is_published: !value}))
+        set_loading(false)
+      } catch (er) {
+        console.log(er)
+      }
+    }
+  }
+
+  const handleVerify = async (value) => {
+    if (window.confirm(`The verification will be reset and a verification mail will be sent to the business email address, do you want to continue?`)) {
+      try {
+        set_loading(true)
+        await businessService.resetVerification(data.id, {is_published: !value})
+        set_data(Object.assign(data, {is_published: !value}))
+        set_loading(false)
+      } catch (er) {
+        console.log(er)
+      }
+    }
+  }
+
   const renderUserAvatar = () => {
     if (data) {
-      if (data.picture) {
+      if (data.logo) {
         return (
-          <CustomAvatar alt='User Image' src={data.picture} variant='rounded' sx={{ width: 120, height: 120, mb: 4 }} />
+          <CustomAvatar alt='User Image' src={data.logo} variant='rounded' sx={{ width: 120, height: 120, mb: 4 }} />
         )
       } else {
         return (
@@ -154,7 +165,7 @@ const UserViewLeft = ({ data, set_data }) => {
             color={data.avatarColor}
             sx={{ width: 120, height: 120, fontWeight: 600, mb: 4, fontSize: '3rem' }}
           >
-            <img style={{width:'100%'}} src={`/images/avatars/${Math.floor(Math.random() * (8 - 1 + 1)) + 1}.png`}></img>
+            {getInitials(data.legal_name)}
           </CustomAvatar>
         )
       }
@@ -168,16 +179,16 @@ const UserViewLeft = ({ data, set_data }) => {
         {console.log(data)}
         <Grid item xs={12}>
           <Card>
-            <CardContent sx={{ pt: 5, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+            <CardContent sx={{ pt: 15, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
               {renderUserAvatar()}
-              <Typography variant='h5' sx={{ mb: 4 }}>
-                @{data.username}
+              <Typography variant='h6' sx={{ mb: 4 }}>
+                {data.legal_name}
               </Typography>
               <CustomChip
                 skin='light'
                 size='small'
-                label={data.role.name}
-                color={typeColors[data.role.name]}
+                label={data.type}
+                color={typeColors[data.type]}
                 sx={{
                   borderRadius: '4px',
                   fontSize: '0.875rem',
@@ -187,7 +198,7 @@ const UserViewLeft = ({ data, set_data }) => {
               />
             </CardContent>
 
-            {/* <CardContent sx={{ my: 1 }}>
+            <CardContent sx={{ my: 1 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Box sx={{ mr: 6, display: 'flex', alignItems: 'center' }}>
                   <CustomAvatar skin='light' variant='rounded' sx={{ mr: 4, width: 44, height: 44 }}>
@@ -212,10 +223,10 @@ const UserViewLeft = ({ data, set_data }) => {
                   </Box>
                 </Box>
               </Box>
-            </CardContent> */}
+            </CardContent>
 
             <CardContent>
-              {/* <Typography variant='h6'>Details</Typography> */}
+              <Typography variant='h6'>Details</Typography>
               <Divider sx={{ mt: 4 }} />
               <Box sx={{ pt: 2, pb: 1 }}>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
@@ -226,12 +237,6 @@ const UserViewLeft = ({ data, set_data }) => {
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
-                    Phone Number:
-                  </Typography>
-                  <Typography variant='body2'>{data.phone}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
                     Enabled:
                   </Typography>
                   <CustomChip
@@ -239,6 +244,24 @@ const UserViewLeft = ({ data, set_data }) => {
                     size='small'
                     label={data.is_enabled ? 'True' : 'False'}
                     color={statusColors[data.is_enabled]}
+                    sx={{
+                      height: 20,
+                      fontSize: '0.75rem',
+                      fontWeight: 500,
+                      borderRadius: '5px',
+                      textTransform: 'capitalize'
+                    }}
+                  />
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
+                    Published:
+                  </Typography>
+                  <CustomChip
+                    skin='light'
+                    size='small'
+                    label={data.is_published ? 'True' : 'False'}
+                    color={statusColors[data.is_published]}
                     sx={{
                       height: 20,
                       fontSize: '0.75rem',
@@ -267,67 +290,69 @@ const UserViewLeft = ({ data, set_data }) => {
                   />
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
-                    Business:
-                  </Typography>
-                  {console.log(data)}
-                  {
-                    !isEmpty(data.business) ? (
-                      <Link 
-                        href={`/admin/businesses/[id]`} 
-                        as={`/admin/businesses/${data.business.id}`}
-                      >
-                        <StyledLink>{data.business.legal_name}</StyledLink>
-                      </Link>
-                    ) : (
-                      <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
-                        None
-                      </Typography>
-                    )
-                  }
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Tax ID:</Typography>
+                  <Typography variant='body2'>Tax-8894</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
-                    Membership:
-                  </Typography>
-                  <CustomChip
-                    skin='light'
-                    size='small'
-                    label={data.business_id ? 'Confirmed' : data.request_business_id ? 'Pending' : 'None'}
-                    color={statusColors[data.business_id ? 'true' : data.request_business_id ? 'false' : 'none']}
-                    sx={{
-                      height: 20,
-                      fontSize: '0.75rem',
-                      fontWeight: 500,
-                      borderRadius: '5px',
-                      textTransform: 'capitalize'
-                    }}
-                  />
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Contact:</Typography>
+                  <Typography variant='body2'>{data.phone}</Typography>
                 </Box>
-                {
-                  data.request_business_id && !data.business_id ? (
-                    <><br />
-                    <Button fullWidth onClick={()=>approveReq()} disabled={loading} variant='contained'>
-                    {/* <Button size='large' onClick={()=>approveReq()} fullWidth variant='outlined' color='primary' > */}
-                      {
-                      loading ? <>`<CircularProgress
-                      size={24}
-                      sx={{
-                        color: green[500],
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        marginTop: '-12px',
-                        marginLeft: '-12px',
-                      }}
-                    /></> : 'APPROVE REQUEST' 
-                    }</Button></>
-                  ) : ('')
-                }
+                <Box sx={{ display: 'flex', mb: 2.7  }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Registration Date:</Typography>
+                  <Typography variant='body2'>{data.registration_date}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7  }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>US Dot Number:</Typography>
+                  <Typography variant='body2'>{data.us_dot_number}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7  }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>MC Number:</Typography>
+                  <Typography variant='body2'>{data.mc_number}</Typography>
+                </Box>
               </Box>
             </CardContent>
 
-            
+            {
+              ['owner', 'representative'].includes(auth.user.role.name) ? (
+                <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <AddReviewDialog />
+                  
+                </CardActions>
+              ) : auth.user.role.name === 'administrator' && (
+                <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+              {/* <Button variant='contained' sx={{ mr: 2 }} onClick={handleEditClickOpen}>
+                Edit
+              </Button> */}
+              {/* <Button color='warning' disabled={loading} onClick={()=>handleVerify()} variant='outlined'>
+                Verify
+              </Button> */}
+              {
+                data.is_enabled ? (
+                  <Button color='error' disabled={loading} onClick={()=>handleStatus(data.is_enabled)} variant='outlined'>
+                    Disable
+                  </Button>
+                ) : (
+                  <Button color='success' disabled={loading} onClick={()=>handleStatus(data.is_enabled)} variant='outlined'>
+                    Enable
+                  </Button>
+                )
+              }
+              {
+                data.is_published ? (
+                  <Button color='error' disabled={loading} onClick={()=>handlePublish(data.is_published)} variant='outlined'>
+                    UNPUBLISH
+                  </Button>
+                ) : (
+                  <Button color='success' disabled={loading} onClick={()=>handlePublish(data.is_published)} variant='outlined'>
+                    PUBLISH
+                  </Button>
+                )
+              }
+              
+              
+            </CardActions>
+              )
+            }
 
             <Dialog
               open={openEdit}

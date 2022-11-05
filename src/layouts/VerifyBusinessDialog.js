@@ -50,7 +50,7 @@ const VerifyBusinessDialog = (props) => {
         <Img alt='error-illustration' src='/images/pages/kb-personalization.png' />
         {
           props.verifyType === 'broker' ||( auth.user.request_business && auth.user.request_business.type === 'broker') ? <Typography sx={{ mb: 3 }}>
-          Your request to sign as broker at <strong>{auth.user.request_business.legal_name}</strong>  is pending<br />We will let you know when the verification is complete
+          Your request to sign as broker {auth.user.request_business ? <strong>at {auth.user.request_business.legal_name}</strong> : ''}  is pending<br />We will let you know when the verification is completed
         </Typography> : ''
         }
 

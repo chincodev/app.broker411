@@ -2,22 +2,23 @@ import { fetchWrapper } from '../utils/fetchWrapper'
 const baseUrl = process.env.NEXT_PUBLIC_API_URI;
 
 export const userService = {
-    list,
+    get,
     find,
     create,
     update,
     update_me,
     get_me,
-    delete: _delete
+    delete: _delete,
+    confirm_membership
 };
 
 
-function list(query = '') {
+function get(query = '') {
     return fetchWrapper.get(`${baseUrl}users${query}`);
 }
 
-function find(_id) {
-    return fetchWrapper.get(`${baseUrl}users/${_id}`);
+function find(_id, token) {
+    return fetchWrapper.get(`${baseUrl}users/${_id}`, token);
 }
 
 function create(params) {
@@ -38,4 +39,8 @@ function update_me(params) {
 
 function get_me(params) {
   return fetchWrapper.get(`${baseUrl}users/me`, params);
+}
+
+function confirm_membership(id, params) {
+    return fetchWrapper.put(`${baseUrl}users/confirm_membership/${id}`, params);
 }

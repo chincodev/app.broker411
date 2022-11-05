@@ -49,6 +49,9 @@ const labels = {
   type:'Type',
   mc_mx_ff_numbers: 'MC/MX/FF Numbers',
   mcs_150_form_date: 'MCS-150 Form Date',
+  mc_number: 'MC Number',
+  carrier_operations: 'Carrier Operations',
+  vehicles_miles_traveled: 'Vehicles Miles Traveled'
 
 }
 
@@ -63,7 +66,7 @@ const TabFramework = (props) => {
       let response = props.businessData.type === 'carrier' 
         ? await businessService.find_carrier_in_fmcsa(props.businessData.us_dot_number)
         : await businessService.find_broker_in_fmcsa(props.businessData.us_dot_number)
-      props.setBusinessData(Object.assign({}, response, props.businessData))
+      props.setBusinessData(Object.assign({}, response.record, props.businessData))
       setActionsLoading(false)
     } catch (er) {
       props.setActiveTab('detailsTab')
@@ -88,9 +91,9 @@ const TabFramework = (props) => {
                       </Box>
           ) : (
             <Grid container spacing={2}>
-
+           
               {
-                Object.keys(props.businessData).map(x => {
+                Object.keys(Object.entries(props.businessData).reduce((a,[k,v]) => (v ? (a[k]=v, a) : a), {})).filter(x => x!='id' && x!='createdAt' && x!='updatedAt' && x!='is_enabled' && x!='is_published' && x!='is_verified').map(x => {
                   return (
 
                     <Grid
