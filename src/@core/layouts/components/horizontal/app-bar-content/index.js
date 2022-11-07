@@ -43,7 +43,13 @@ const AppBarContent = props => {
               {themeConfig.templateName}
             </Typography>
             {
-              auth.user.role.name === 'administrator' ? (
+              auth.user.role.name === 'guest' ? (
+                <>
+                   <Button  color="primary" style={{marginLeft:'0.5rem', paddingRight:'1rem', paddingLeft:'1rem'}} variant={window.location.pathname === '/admin/' ? 'contained' : ''} aria-label='capture screenshot'>
+                    Home
+                  </Button>
+                </>
+              ) : auth.user.role.name === 'administrator' ? (
                 <>
                    <Button  color="primary" style={{marginLeft:'0.5rem', paddingRight:'1rem', paddingLeft:'1rem'}} variant={window.location.pathname === '/admin/' ? 'contained' : ''} aria-label='capture screenshot'>
                     Home

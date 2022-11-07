@@ -130,7 +130,7 @@ const columns = [
     renderCell: ({ row }) => (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         
-        <Tooltip title='View Business'>
+        <Tooltip title='View User'>
           <Box>
             <Link href={`/admin/users/${row.id}`} passHref>
               <IconButton size='small' component='a' sx={{ textDecoration: 'none', mr: 0.5 }}>

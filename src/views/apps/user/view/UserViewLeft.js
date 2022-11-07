@@ -25,7 +25,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 import LinearProgress from '@mui/material/LinearProgress'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import DialogContentText from '@mui/material/DialogContentText'
-
+import MuiChip from '@mui/material/Chip'
 // ** Icons Imports
 import Check from 'mdi-material-ui/Check'
 import Circle from 'mdi-material-ui/Circle'
@@ -45,7 +45,7 @@ import { isEmpty } from 'lodash'
 import Link from 'next/link'
 import { userService } from 'services/user.service'
 import FallbackSpinner from 'src/@core/components/spinner'
-import { CircularProgress } from '@mui/material'
+import { Chip, CircularProgress } from '@mui/material'
 import { green } from '@mui/material/colors'
 import { clockPickerClasses } from '@mui/lab'
 
@@ -154,7 +154,7 @@ const UserViewLeft = ({ data, set_data }) => {
             color={data.avatarColor}
             sx={{ width: 120, height: 120, fontWeight: 600, mb: 4, fontSize: '3rem' }}
           >
-            <img style={{width:'100%'}} src={`https://avatars.dicebear.com/api/adventurer-neutral/${Math.floor(Math.random() * (8 - 1 + 1)) + 1}.png`}></img>
+            <img style={{width:'100%'}} src={`https://avatars.dicebear.com/api/adventurer-neutral/${data.id}.png`}></img>
           </CustomAvatar>
         )
       }
@@ -266,6 +266,7 @@ const UserViewLeft = ({ data, set_data }) => {
                     }}
                   />
                 </Box>
+                <Divider sx={{ mt: 4, mb: 4 }} />
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
                     Business:
@@ -285,6 +286,25 @@ const UserViewLeft = ({ data, set_data }) => {
                       </Typography>
                     )
                   }
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
+                    Business Type:
+                  </Typography>
+                  <CustomChip
+                    skin='light'
+                    size='small'
+                    label={data.business.type}
+                    color={'warning'}
+                    sx={{
+                      height: 20,
+                      fontSize: '0.75rem',
+                      fontWeight: 500,
+                      borderRadius: '5px',
+                      textTransform: 'capitalize'
+                    }}
+                  />
+                
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>

@@ -96,7 +96,7 @@ const UserDropdown = props => {
           alt={auth.user.username}
           onClick={handleDropdownOpen}
           sx={{ width: 40, height: 40 }}
-          src='https://avatars.dicebear.com/api/adventurer-neutral/1.png'
+          src={'https://avatars.dicebear.com/api/adventurer-neutral/'+auth.user.id+'.png'}
         />
       </Badge>
       <Menu
@@ -117,13 +117,12 @@ const UserDropdown = props => {
                 horizontal: 'right'
               }}
             >
-              {console.log(auth.user)}
-              <Avatar alt='John Doe' src='https://avatars.dicebear.com/api/adventurer-neutral/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
+              <Avatar alt='John Doe' src={'https://avatars.dicebear.com/api/adventurer-neutral/'+auth.user.id+'.png'} sx={{ width: '2.5rem', height: '2.5rem' }} />
             </Badge>
             <Box sx={{ display: 'flex', ml: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
               <Typography sx={{ fontWeight: 600 }}>{auth.user.username}</Typography>
               <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
-                {auth.user.role.name}
+                {auth.user.role.name.toUpperCase()}
               </Typography>
             </Box>
           </Box>

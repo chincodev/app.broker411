@@ -337,7 +337,7 @@ const UserViewLeft = ({ data, set_data }) => {
                   </Button>
                 )
               }
-              {
+              {/* {
                 data.is_published ? (
                   <Button color='error' disabled={loading} onClick={()=>handlePublish(data.is_published)} variant='outlined'>
                     UNPUBLISH
@@ -347,7 +347,7 @@ const UserViewLeft = ({ data, set_data }) => {
                     PUBLISH
                   </Button>
                 )
-              }
+              } */}
               
               
             </CardActions>

@@ -50,13 +50,13 @@ const VerifyBusinessDialog = (props) => {
         <Img alt='error-illustration' src='/images/pages/kb-personalization.png' />
         {
           props.verifyType === 'broker' ||( auth.user.request_business && auth.user.request_business.type === 'broker') ? <Typography sx={{ mb: 3 }}>
-          Your request to sign as broker {auth.user.request_business ? <strong>at {auth.user.request_business.legal_name}</strong> : ''}  is pending<br />We will let you know when the verification is completed
+          Your request to join as broker {auth.user.request_business ? <strong>at {auth.user.request_business.legal_name}</strong> : ''}  is pending<br />We will let you know when the verification is completed
         </Typography> : ''
         }
 
 {
           props.verifyType === 'carrier' || (auth.user.business && auth.user.business.type === 'carrier') ? <Typography sx={{ mb: 3 }}>
-          If you signed up as a broker, you must wait until an administrator review your information before you receive the verification.
+          Your request to join as carrier {auth.user.request_business ? <strong>at {auth.user.request_business.legal_name}</strong> : ''}  is pending<br /><strong>Check your email to complete the verification process.</strong>
         </Typography> : ''
         }
         

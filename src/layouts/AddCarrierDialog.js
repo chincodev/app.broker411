@@ -169,7 +169,7 @@ const AddCarrierDialog = (props) => {
       <CardMedia sx={{ height: 140 }} image='/images/cards/carrier.jpg' />
       <CardContent sx={{ p: theme => `${theme.spacing(4, 5)} !important` }}>
         <Typography variant='h6' sx={{ mb: 2 }}>
-          Carrier
+          Carriers
         </Typography>
         <Typography sx={{ mb: 2 }}>Sign Up & Get Started Today</Typography>
         <Typography variant='body2'>

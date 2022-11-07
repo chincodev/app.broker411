@@ -172,7 +172,7 @@ const AddBrokerDialog = (props) => {
       <CardMedia sx={{ height: 140 }} image='/images/cards/broker.png' />
       <CardContent sx={{ p: theme => `${theme.spacing(4, 5)} !important` }}>
         <Typography variant='h6' sx={{ mb: 2 }}>
-          Broker
+          Brokers
         </Typography>
         <Typography sx={{ mb: 2 }}>Get Started For $9.99/Month</Typography>
         <Typography variant='body2'>

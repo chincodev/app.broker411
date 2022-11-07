@@ -34,14 +34,14 @@ import AddCarrierDialog from 'src/layouts/AddCarrierDialog'
 import { useAuth } from 'src/hooks/useAuth'
 import { isEmpty } from 'lodash'
 import VerifyBusinessDialog from 'src/layouts/VerifyBusinessDialog'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AddBrokerDialog from 'src/layouts/AddBrokerDialog'
 import CardUser from 'src/views/ui/cards/basic/CardUser'
 
 const CrmDashboard = () => {
 
   const auth = useAuth()
-
+  
   const [verify, setVerify] = useState(false)
   const [verifyType, setVerifyType] = useState('')
 
@@ -58,71 +58,53 @@ const CrmDashboard = () => {
     }
   }))
 
+  useEffect(() => {
+    if(verify){
+      window.location.reload()
+    }
+  }, [verify])
+  
+
+  if(verify){
+    return <VerifyBusinessDialog verifyType={verifyType} />
+  }
+
+  if(isEmpty(auth.user.business) && isEmpty(auth.user.request_business)){
+    return <Grid container spacing={4}>
+      <Grid item xs={12} sm={6} lg={4}>
+        <AddBrokerDialog setVerify={setVerify} setVerifyType={()=>setVerifyType} />
+      </Grid>
+      <Grid item xs={12} sm={6} lg={4}>
+        <AddCarrierDialog setVerify={setVerify} setVerifyType={setVerifyType} />
+      </Grid>
+    </Grid>
+  }
+
+  if(auth.user.business && auth.user.business.type === 'carrier' && !auth.user.business.is_verified){
+    return <VerifyBusinessDialog verifyType={verifyType} />
+  }
+
+  if(!isEmpty(auth.user.request_business)){
+    return <VerifyBusinessDialog verifyType={verifyType} />
+  }
+
+
+
   return (
     <Box className='content-center'>
-      {console.log(auth)}
-     {
-       verify ? (
-        <VerifyBusinessDialog verifyType={verifyType} />
-      ) : (
-        
-    
-            (auth.user.business && auth.user.business.type === 'carrier') ? (
-
-
-
-              !auth.user.business.is_verified ? (
-                <VerifyBusinessDialog verifyType={verifyType} />
-              ) : (
-                panel()
-              )
-
-
-
-
-            ) : ((auth.user.business && auth.user.business.type === 'broker'))) ? (
-              panel()
-            ) : (auth.user.request_business) ? (
-              <VerifyBusinessDialog verifyType={verifyType} />
-            ) : (isEmpty(auth.user.business) && isEmpty(auth.user.request_business)) && (
-              <Grid container spacing={4}>
-                <Grid item xs={12} sm={6} lg={4}>
-                  <AddBrokerDialog setVerify={setVerify} setVerifyType={setVerifyType} />
-                </Grid>
-                <Grid item xs={12} sm={6} lg={4}>
-                  <AddCarrierDialog setVerify={setVerify} setVerifyType={setVerifyType} />
-                </Grid>
-              </Grid>
-            )
-
-
-
-              
-
-
-      }
-      
-    
+      <Grid container spacing={6} className='match-height'>
+        <Grid item xs={12} md={3}>
+          <CardUser />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          asdasdasdasdasdasdasdasdasdasdasdasd
+        </Grid>
+        <Grid item xs={12} md={3}>
+          asdasdasdasdasdasdasdasdasdasdasdasd
+        </Grid>
+      </Grid>
     </Box>
   )
 }
 
 export default CrmDashboard
-
-
-const panel = () => {
-
-  return (
-    <Grid container spacing={6} className='match-height'>
-                  <Grid item xs={12} md={3}>
-                    <CardUser />
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    asdasdasdasdasdasdasdasdasdasdasdasd
-                  </Grid>
-                  <Grid item xs={12} md={3}>
-                  asdasdasdasdasdasdasdasdasdasdasdasd
-                  </Grid>
-                </Grid>
-  )
-}

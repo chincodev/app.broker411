@@ -38,14 +38,14 @@ const CardUser = () => {
           />
           <Box sx={{ mr: 2, mb: 1, display: 'flex', flexDirection: 'column', justifyContent:'center' }}>
             <Typography style={{textAlign:'center'}} variant='h6'>{auth.user.username}</Typography>
-            <Typography style={{textAlign:'center', marginBottom:'.5em'}} variant='caption'>{auth.user?.business.legal_name}</Typography>
+            <Typography style={{textAlign:'center', marginBottom:'.5em'}} variant='caption'>{auth.user && auth.user.business && auth.user.business.legal_name}</Typography>
             
             <div style={{textAlign:'center'}}>
           <CustomChip
               skin='light'
               size='small'
               style={{marginBottom: '1rem'}}
-              label={auth.user?.business.type.toUpperCase()+' '+auth.user?.role.name.toUpperCase()}
+              label={auth.user && auth.user.business && auth.user.business.type.toUpperCase()+' '+auth.user?.role.name.toUpperCase()}
               sx={{ textTransform: 'capitalize', '& .MuiChip-label': { lineHeight: '18px' } }}
             />
           </div>
