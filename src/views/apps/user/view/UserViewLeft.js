@@ -291,19 +291,8 @@ const UserViewLeft = ({ data, set_data }) => {
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
                     Business Type:
                   </Typography>
-                  <CustomChip
-                    skin='light'
-                    size='small'
-                    label={data.business.type}
-                    color={'warning'}
-                    sx={{
-                      height: 20,
-                      fontSize: '0.75rem',
-                      fontWeight: 500,
-                      borderRadius: '5px',
-                      textTransform: 'capitalize'
-                    }}
-                  />
+                 
+                  
                 
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>

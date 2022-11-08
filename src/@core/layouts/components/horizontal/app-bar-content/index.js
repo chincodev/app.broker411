@@ -54,6 +54,11 @@ const AppBarContent = props => {
                    <Button  color="primary" style={{marginLeft:'0.5rem', paddingRight:'1rem', paddingLeft:'1rem'}} variant={window.location.pathname === '/admin/' ? 'contained' : ''} aria-label='capture screenshot'>
                     Home
                   </Button>
+                  <Link href={'/admin/fields'}>
+                    <Button  color="primary" style={{marginLeft:'0.5rem', paddingRight:'1rem', paddingLeft:'1rem'}} variant={window.location.pathname.includes('/admin/fields/') ? 'contained' : ''} aria-label='capture screenshot'>
+                      Fields
+                    </Button>
+                  </Link>
                   <Link href={'/admin/businesses'}>
                     <Button color="primary" style={{marginLeft:'0.5rem', paddingRight:'1rem', paddingLeft:'1rem'}} variant={window.location.pathname.includes('/admin/businesses/') ? 'contained' : ''} aria-label='capture screenshot'>
                       Businesses

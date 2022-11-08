@@ -69,6 +69,8 @@ const CrmDashboard = () => {
     return <VerifyBusinessDialog verifyType={verifyType} />
   }
 
+  {console.log(auth.user)}
+
   if(isEmpty(auth.user.business) && isEmpty(auth.user.request_business)){
     return <Grid container spacing={4}>
       <Grid item xs={12} sm={6} lg={4}>

@@ -56,7 +56,7 @@ const VerifyBusinessDialog = (props) => {
 
 {
           props.verifyType === 'carrier' || (auth.user.business && auth.user.business.type === 'carrier') ? <Typography sx={{ mb: 3 }}>
-          Your request to join as carrier {auth.user.request_business ? <strong>at {auth.user.request_business.legal_name}</strong> : ''}  is pending<br /><strong>Check your email to complete the verification process.</strong>
+          Your request to join as carrier {auth.user.business ? <strong>at {auth.user.business.legal_name}</strong> : ''}  is pending<br /><strong>Check your email to complete the verification process.</strong>
         </Typography> : ''
         }
         

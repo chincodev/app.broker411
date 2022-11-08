@@ -39,6 +39,7 @@ const AddNewCustomer = ({ open, toggle, setSelectedClient, clients, setClients }
   const {
     reset,
     control,
+    setError,
     handleSubmit,
     formState: { errors }
   } = useForm({
@@ -83,6 +84,7 @@ const AddNewCustomer = ({ open, toggle, setSelectedClient, clients, setClients }
         <Typography variant='h6'>Add New Customer</Typography>
         <Close fontSize='small' onClick={toggle} sx={{ cursor: 'pointer' }} />
       </Header>
+      {console.log(errors)}
       <Box component='form' sx={{ p: 5 }} onSubmit={handleSubmit(onSubmit)}>
         <FormControl fullWidth sx={{ mb: 6 }}>
           <Controller
