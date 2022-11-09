@@ -10,6 +10,7 @@ import calendar from 'src/store/apps/calendar'
 import permissions from 'src/store/apps/permissions'
 import business from 'src/store/apps/business'
 import fields from 'src/store/apps/field'
+import feed from 'src/store/apps/feed'
 
 export const store = configureStore({
   reducer: {
@@ -20,7 +21,8 @@ export const store = configureStore({
     calendar,
     permissions,
     business,
-    fields
+    fields,
+    feed
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

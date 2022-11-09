@@ -63,7 +63,7 @@ const VerticalNavSectionTitle = props => {
   }
 
   return (
-    <CanViewNavSectionTitle navTitle={item}>
+    // <CanViewNavSectionTitle navTitle={item}>
       <ListSubheader
         className='nav-section-title'
         sx={{
@@ -95,7 +95,7 @@ const VerticalNavSectionTitle = props => {
           )}
         </Divider>
       </ListSubheader>
-    </CanViewNavSectionTitle>
+    // </CanViewNavSectionTitle>
   )
 }
 

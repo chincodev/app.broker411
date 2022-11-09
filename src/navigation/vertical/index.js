@@ -19,21 +19,17 @@ import CalendarBlankOutline from 'mdi-material-ui/CalendarBlankOutline'
 import PackageVariantClosed from 'mdi-material-ui/PackageVariantClosed'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 import CheckboxMarkedCircleOutline from 'mdi-material-ui/CheckboxMarkedCircleOutline'
+import { FaceAgent } from 'mdi-material-ui'
 
 const navigation = () => {
   return [
     {
-      title: 'Dashboard',
+      sectionTitle: 'Menu'
+    },
+    {
+      title: 'Home',
       icon: HomeOutline,
-      path: '/dashboard'
-    },
-    {
-      sectionTitle: 'New Section'
-    },
-    {
-      title: 'New option',
-      icon: EmailOutline,
-      path: '/apps/email'
+      path: '/'
     },
   ]
 }

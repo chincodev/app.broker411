@@ -125,6 +125,7 @@ const Navigation = props => {
       {(beforeVerticalNavMenuContentPosition === 'static' || !beforeVerticalNavMenuContent) && (
         <StyledBoxForShadow ref={shadowRef} sx={{ background: shadowBgColor() }} />
       )}
+      
       <Box sx={{ position: 'relative', overflow: 'hidden' }}>
         <ScrollWrapper
           containerRef={ref => handleInfiniteScroll(ref)}

@@ -118,7 +118,7 @@ const AddCarrierDialog = (props) => {
       setActionsLoading(false)
       setActiveTab('detailsTab')
     } catch (er) {
-      toast.error(er.errors[0].message)
+      toast.error(er.errors[0].message === '"email" is required' ? 'You must have an email address registered on file with FMSCA so we can verify your carrier profile. Add an email into your FMSCA profile then come try again.' : er.errors[0].message)
       setShow(false)
       setActionsLoading(false)
       setActiveTab('detailsTab')

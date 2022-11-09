@@ -165,6 +165,7 @@ const UserViewLeft = ({ data, set_data }) => {
             color={data.avatarColor}
             sx={{ width: 120, height: 120, fontWeight: 600, mb: 4, fontSize: '3rem' }}
           >
+            {console.log(data)}
             {getInitials(data.legal_name)}
           </CustomAvatar>
         )

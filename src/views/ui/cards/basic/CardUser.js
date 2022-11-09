@@ -1,6 +1,5 @@
 // ** MUI Imports
 import Box from '@mui/material/Box'
-import Card from '@mui/material/Card'
 import Button from '@mui/material/Button'
 import Avatar from '@mui/material/Avatar'
 import CardMedia from '@mui/material/CardMedia'
@@ -10,13 +9,26 @@ import AvatarGroup from '@mui/material/AvatarGroup'
 import { Divider } from '@mui/material'
 import { useAuth } from 'src/hooks/useAuth'
 import CustomChip from 'src/@core/components/mui/chip'
+import styled from '@emotion/styled'
+import MuiCard from '@mui/material/Card'
+
+const Card = styled(MuiCard)(({ theme }) => ({
+  '& .MuiCard-root': {
+    [theme.breakpoints.up('md')]: {
+      position: 'sticky',
+      top: '88px'
+    }
+  },
+}))
 
 const CardUser = () => {
 
   const auth = useAuth()
 
+
+
   return (
-    <Card sx={{ position: 'relative' }}>
+    <Card >
       <CardContent>
         <Box
           sx={{

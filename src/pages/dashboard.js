@@ -25,8 +25,7 @@ import CrmOrganicSessions from 'src/views/dashboards/crm/CrmOrganicSessions'
 import CrmProjectTimeline from 'src/views/dashboards/crm/CrmProjectTimeline'
 import CrmMeetingSchedule from 'src/views/dashboards/crm/CrmMeetingSchedule'
 import CrmSocialNetworkVisits from 'src/views/dashboards/crm/CrmSocialNetworkVisits'
-import CrmMostSalesInCountries from 'src/views/dashboards/crm/CrmMostSalesInCountries'
-import { Button, CardContent, CardMedia, Typography } from '@mui/material'
+import { Button, CardContent, CardMedia, Divider, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import Link from 'next/link'
 import { styled } from '@mui/material/styles'
@@ -37,6 +36,7 @@ import VerifyBusinessDialog from 'src/layouts/VerifyBusinessDialog'
 import { useEffect, useState } from 'react'
 import AddBrokerDialog from 'src/layouts/AddBrokerDialog'
 import CardUser from 'src/views/ui/cards/basic/CardUser'
+import Feed from 'src/views/dashboards/feed'
 
 const CrmDashboard = () => {
 
@@ -93,19 +93,7 @@ const CrmDashboard = () => {
 
 
   return (
-    <Box className='content-center'>
-      <Grid container spacing={6} className='match-height'>
-        <Grid item xs={12} md={3}>
-          <CardUser />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          asdasdasdasdasdasdasdasdasdasdasdasd
-        </Grid>
-        <Grid item xs={12} md={3}>
-          asdasdasdasdasdasdasdasdasdasdasdasd
-        </Grid>
-      </Grid>
-    </Box>
+    <Feed />
   )
 }
 
