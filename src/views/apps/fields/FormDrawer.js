@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -42,16 +42,12 @@ const schema = yup.object().shape({
   description: yup.string().optional().max(128),
 })
 
-const defaultValues = {
-    name: '',
-    type: '',
-    context: '',
-    description: '',
-}
+
 
 const SidebarAddCategory = props => {
   // ** Props
-  const { open, toggle } = props
+  const { open, toggle, isEdit, defaultValues } = props
+  
 
   // ** State
   const [context, setContext] = useState('review')
@@ -73,8 +69,23 @@ const SidebarAddCategory = props => {
     resolver: yupResolver(schema)
   })
 
+  useEffect(() => {
+    setContext(defaultValues.context)
+    setType(defaultValues.type)
+    reset({
+      name: defaultValues.name,
+      description: defaultValues.description
+    })
+  }, [defaultValues])
+  
+
   const onSubmit = data => {
-    dispatch(create({ ...data, context, type }))
+    if(defaultValues.id){
+      dispatch(update(defaultValues.id, { ...data, context, type }))
+    } else {
+      dispatch(create({ ...data, context, type }))
+    }
+    
     toggle()
     reset()
   }
@@ -95,9 +106,9 @@ const SidebarAddCategory = props => {
       ModalProps={{ keepMounted: true }}
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
-        {console.log(errors)}
+      {console.log(props)}
       <Header>
-        <Typography variant='h6'>Add Field</Typography>
+        <Typography variant='h6'>{isEdit ? 'Edit' : 'Add'} Field</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
       </Header>
       <Box sx={{ p: 5 }}>

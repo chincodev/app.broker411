@@ -176,7 +176,7 @@ const UserViewLeft = ({ data, set_data }) => {
   if (data) {
     return (
       <Grid container spacing={6}>
-        {console.log(data)}
+       
         <Grid item xs={12}>
           <Card>
             <CardContent sx={{ pt: 15, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
@@ -206,7 +206,9 @@ const UserViewLeft = ({ data, set_data }) => {
                   </CustomAvatar>
                   <Box>
                     <Typography variant='h5' sx={{ lineHeight: 1.3 }}>
-                      300
+                      {
+                        data.reviewCount ? data.reviewCount : 0
+                      }
                     </Typography>
                     <Typography variant='body2'>Reviews</Typography>
                   </Box>
@@ -217,7 +219,9 @@ const UserViewLeft = ({ data, set_data }) => {
                   </CustomAvatar>
                   <Box>
                     <Typography variant='h5' sx={{ lineHeight: 1.3 }}>
-                      4.3
+                    {
+                        data.avgRating ? parseFloat(data.avgRating).toFixed(2) : 0
+                      }
                     </Typography>
                     <Typography variant='body2'>Rating Avg.</Typography>
                   </Box>
@@ -226,7 +230,6 @@ const UserViewLeft = ({ data, set_data }) => {
             </CardContent>
 
             <CardContent>
-              <Typography variant='h6'>Details</Typography>
               <Divider sx={{ mt: 4 }} />
               <Box sx={{ pt: 2, pb: 1 }}>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
@@ -235,7 +238,7 @@ const UserViewLeft = ({ data, set_data }) => {
                   </Typography>
                   <Typography variant='body2'>{data.email}</Typography>
                 </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                {/* <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
                     Enabled:
                   </Typography>
@@ -288,7 +291,7 @@ const UserViewLeft = ({ data, set_data }) => {
                       textTransform: 'capitalize'
                     }}
                   />
-                </Box>
+                </Box> */}
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Tax ID:</Typography>
                   <Typography variant='body2'>Tax-8894</Typography>
@@ -315,7 +318,7 @@ const UserViewLeft = ({ data, set_data }) => {
             {
               ['owner', 'representative'].includes(auth.user.role.name) ? (
                 <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
-                  <AddReviewDialog />
+                  <AddReviewDialog business={data}  />
                   
                 </CardActions>
               ) : auth.user.role.name === 'administrator' && (

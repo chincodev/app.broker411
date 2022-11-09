@@ -11,11 +11,11 @@ const FooterContent = () => {
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'end' }}>
       <Typography sx={{ mr: 2 }}>
-        {`© ${new Date().getFullYear()}, Made with `}
-        <Box component='span' sx={{ color: 'error.main' }}>
+        {`© ${new Date().getFullYear()} Broker411`}
+        {/* <Box component='span' sx={{ color: 'error.main' }}>
           ❤️
         </Box>
-        {` in California `}
+        {` in California `} */}
 
       </Typography>
       {/* {hidden ? null : (

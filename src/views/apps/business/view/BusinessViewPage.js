@@ -59,11 +59,11 @@ const UserView = ({ id, data, code }) => {
   } else {
     return (
       <Grid container spacing={6}>
-        <Grid item xs={12} md={5} lg={4}>
-          <BusinessViewLeft data={business_data} set_data={set_business_data} />
+        <Grid item xs={12} md={4} lg={3}>
+          <BusinessViewLeft data={business_data} setData={set_business_data} />
         </Grid>
-        <Grid item xs={12} md={7} lg={8}>
-          <BusinessViewRight data={business_data} set_business_data={set_business_data} />
+        <Grid item xs={12} md={8} lg={9}>
+          <BusinessViewRight business={business_data} setBusiness={set_business_data} />
         </Grid>
       </Grid>
     )

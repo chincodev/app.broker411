@@ -10,7 +10,7 @@ import { categoryService } from 'services/category.service'
 export const fetchData = createAsyncThunk('appFields/fetchData', async (params = '', { getState, dispatch }) => {
   try {
     await dispatch(setLoading())
-    const response = await categoryService.list(window.location.search)
+    const response = await categoryService.list(params ? params : window.location.search)
     return response
   } catch (er){
     console.log(er)

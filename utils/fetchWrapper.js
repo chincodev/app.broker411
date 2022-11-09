@@ -72,7 +72,6 @@ function handleResponse(response) {
         const data = text && JSON.parse(text);
 
         if (!response.ok) {
-          console.log(data)
             let errors = data.errors && data.errors.length > 0 ? data.errors : data.data && data.data.message ? [{message:data.data.message}] : [{message:response.statusText}]
             console.log(errors)
             return Promise.reject({errors, code: response.status});

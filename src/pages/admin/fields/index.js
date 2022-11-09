@@ -17,6 +17,7 @@ import { useRouter } from 'next/router'
 import styled from '@emotion/styled'
 import { isEmpty } from 'lodash'
 import SidebarAddCategory from 'src/views/apps/fields/FormDrawer'
+import { PencilOutline } from 'mdi-material-ui'
 
 
 
@@ -96,35 +97,7 @@ const defaultColumns = [
   },
 ]
 
-const columns = [
-  ...defaultColumns,
-  {
-    flex: 0.1,
-    minWidth: 130,
-    sortable: false,
-    field: 'actions',
-    headerName: 'Actions',
-    renderCell: ({ row }) => (
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        
-        <Tooltip title='View User'>
-          <Box>
-            <Link href={`/admin/users/${row.id}`} passHref>
-              <IconButton size='small' component='a' sx={{ textDecoration: 'none', mr: 0.5 }}>
-                <EyeOutline />
-              </IconButton>
-            </Link>
-          </Box>
-        </Tooltip>
-        {/* <Tooltip title='Delete Business'>
-          <IconButton size='small' sx={{ mr: 0.5 }} onClick={() => dispatch(deleteInvoice(row.id))}>
-            <DeleteOutline />
-          </IconButton>
-        </Tooltip> */}
-      </Box>
-    )
-  }
-]
+
 
 const FieldList = () => {
   // ** State
@@ -136,10 +109,42 @@ const FieldList = () => {
   const store = useSelector(state => state.fields)
   useEffect(() => {
     if(!store.total){
-      dispatch(fetchData(window.location.search.replace('?', '')))
+      dispatch(fetchData(window.location.search))
     }
   }, [])
-
+  const columns = [
+    ...defaultColumns,
+    {
+      flex: 0.1,
+      minWidth: 130,
+      sortable: false,
+      field: 'actions',
+      headerName: 'Actions',
+      renderCell: ({ row }) => (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          
+          <Tooltip title='Edit Record'>
+            <Box>
+              <a href={`#`} onClick={()=>{
+                setIsEdit(true)
+                setDefaultValues(row)
+                toggleDrawer()
+              }} passHref>
+                <IconButton size='small' component='a' sx={{ textDecoration: 'none', mr: 0.5 }}>
+                  <PencilOutline />
+                </IconButton>
+              </a>
+            </Box>
+          </Tooltip>
+          {/* <Tooltip title='Delete Business'>
+            <IconButton size='small' sx={{ mr: 0.5 }} onClick={() => dispatch(deleteInvoice(row.id))}>
+              <DeleteOutline />
+            </IconButton>
+          </Tooltip> */}
+        </Box>
+      )
+    }
+  ]
   const isFirstRun = useRef(true);
 
   useEffect(() => {
@@ -197,6 +202,17 @@ const FieldList = () => {
 
   const [ openDrawer, setOpenDrawer ] = useState(false)
 
+  const defaultValuesInitialValue = {
+    name: '',
+    type: '',
+    context: '',
+    description: '',
+    id: ''
+  }
+  const [ defaultValues, setDefaultValues ] = useState(defaultValuesInitialValue)
+
+  const [ isEdit, setIsEdit ] = useState(false)
+
   const toggleDrawer = () => {
     setOpenDrawer(!openDrawer)
   } 
@@ -204,6 +220,8 @@ const FieldList = () => {
   return (
     <Grid container spacing={6}>
       <SidebarAddCategory 
+        defaultValues={defaultValues}
+        isEdit={isEdit}
         open={openDrawer}
         toggle={toggleDrawer}
       />
@@ -218,7 +236,11 @@ const FieldList = () => {
                 placeholder='Search by Username'
                 onChange={(e)=>set_search(e.target.value)}
               />
-              <Button onClick={()=>toggleDrawer()} sx={{ mr: 6, mb: 2 }} type='submit' color='secondary' variant='contained' size='medium'>
+              <Button onClick={()=>{
+                setIsEdit(false)
+                setDefaultValues(defaultValuesInitialValue)
+                toggleDrawer()
+                }} sx={{ mr: 6, mb: 2 }} type='submit' color='secondary' variant='contained' size='medium'>
                 New Field
               </Button>
             </Box>

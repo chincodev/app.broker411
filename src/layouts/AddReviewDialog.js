@@ -51,6 +51,9 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 
 const AddReviewDialog = (props) => {
+
+  const { business } = props
+
   // ** States
   const [show, setShow] = useState(false)
   const [ actionsLoading, setActionsLoading ] = useState(false)
@@ -104,7 +107,7 @@ const AddReviewDialog = (props) => {
           <Box sx={{ display: 'flex', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
            
           <DialogTabBrokerDetails
-                 
+                  business={business}
                   handleClose={handleClose}
                   setVerify={props.setVerify}
                 />

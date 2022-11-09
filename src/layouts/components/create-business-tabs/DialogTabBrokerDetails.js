@@ -313,7 +313,7 @@ const DialogTabBrokerDetails = (props) => {
             </Grid>
            
             <Grid item xs={12} style={{textAlign:'end', paddingTop:'1em'}}>
-              <Button type='submit' disabled={actionsLoading} color='secondary' onClick={()=>reset()} variant='contained' size='large'>
+              <Button type='button' disabled={actionsLoading} color='secondary' onClick={()=>reset()} variant='contained' size='large'>
                 Reset
               </Button>&nbsp;&nbsp;
               <Button type='submit' disabled={actionsLoading} variant='contained' size='large'>

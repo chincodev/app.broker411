@@ -28,7 +28,7 @@ const CardUser = () => {
         >
           <Avatar
             alt='Robert Meyer'
-            src='https://avatars.dicebear.com/api/adventurer-neutral/3.png'
+            src={`https://avatars.dicebear.com/api/adventurer-neutral/${auth.user.id}.png`}
             sx={{
               width: 78,
               height: 78,

@@ -75,9 +75,9 @@ const AppBarContent = props => {
                   <Button color="primary" style={{marginLeft:'0.5rem', paddingRight:'1rem', paddingLeft:'1rem'}} variant={window.location.pathname.includes('/admin/') ? 'contained' : ''} aria-label='capture screenshot'>
                     Home
                   </Button>
-                  <Button color="primary" style={{marginLeft:'0.5rem', paddingRight:'1rem', paddingLeft:'1rem'}} variant={window.location.pathname.includes('/admin/brokers/') ? 'contained' : ''} aria-label='capture screenshot'>
+                  {/* <Button color="primary" style={{marginLeft:'0.5rem', paddingRight:'1rem', paddingLeft:'1rem'}} variant={window.location.pathname.includes('/admin/brokers/') ? 'contained' : ''} aria-label='capture screenshot'>
                     Brokers
-                  </Button>
+                  </Button> */}
                 </>
               )
             }

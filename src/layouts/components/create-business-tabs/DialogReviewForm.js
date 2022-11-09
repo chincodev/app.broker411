@@ -20,8 +20,8 @@ import axios from 'axios'
 import CardSnippet from 'src/@core/components/card-snippet'
 import Grid from '@mui/material/Grid'
 import toast from 'react-hot-toast'
-import { Button, CardContent, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, FormHelperText, InputAdornment, Rating, TextField } from '@mui/material'
-import { AccountOutline, Email, EmailOutline, FaceAgent, LocationEnter, Map, Marker, MessageOutline, OfficeBuildingOutline, Phone, Pin } from 'mdi-material-ui'
+import { Button, CardContent, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, FormHelperText, InputAdornment, Rating, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { AccountOutline, DeleteOutline, Email, EmailOutline, FaceAgent, LocationEnter, Map, Marker, MessageOutline, OfficeBuildingOutline, Phone, Pin, ThumbDown, ThumbUp } from 'mdi-material-ui'
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -29,6 +29,12 @@ import { green } from '@mui/material/colors'
 
 
 import useBgColor from 'src/@core/hooks/useBgColor'
+import { fetchData } from 'src/store/apps/field'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { size } from 'lodash'
+import { reviewService } from 'services/review.service'
+
 
 const schema = yup.object().shape({
   type: yup.string().required().oneOf(['broker']),
@@ -44,59 +50,65 @@ const schema = yup.object().shape({
 
 const DialogReviewForm = (props) => {
 
+  const { business } = props
 
   const bgClasses = useBgColor()
   
   const [ actionsLoading, setActionsLoading ] = useState(false)
+  const [ submitting, setSubmitting ] = useState(false)
+  const store = useSelector(state => state.fields)
+  const dispatch = useDispatch()
 
-  const defaultValues = {
-    type: 'broker',
-    legal_name: '',
-    address: '',
-    address_line_2: '',
-    phone: '',
-    email: '',
-    mc_number: '',
-    registration_date: ''
+  useEffect(() => {
+    if(store.data.length === 0){
+      dispatch(fetchData('?page_size=50'))
+    }
+  }, [])
+  
+
+  const [ type, setType ] = useState('good')
+  const [ body, setBody ] = useState('')
+  const [ experience_rate, setExperience_rate ] = useState(1)
+  const [ categories, setCategories ] = useState([])
+
+  const reset = () => {
+    setType('good')
+    setBody('')
+    setExperience_rate(1)
+    setCategories([])
   }
 
-  const { register, control, handleSubmit, formState: { errors }, reset, setError } = useForm({
-    resolver: yupResolver(schema), defaultValues
-  });
-
-  const submitData = async (data) => {
+  const submitData = async (e) => {
     try {
-      setActionsLoading(true)
-      await businessService.create(data)
-      setActionsLoading(false)
-      toast.success('Your request has been submitted. A representative will reach out to you soon.')
-      props.setVerify(true)
+      e.preventDefault()
+      setSubmitting(true)
+      await reviewService.create({
+        rating: experience_rate,
+        type,
+        body,
+        categories,
+        business_id: business.id
+      })
+      setSubmitting(false)
+      toast.success('Review Sent')
       props.handleClose(true)
     } catch (er) {
-      
-      er.errors && Array.isArray(er.errors) && er.errors.map(x => {
-        if(x.path){
-          x.path.map(y => setError(y, {
-            message: x.message
-          }))
-        } else {
-          toast.error(x.message)
-        }
-      })
-      
-      setActionsLoading(false)
       console.log(er)
+      toast.error(er.errors[0].message)
+      setSubmitting(false)
     }
+  }
+
+  if(store.loading){
+    return <Box style={{textAlign:'center', width:'100%'}}>
+      <CircularProgress disableShrink sx={{ mt: 6, mb: 6 }} />
+    </Box>
   }
 
   return (
     <Box>
-      {/* <Typography variant='h6' sx={{ mb: 4 }}>
-        Add broker details
-      </Typography> */}
-      {console.log(errors)}
-     
-        <form onSubmit={handleSubmit(submitData)}>
+        <form onSubmit={(e)=>submitData(e)}>
+          
           <Grid container>
           <Grid item xs={12} style={{marginBottom:'2rem'}}>
           <Box
@@ -118,11 +130,12 @@ const DialogReviewForm = (props) => {
                   </Typography>
                 </Box>
                 <Typography>
-                  <strong>Broker Broker Broker</strong>
+                  {console.log(props)}
+                  <strong>{business.legal_name}</strong>
                 </Typography>
               </Box>
 
-              <Box
+              {/* <Box
             
                 sx={{
                   py: 3,
@@ -140,29 +153,66 @@ const DialogReviewForm = (props) => {
                   </Typography>
                 </Box>
                 <Typography>
-                  <strong>Broker Broker Broker</strong>
+                  <strong>DISABLED TEMPORARLLY</strong>
                 </Typography>
-              </Box>
+              </Box> */}
 
             </Grid>
+            
+            <Grid item xs={12} style={{marginBottom:'1rem'}}>
+              <Typography style={{marginBottom:'0.5rem'}} variant='h6'>Overall experience:</Typography>
+              <ToggleButtonGroup size='large' exclusive color={type === 'good' ? 'success' : 'error'} value={type} onChange={(e)=>{
+                setCategories([])
+                setType(e.target.value)
+              }}>
+                
+                <ToggleButton value='good'>Good</ToggleButton>
+                <ToggleButton value='bad'>Bad</ToggleButton>
+              </ToggleButtonGroup>
+              </Grid>
+              <Grid item xs={12} style={{marginBottom:'2rem'}}>
+              {/* <Typography variant='h6' >Check the box if any applies to you:</Typography>  */}
+            <FormGroup>
+              {console.log(categories)}
+            {
+              store.data.filter(x => x.type === type).map(x => <FormControlLabel
+                label={x.description}
+                control={<Checkbox
+                  checked={categories.find(y => y === x.id) ? true : false}
+                  onChange={(e)=>e.target.checked ? categories.find(y => y === x.id) ? '' : setCategories(categories.concat(x.id)) : setCategories(categories.filter(y => y != x.id))}
+                  name={x.name} 
+                />}
+              />)
+            }
+          
+        </FormGroup>
+            </Grid>
+            {console.log(categories)}
             <Grid item xs={12} style={{marginBottom:'2rem'}}>
+            <Typography variant='h6' >Your experience:</Typography>
+      
+            <Box sx={{ mb: 3 }}>
+        {/* <Typography sx={{ fontWeight: 500 }}>Your experience</Typography> */}
+        <Rating size="large" max={10} value={experience_rate} name='simple-controlled' onChange={(event, newValue) => setExperience_rate(newValue)} />
+      </Box>
+      <br />
+      <Grid item xs={12} style={{marginBottom:'2rem'}}>
               <FormControl fullWidth>
-                <Controller
-                  name='body'
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
+                
                     <TextField
-                      value={value}
+                      value={body}
                       label='Body'
-                      onChange={onChange}
-                      placeholder='Describe your experience in 100 words.'
+                      onChange={(e)=>setBody(e.target.value)}
+                      placeholder='Describe your experience.'
                       fullWidth
                       multiline
                       sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
                       minRows={3}
-                      error={Boolean(errors.registration_date)}
+                      minLe
                       aria-describedby='registration_date'
+                      inputProps={{
+                        maxLength: 250,
+                      }}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position='start'>
@@ -171,59 +221,11 @@ const DialogReviewForm = (props) => {
                         )
                       }}
                     />
-                  )}
-                />
-                {errors.registration_date && (
-                  <FormHelperText sx={{ color: 'error.main' }} id='registration_date'>
-                    {errors.registration_date.message}
-                  </FormHelperText>
-                )}
+                 
               </FormControl>
+              <small>{body.length} of 250 Characters Used</small>
             </Grid>
-            <Grid item xs={12} style={{marginBottom:'2rem'}}>
-              <Typography variant='h6' >Check the box if any applies to you:</Typography>
-            <FormGroup>
-          <FormControlLabel
-            label='No detention Pay'
-            control={<Checkbox  name='gilad' />}
-          />
-          <FormControlLabel
-            label='Cancels Load Before Pickup'
-            control={<Checkbox  name='jason' />}
-          />
-          <FormControlLabel
-            label='Double Booked'
-            control={<Checkbox  name='antoine' />}
-          />
-          <FormControlLabel
-            label='Rude or Disrespectful Broker Agent'
-            control={<Checkbox  name='antoine' />}
-          />
-          <FormControlLabel
-            label='Change of terms during transit'
-            control={<Checkbox  name='antoine' />}
-          />
-          <FormControlLabel
-            label='Gives wrong delivery or pickup times'
-            control={<Checkbox  name='antoine' />}
-          />
-          <FormControlLabel
-            label='Unresponsive after giving you the load'
-            control={<Checkbox  name='antoine' />}
-          />
-          <FormControlLabel
-            label='Leaves false reviews on other platforms '
-            control={<Checkbox  name='antoine' />}
-          />
-        </FormGroup>
-            </Grid>
-            
-            <Grid item xs={12} style={{marginBottom:'2rem'}}>
-            <Box sx={{ mb: 3 }}>
-        <Typography sx={{ fontWeight: 500 }}>Your experience</Typography>
-        <Rating size="large" max={10} value={1} name='simple-controlled' onChange={(event, newValue) => console.log(newValue)} />
-      </Box>
-      <Box sx={{ mb: 3 }}>
+      {/* <Box sx={{ mb: 3 }}>
         <Typography sx={{ fontWeight: 500 }}>Payment Speed</Typography>
         <Rating size="large" max={10} value={1} name='simple-controlled' onChange={(event, newValue) => console.log(newValue)} />
       </Box>
@@ -234,16 +236,16 @@ const DialogReviewForm = (props) => {
       <Box sx={{ mb: 3 }}>
         <Typography sx={{ fontWeight: 500 }}>Would you work with this company again</Typography>
         <Rating  size="large" max={10} value={1} name='simple-controlled' onChange={(event, newValue) => console.log(newValue)} />
-      </Box>
+      </Box> */}
             </Grid>
            
             <Grid item xs={12} style={{textAlign:'end', paddingTop:'1em'}}>
-              <Button type='submit' disabled={actionsLoading} color='secondary' onClick={()=>reset()} variant='contained' size='large'>
+              <Button type='button' disabled={submitting} color='secondary' onClick={()=>reset()} variant='contained' size='large'>
                 Reset
               </Button>&nbsp;&nbsp;
-              <Button type='submit' disabled={actionsLoading} variant='contained' size='large'>
+              <Button type='submit' disabled={submitting} variant='contained' size='large'>
                 {
-                  actionsLoading && <CircularProgress
+                  submitting && <CircularProgress
                     size={24}
                     sx={{
                       color: green[500],

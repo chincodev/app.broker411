@@ -22,6 +22,9 @@ import UserViewSecurity from 'src/views/apps/user/view/UserViewSecurity'
 import UserViewConnection from 'src/views/apps/user/view/UserViewConnection'
 import UserViewNotification from 'src/views/apps/user/view/UserViewNotification'
 import { BowlMixOutline, StarOutline, ZipBoxOutline } from 'mdi-material-ui'
+import Grid from '@mui/material/Grid'
+import ReviewCard from './ReviewCard'
+import ReviewsTab from './ReviewsTab'
 
 // ** Styled Tab component
 const Tab = styled(MuiTab)(({ theme }) => ({
@@ -33,9 +36,9 @@ const Tab = styled(MuiTab)(({ theme }) => ({
   }
 }))
 
-const UserViewRight = ({ invoiceData }) => {
+const UserViewRight = ({ business, setBusiness }) => {
   // ** State
-  const [value, setValue] = useState('overview')
+  const [value, setValue] = useState('reviews')
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -50,29 +53,24 @@ const UserViewRight = ({ invoiceData }) => {
         aria-label='forced scroll tabs example'
         sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
       >
-        <Tab value='overview' label='Reviews' icon={<StarOutline sx={{ fontSize: '18px' }} />} />
-        <Tab value='security' label='Loads' icon={<ZipBoxOutline sx={{ fontSize: '18px' }} />} />
+        <Tab value='reviews' label='Reviews' icon={<StarOutline sx={{ fontSize: '18px' }} />} />
+        <Tab value='loads' label='Loads' icon={<ZipBoxOutline sx={{ fontSize: '18px' }} />} />
         {/* <Tab value='billing-plan' label='Billing & Plan' icon={<BookmarkOutline sx={{ fontSize: '18px' }} />} /> */}
         {/* <Tab value='notification' label='Notification' icon={<BellOutline sx={{ fontSize: '18px' }} />} />
         <Tab value='connection' label='Connection' icon={<LinkVariant sx={{ fontSize: '18px' }} />} /> */}
       </TabList>
       <Box sx={{ mt: 3 }}>
-        <TabPanel sx={{ p: 0 }} value='overview'>
-          <UserViewOverview invoiceData={invoiceData} />
+        <TabPanel sx={{ p: 0 }} value='reviews'>
+          <ReviewsTab 
+            business={business}
+            setBusiness={setBusiness}
+          />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='security'>
+        <TabPanel sx={{ p: 0 }} value='loads'>
           <UserViewSecurity />
         </TabPanel>
-        {/* <TabPanel sx={{ p: 0 }} value='billing-plan'>
-          <UserViewBilling />
-        </TabPanel> */}
-        {/* <TabPanel sx={{ p: 0 }} value='notification'>
-          <UserViewNotification />
-        </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='connection'>
-          <UserViewConnection />
-        </TabPanel> */}
       </Box>
+
     </TabContext>
   )
 }
