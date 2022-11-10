@@ -42,11 +42,14 @@ const ReviewCard = ({ data, feedMode = false }) => {
         <Grid container>
           <Grid item xs={12}>
             <div style={{display:'flex', alignItems:'center'}}>
-              <Star style={{color:'#fdff62', marginBottom:'2px'}} />
+              <Star style={{color:'rgb(223 206 0)', marginBottom:'2px'}} />
               <Typography variant='h7' sx={{ fontSize: '1rem', color: 'primary', marginRight:'.4em' }}>
-                &nbsp;{data.rating}/10&nbsp;&nbsp;|
+                &nbsp;{data.rating}/10&nbsp;&nbsp;{feedMode && '|'}
               </Typography>
-              <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled', marginTop:'2px' }}>Review by {data.user.business.legal_name}</Typography>&nbsp;
+              {
+                feedMode && <><Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled', marginTop:'2px' }}>Review by {data.user.business.legal_name}</Typography>&nbsp;</>
+              }
+              
               {/* <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}></Typography> */}
             
             </div>

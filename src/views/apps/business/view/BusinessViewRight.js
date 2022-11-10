@@ -18,13 +18,13 @@ import BookmarkOutline from 'mdi-material-ui/BookmarkOutline'
 // ** Demo Components Imports
 import UserViewBilling from 'src/views/apps/user/view/UserViewBilling'
 import UserViewOverview from 'src/views/apps/user/view/UserViewOverview'
-import UserViewSecurity from 'src/views/apps/user/view/UserViewSecurity'
 import UserViewConnection from 'src/views/apps/user/view/UserViewConnection'
 import UserViewNotification from 'src/views/apps/user/view/UserViewNotification'
 import { BowlMixOutline, StarOutline, ZipBoxOutline } from 'mdi-material-ui'
 import Grid from '@mui/material/Grid'
 import ReviewCard from './ReviewCard'
 import ReviewsTab from './ReviewsTab'
+import LoadsTab from './LoadsTab'
 
 // ** Styled Tab component
 const Tab = styled(MuiTab)(({ theme }) => ({
@@ -67,7 +67,7 @@ const UserViewRight = ({ business, setBusiness }) => {
           />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='loads'>
-          <UserViewSecurity />
+          <LoadsTab />
         </TabPanel>
       </Box>
 

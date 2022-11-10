@@ -23,6 +23,9 @@ import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
 import { useAuth } from 'src/hooks/useAuth'
+import { KeyOutline, MailboxOutline } from 'mdi-material-ui'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
+import ChangePasswordDialog from 'src/views/apps/profile/ChangePasswordDialog'
 // ** Context
 
 // ** Styled Components
@@ -79,9 +82,13 @@ const UserDropdown = props => {
     handleDropdownClose()
   }
 
+  const [ openPasswordDialog, setOpenPasswordDialog ] = useState(false)
+  const [ openEmailDialog, setOpenEmailDialog ] = useState(false)
+
+  const [ password, setPassword ] = useState('')
+
   return (
     <Fragment>
-      
       <Badge
         overlap='circular'
         onClick={handleDropdownOpen}
@@ -128,49 +135,28 @@ const UserDropdown = props => {
           </Box>
         </Box>
         <Divider sx={{ mt: 0, mb: 1 }} />
+        <MenuItem sx={{ p: 0 }} onClick={() => setOpenPasswordDialog(true)}>
+          <Box sx={styles}>
+            <KeyOutline sx={{ mr: 2 }} />
+            Change password
+          </Box>
+        </MenuItem>
         <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/apps/user/view/12')}>
           <Box sx={styles}>
-            <AccountOutline sx={{ mr: 2 }} />
-            Profile
+            <MailboxOutline sx={{ mr: 2 }} />
+            Change email
           </Box>
         </MenuItem>
-        {/* <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/apps/email')}>
-          <Box sx={styles}>
-            <EmailOutline sx={{ mr: 2 }} />
-            Inbox
-          </Box>
-        </MenuItem> */}
-        {/* <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/apps/chat')}>
-          <Box sx={styles}>
-            <MessageOutline sx={{ mr: 2 }} />
-            Chat
-          </Box>
-        </MenuItem>
-        <Divider /> */}
-        {/* <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/pages/account-settings')}>
-          <Box sx={styles}>
-            <CogOutline sx={{ mr: 2 }} />
-            Settings
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/pages/pricing')}>
-          <Box sx={styles}>
-            <CurrencyUsd sx={{ mr: 2 }} />
-            Pricing
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/pages/faq')}>
-          <Box sx={styles}>
-            <HelpCircleOutline sx={{ mr: 2 }} />
-            FAQ
-          </Box>
-        </MenuItem> */}
         <Divider />
         <MenuItem sx={{ py: 2 }} onClick={handleLogout}>
           <LogoutVariant sx={{ mr: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
           Logout
         </MenuItem>
       </Menu>
+      <ChangePasswordDialog 
+        setOpenPasswordDialog={setOpenPasswordDialog}
+        openPasswordDialog={openPasswordDialog}
+      />
     </Fragment>
   )
 }
