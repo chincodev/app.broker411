@@ -1,12 +1,25 @@
 import { Router, useRouter } from "next/router"
 
-export default function (values) {
+export default function (props) {
 
-    const router = useRouter()
+	const { router, href, as, params } = props
 
     let currentUrlParams = new URLSearchParams(window.location.search)
-    values && values.length > 0 && values.map(x => {
-        currentUrlParams.set(x.key, x.value)
+  
+    params && params.length > 0 && params.map(x => {
+      	if(x.type === 'replace'){
+        	currentUrlParams.set(x.key, x.value)
+      	}
+      	if(x.type === 'remove'){
+        	currentUrlParams.delete(x.key)
+      	}
     })
-    router.push('?'+currentUrlParams.toString(), undefined, { shallow: true })
+    
+    router.push(
+		href+'?'+currentUrlParams.toString(), 
+		as ? as+'?'+currentUrlParams.toString() : undefined, 
+		{ 
+			shallow: true 
+		}
+	)
 }

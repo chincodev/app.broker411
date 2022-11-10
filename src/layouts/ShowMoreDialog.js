@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, forwardRef } from 'react'
+import { useState, forwardRef, useEffect } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -39,9 +39,10 @@ import DialogTabFramework from 'src/layouts/components/create-business-tabs/Dial
 import { styled } from '@mui/material/styles'
 import { CardHeader, CardMedia, Divider } from '@mui/material'
 import { businessService } from 'services/business.service'
-import { ViewListOutline } from 'mdi-material-ui'
+import Grid from '@mui/material/Grid'
 import DialogTabBrokerMc from './components/create-business-tabs/DialogTabBrokerMc'
 import DialogTabBrokerDetails from './components/create-business-tabs/DialogReviewForm'
+import { isEmpty } from 'lodash'
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} {...props} />
@@ -50,7 +51,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 
 
-const AddReviewDialog = (props) => {
+const ShowMoreDialog = (props) => {
 
   const { business } = props
 
@@ -67,13 +68,43 @@ const AddReviewDialog = (props) => {
       setActionsLoading(false)
   }
 
+  const [ data, setData ] = useState({})
+
+  useEffect(() => {
+
+    let bus = Object.assign({}, props.business)
+    let a = ['reviewCount', 'avgRating', 'createdAt', 'updatedAt', 'id', 'is_enabled', 'is_published', 'is_verified']
+    a.map(x => {
+      delete bus[x]
+    })
+
  
 
 
+    Object.keys(bus).map(x => {
+      if(bus[x] === null){
+        delete bus[x]
+      }
+    })
+
+    bus.address = `${bus['address']} ${bus['address_line_2']}`
+
+    bus.mailing_address = `${bus['mailing_address']} ${bus['mailing_address_line_2']}`
+
+    delete bus['address_line_2']
+    
+    delete bus['mailing_address_line_2']
+
+
+    setData(bus)
+  }, [props.business])
+  
+
+
   return (
-    <Box style={{marginLeft:0}}>
-<Button color='primary'  onClick={()=>setShow(true)} variant='contained'>
-                    Leave a review
+    <Box style={{marginBottom:'10px'}}>
+<Button color='secondary' fullWidth onClick={()=>setShow(true)} size={'small'} variant='contained'>
+                    More Info
                   
                   </Button>
           
@@ -95,22 +126,27 @@ const AddReviewDialog = (props) => {
             pb: { xs: 5, sm: 12.5 }
           }}
         >
+       
           <IconButton size='small' onClick={handleClose} sx={{ position: 'absolute', right: '1rem', top: '1rem' }}>
             <Close />
           </IconButton>
           <Box sx={{ mb: 3, textAlign: 'center' }}>
             <Typography variant='h5' sx={{ mb: 8, lineHeight: '2rem' }}>
-              Leave a Review
+              Business Information
             </Typography>
             {/* <Typography variant='body2'>Provide data with this form to add your business.</Typography> */}
           </Box>
           <Box sx={{ display: 'flex', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
-           
-          <DialogTabBrokerDetails
-                  business={business}
-                  handleClose={handleClose}
-                  setVerify={props.setVerify}
-                />
+            <Grid container className='match-height'>
+              {
+                Object.keys(data).map(x => <Grid item xs={12} md={6} lg={6}>
+                  <Typography style={{fontWeight:700, fontSize:'1.1rem'}}>{x.replaceAll('_',' ').toUpperCase()}</Typography>
+                  <Typography style={{fontSize:'0.7rem'}}>{data[x]}</Typography>
+                  <Divider />
+                </Grid>)
+              }
+              
+            </Grid>
           </Box>
         </DialogContent>
       </Dialog>
@@ -120,4 +156,4 @@ const AddReviewDialog = (props) => {
   )
 }
 
-export default AddReviewDialog
+export default ShowMoreDialog

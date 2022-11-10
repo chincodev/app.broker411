@@ -41,6 +41,7 @@ import { businessService } from 'services/business.service'
 import { useAuth } from 'src/hooks/useAuth'
 import AddBrokerDialog from 'src/layouts/AddBrokerDialog'
 import AddReviewDialog from 'src/layouts/AddReviewDialog'
+import ShowMoreDialog from 'src/layouts/ShowMoreDialog'
 
 // ** Styled <sup> component
 const Sup = styled('sup')(({ theme }) => ({
@@ -234,10 +235,14 @@ const UserViewLeft = ({ data, set_data }) => {
               <Divider sx={{ mt: 4 }} />
               <Box sx={{ pt: 2, pb: 1 }}>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Address:</Typography>
+                  <Typography variant='body2'>{data.address}{' '}{data.address_line_2}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
                     Email:
                   </Typography>
-                  <Typography variant='body2'>{data.email}</Typography>
+                  <Typography variant='body2'>{data.email || '-'}</Typography>
                 </Box>
                 {/* <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
@@ -293,32 +298,30 @@ const UserViewLeft = ({ data, set_data }) => {
                     }}
                   />
                 </Box> */}
+                
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Tax ID:</Typography>
-                  <Typography variant='body2'>Tax-8894</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Contact:</Typography>
-                  <Typography variant='body2'>{data.phone}</Typography>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Phone Number:</Typography>
+                  <Typography variant='body2'>{data.phone || '-'}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7  }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Registration Date:</Typography>
-                  <Typography variant='body2'>{data.registration_date}</Typography>
+                  <Typography variant='body2'>{data.registration_date || '-'}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7  }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>US Dot Number:</Typography>
-                  <Typography variant='body2'>{data.us_dot_number}</Typography>
+                  <Typography variant='body2'>{data.us_dot_number || '-'}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7  }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>MC Number:</Typography>
-                  <Typography variant='body2'>{data.mc_number}</Typography>
+                  <Typography variant='body2'>{data.mc_number || '-'}</Typography>
                 </Box>
               </Box>
             </CardContent>
 
             {
               ['owner', 'representative'].includes(auth.user.role.name) ? (
-                <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+                <CardActions sx={{ display: 'flex', justifyContent: 'center', flexDirection:'column' }}>
+                  <ShowMoreDialog business={data}  />
                   <AddReviewDialog business={data}  />
                   
                 </CardActions>

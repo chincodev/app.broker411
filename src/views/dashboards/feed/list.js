@@ -24,7 +24,7 @@ const FeedList = () => {
 
     return (
         <Box sx={{ml:6, mr:6}}>
-            <Typography variant='h6'>Feed</Typography>
+            <Typography variant='h6'>Reviews By Carriers</Typography>
             {console.log(feed)}
             <Divider />
             {
@@ -38,6 +38,7 @@ const FeedList = () => {
                             feed.data.length > 0 ? (
                                 feed.data.map(x => <Grid style={{width:'100%'}} item>
                                     <ReviewCard
+                                        feedMode={true}
                                         data={x}
                                     >
                                         </ReviewCard>

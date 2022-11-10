@@ -10,45 +10,30 @@ import CustomChip from 'src/@core/components/mui/chip'
 import { Avatar, Badge, Divider, IconButton } from '@mui/material'
 import { Star, ThumbUp } from 'mdi-material-ui'
 
-moment.locale('en', {
-  relativeTime: {
-    future: 'in %s',
-    past: '%s ago',
-    s:  '1s',
-    ss: '%ss',
-    m:  '1m',
-    mm: '%dm',
-    h:  '1h',
-    hh: '%dh',
-    d:  '1d',
-    dd: '%dd',
-    M:  '1M',
-    MM: '%dM',
-    y:  '1Y',
-    yy: '%dY'
-  }
-})
 
-const ReviewCard = ({ data }) => {
+const ReviewCard = ({ data, feedMode = false }) => {
   // ** Vars
   const { title, chipColor, chipText, src, stats, trend, trendNumber } = data
+
+  const top = feedMode ? data.business : data.user.business
+
 
   return (
     <Card sx={{ overflow: 'visible', position: 'relative', pb:4 }}>
       <CardContent sx={{ pb: '0 !important' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb:5 }}>
-           
-              <Avatar alt='John Doe' src={'https://avatars.dicebear.com/api/identicon/'+data.user.business_id+'.png'} sx={{ width: '2.5rem', height: '2.5rem' }} />
+              
+              <Avatar alt='John Doe' src={'https://avatars.dicebear.com/api/identicon/'+top.id+'.png'} sx={{ width: '2.5rem', height: '2.5rem' }} />
          
             <Box sx={{ display: 'flex', ml: 3, alignItems: 'flex-start', flexDirection: 'column', overflow:'hidden' }}>
               <Typography noWrap sx={{ fontWeight: 600, width:'100%', fontSize:'0.9em' }} style={{overflow: "hidden",
-    textOverflow: "ellipsis",
-    display: "block"}}>{data.user.business.legal_name}</Typography>
+                textOverflow: "ellipsis",
+                display: "block"}}>{top.legal_name}</Typography>
               {/* <Typography variant='body2' sx={{ fontSize: '0.7rem', color: 'text.disabled' }}>
                 {data.user.business.address_line_2}
               </Typography> */}
-              <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
-              {data.user.business.address_line_2} &bull; {moment(data.createdAt).fromNow()}
+              <Typography variant='caption'>
+              {top.address_line_2} &bull; {moment(data.createdAt).fromNow()}
               </Typography>
              
             </Box>
@@ -57,15 +42,17 @@ const ReviewCard = ({ data }) => {
         <Grid container>
           <Grid item xs={12}>
             <div style={{display:'flex', alignItems:'center'}}>
-              <Star style={{color:'#fdff62'}} />
-              <Typography variant='h7' sx={{ fontSize: '1rem', color: 'primary', marginTop:'5px' }}>
-                &nbsp;&nbsp;{data.rating}
+              <Star style={{color:'#fdff62', marginBottom:'2px'}} />
+              <Typography variant='h7' sx={{ fontSize: '1rem', color: 'primary', marginRight:'.4em' }}>
+                &nbsp;{data.rating}/10&nbsp;&nbsp;|
               </Typography>
-              
+              <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled', marginTop:'2px' }}>Review by {data.user.business.legal_name}</Typography>&nbsp;
+              {/* <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}></Typography> */}
+            
             </div>
-           
+              <br />
             <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
-              <Typography sx={{ mr: 1.5, pb:0.1 }}>
+              <Typography sx={{ mr: 1.5, pb:0.1, fontSize:'15px' }}>
                 {data.body}
               </Typography>
             </Box>
@@ -79,7 +66,13 @@ const ReviewCard = ({ data }) => {
 
         </Box>
       </CardContent>
-    
+      {/* <Divider></Divider>
+      <CardContent style={{paddingTop:'3px', paddingBottom:'0px'}}>
+        <Box style={{display:'flex', alignItems:'center'}}>
+          <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>Review by</Typography>&nbsp;
+          <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>{data.user.business.legal_name}</Typography>
+        </Box>
+      </CardContent> */}
     </Card>
   )
 }

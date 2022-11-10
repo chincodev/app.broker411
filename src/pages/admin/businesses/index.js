@@ -156,8 +156,6 @@ const BusinessList = () => {
           currentUrlParams.delete(x.key)
         }
       })
-
-      console.log(currentUrlParams.toString())
     
     router.push('?'+currentUrlParams.toString(), undefined, { shallow: true })
   }
@@ -273,7 +271,6 @@ const BusinessList = () => {
               />
             </Box>
           </Box>
-          {console.log(store)}
           <DataGrid
             autoHeight
             disableSelectionOnClick
@@ -286,7 +283,7 @@ const BusinessList = () => {
             pagination
             pageSize={store.page_size}
             initialState={
-              (new URLSearchParams(window.location.search).get('sort_field') && new URLSearchParams(window.location.search).get('sort_field')) ? (
+              (new URLSearchParams(window.location.search).get('sort_field') && new URLSearchParams(window.location.search).get('sort_order')) ? (
                 {
                   sorting: {
                     sortModel: [{ field: new URLSearchParams(window.location.search).get('sort_field'), sort: new URLSearchParams(window.location.search).get('sort_order') }],

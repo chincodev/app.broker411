@@ -11,6 +11,7 @@ import permissions from 'src/store/apps/permissions'
 import business from 'src/store/apps/business'
 import fields from 'src/store/apps/field'
 import feed from 'src/store/apps/feed'
+import review from 'src/store/apps/review'
 
 export const store = configureStore({
   reducer: {
@@ -22,7 +23,8 @@ export const store = configureStore({
     permissions,
     business,
     fields,
-    feed
+    feed,
+    review
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
