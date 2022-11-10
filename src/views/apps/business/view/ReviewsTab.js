@@ -83,8 +83,8 @@ const ReviewsTab = (props) => {
 	const dispatch = useDispatch()
 
     useEffect(() => {
-		getData()
-    }, [])
+		getData(window.location.search ? window.location.search.replace('?', '') : null)
+    }, [business])
 
 	useEffect(() => {
 		const handleRouteChange = (url, { shallow }) => {
@@ -128,7 +128,7 @@ const ReviewsTab = (props) => {
 							marginBottom:'1em'
 						}}>
 							<Typography>
-								{`Showing ${store.starting_at} to ${(store.starting_at) + store.data.length} of ${store.total}`}
+								{`Showing ${store.starting_at} to ${(store.starting_at - 1) + store.data.length} of ${store.total}`}
 							</Typography>
 							<Box>
 								<Select

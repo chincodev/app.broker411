@@ -53,12 +53,14 @@ const ReviewCard = ({ data, feedMode = false }) => {
               {/* <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}></Typography> */}
             
             </div>
-              <br />
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
+              
+            {
+              data.body && data.body.length > 0 && <><br /><Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
               <Typography sx={{ mr: 1.5, pb:0.1, fontSize:'15px' }}>
                 {data.body}
               </Typography>
-            </Box>
+            </Box></>
+            }
           </Grid>
           
         </Grid>
@@ -69,13 +71,20 @@ const ReviewCard = ({ data, feedMode = false }) => {
 
         </Box>
       </CardContent>
-      {/* <Divider></Divider>
+
+      {
+        data.categories.length > 0 && <>
+          <Divider></Divider>
       <CardContent style={{paddingTop:'3px', paddingBottom:'0px'}}>
         <Box style={{display:'flex', alignItems:'center'}}>
-          <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>Review by</Typography>&nbsp;
-          <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>{data.user.business.legal_name}</Typography>
-        </Box>
-      </CardContent> */}
+          {
+            data.categories.map(x => <CustomChip sx={{mr:'5px'}} label={x.name} size='small' skin='light' color={x.type === 'good' ? 'primary' : 'error'} />)
+          }
+         </Box>
+      </CardContent>
+        </>
+      }
+      
     </Card>
   )
 }

@@ -260,6 +260,7 @@ const UserViewLeft = ({ business, setBusiness }) => {
                 <Box sx={{ display: 'flex', mb: 2.7  }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>MC Number:</Typography>
                   <Typography variant='body2'>{business.mc_mx_ff_numbers || '-'}</Typography>
+                  
                 </Box>
               </Box>
             </CardContent>
