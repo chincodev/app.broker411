@@ -73,7 +73,7 @@ const ReviewCard = ({ data, feedMode = false }) => {
       </CardContent>
 
       {
-        data.categories.length > 0 && <>
+        data.categories && data.categories.length > 0 && <>
           <Divider></Divider>
       <CardContent style={{paddingTop:'3px', paddingBottom:'0px'}}>
         <Box style={{display:'flex', alignItems:'center'}}>
