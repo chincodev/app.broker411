@@ -26,7 +26,7 @@ import Grid from '@mui/material/Grid'
 import ReviewCard from './ReviewCard'
 import { reviewService } from 'services/review.service'
 import queryString from 'query-string'
-import { CircularProgress, MenuItem, Pagination, Select, Typography } from '@mui/material'
+import { Button, CircularProgress, MenuItem, Pagination, Select, Typography } from '@mui/material'
 import PaginationSimple from 'src/views/components/pagination/PaginationSimple'
 import usePaginationController from '../../../../../utils/usePaginationController'
 import urlManager from '../../../../../utils/urlManager'
@@ -34,6 +34,21 @@ import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import { fetchData } from 'src/store/apps/review'
 import { useDispatch } from 'react-redux'
+import AddReviewDialog from 'src/layouts/AddReviewDialog'
+
+const Img = styled('img')(({ theme }) => ({
+	marginTop: theme.spacing(15),
+	marginBottom: theme.spacing(15),
+	[theme.breakpoints.down('lg')]: {
+		height: 225,
+		marginTop: theme.spacing(10),
+		marginBottom: theme.spacing(10)
+	},
+	[theme.breakpoints.down('md')]: {
+		height: 200
+	}
+}))
+
 const ReviewsTab = (props) => {
 
 	const store = useSelector(state => state.review)
@@ -95,6 +110,14 @@ const ReviewsTab = (props) => {
 					<Box style={{width:'100%', textAlign:'center'}}>
 						<CircularProgress disableShrink sx={{ mt: 6 }} />
 					</Box>
+				) : (!store.data.length > 0) ? (
+					<Box style={{display:'flex', alignItems:'center', marginTop:'2rem', flexDirection:'column'}}>
+						<Typography variant='h5' style={{fontWeight:'700'}}>No data found right now</Typography>
+						<Img alt='error-illustration' src='/images/pages/kb-api.png' />
+						<Box>
+							<AddReviewDialog business={business} btnText={'Leave the first review!'}  />
+						</Box>
+					</Box>
 				) : (
 					<Box>
 						<Box style={{
@@ -105,7 +128,7 @@ const ReviewsTab = (props) => {
 							marginBottom:'1em'
 						}}>
 							<Typography>
-								{`Showing ${store.starting_at} to ${(store.starting_at - 1) + store.data.length} of ${store.total}`}
+								{`Showing ${store.starting_at} to ${(store.starting_at) + store.data.length} of ${store.total}`}
 							</Typography>
 							<Box>
 								<Select

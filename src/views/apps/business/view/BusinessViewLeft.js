@@ -96,7 +96,7 @@ const admin_fields = [
 ]
 
 
-const UserViewLeft = ({ data, set_data }) => {
+const UserViewLeft = ({ business, setBusiness }) => {
   // ** States
   const [openEdit, setOpenEdit] = useState(false)
   const [openPlans, setOpenPlans] = useState(false)
@@ -114,11 +114,11 @@ const UserViewLeft = ({ data, set_data }) => {
   const auth = useAuth()
 
   const handleStatus = async (value) => {
-    if (window.confirm(`Do you really want to ${value ? 'disable' : 'enable'} ${data.legal_name}`)) {
+    if (window.confirm(`Do you really want to ${value ? 'disable' : 'enable'} ${business.legal_name}`)) {
       try {
         set_loading(true)
-        await businessService.update(data.id, {is_enabled: !value})
-        set_data(Object.assign(data, {is_enabled: !value}))
+        await businessService.update(business.id, {is_enabled: !value})
+        setBusiness(Object.assign(business, {is_enabled: !value}))
         set_loading(false)
       } catch (er) {
         set_loading(false)
@@ -127,11 +127,11 @@ const UserViewLeft = ({ data, set_data }) => {
   }
 
   const handlePublish = async (value) => {
-    if (window.confirm(`Do you really want to ${value ? 'unpublish' : 'publish'} ${data.legal_name}`)) {
+    if (window.confirm(`Do you really want to ${value ? 'unpublish' : 'publish'} ${business.legal_name}`)) {
       try {
         set_loading(true)
-        await businessService.update(data.id, {is_published: !value})
-        set_data(Object.assign(data, {is_published: !value}))
+        await businessService.update(business.id, {is_published: !value})
+        setBusiness(Object.assign(business, {is_published: !value}))
         set_loading(false)
       } catch (er) {
         console.log(er)
@@ -143,8 +143,8 @@ const UserViewLeft = ({ data, set_data }) => {
     if (window.confirm(`The verification will be reset and a verification mail will be sent to the business email address, do you want to continue?`)) {
       try {
         set_loading(true)
-        await businessService.resetVerification(data.id, {is_published: !value})
-        set_data(Object.assign(data, {is_published: !value}))
+        await businessService.resetVerification(business.id, {is_published: !value})
+        setBusiness(Object.assign(business, {is_published: !value}))
         set_loading(false)
       } catch (er) {
         console.log(er)
@@ -153,21 +153,21 @@ const UserViewLeft = ({ data, set_data }) => {
   }
 
   const renderUserAvatar = () => {
-    if (data) {
-      if (data.logo) {
+    if (business) {
+      if (business.logo) {
         return (
-          <CustomAvatar alt='User Image' src={data.logo} variant='rounded' sx={{ width: 120, height: 120, mb: 4 }} />
+          <CustomAvatar alt='User Image' src={business.logo} variant='rounded' sx={{ width: 120, height: 120, mb: 4 }} />
         )
       } else {
         return (
           <CustomAvatar
             skin='light'
             variant='rounded'
-            color={data.avatarColor}
+            color={business.avatarColor}
             sx={{ width: 120, height: 120, fontWeight: 600, mb: 4, fontSize: '3rem' }}
           >
-            {console.log(data)}
-            {getInitials(data.legal_name)}
+            {console.log(business)}
+            {getInitials(business.legal_name)}
           </CustomAvatar>
         )
       }
@@ -175,7 +175,7 @@ const UserViewLeft = ({ data, set_data }) => {
       return null
     }
   }
-  if (data) {
+  if (business) {
     return (
       <Grid container spacing={6}>
        
@@ -184,13 +184,13 @@ const UserViewLeft = ({ data, set_data }) => {
             <CardContent sx={{ pt: 15, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
               {renderUserAvatar()}
               <Typography variant='h6' sx={{ mb: 4 }}>
-                {data.legal_name}
+                {business.legal_name}
               </Typography>
               <CustomChip
                 skin='light'
                 size='small'
-                label={data.type}
-                color={typeColors[data.type]}
+                label={business.type}
+                color={typeColors[business.type]}
                 sx={{
                   borderRadius: '4px',
                   fontSize: '0.875rem',
@@ -209,7 +209,7 @@ const UserViewLeft = ({ data, set_data }) => {
                   <Box>
                     <Typography variant='h5' sx={{ lineHeight: 1.3 }}>
                       {
-                        data.reviewCount ? data.reviewCount : 0
+                        business.reviewCount ? business.reviewCount : 0
                       }
                     </Typography>
                     <Typography variant='body2'>Reviews</Typography>
@@ -222,7 +222,7 @@ const UserViewLeft = ({ data, set_data }) => {
                   <Box>
                     <Typography variant='h5' sx={{ lineHeight: 1.3 }}>
                     {
-                        data.avgRating ? parseFloat(data.avgRating).toFixed(2) : 0
+                        business.avgRating ? parseFloat(business.avgRating).toFixed(2) : 0
                       }
                     </Typography>
                     <Typography variant='body2'>Rating Avg.</Typography>
@@ -236,84 +236,30 @@ const UserViewLeft = ({ data, set_data }) => {
               <Box sx={{ pt: 2, pb: 1 }}>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Address:</Typography>
-                  <Typography variant='body2'>{data.address}{' '}{data.address_line_2}</Typography>
+                  <Typography variant='body2'>{business.address}{' '}{business.address_line_2}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
                     Email:
                   </Typography>
-                  <Typography variant='body2'>{data.email || '-'}</Typography>
+                  <Typography variant='body2'>{business.email || '-'}</Typography>
                 </Box>
-                {/* <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
-                    Enabled:
-                  </Typography>
-                  <CustomChip
-                    skin='light'
-                    size='small'
-                    label={data.is_enabled ? 'True' : 'False'}
-                    color={statusColors[data.is_enabled]}
-                    sx={{
-                      height: 20,
-                      fontSize: '0.75rem',
-                      fontWeight: 500,
-                      borderRadius: '5px',
-                      textTransform: 'capitalize'
-                    }}
-                  />
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
-                    Published:
-                  </Typography>
-                  <CustomChip
-                    skin='light'
-                    size='small'
-                    label={data.is_published ? 'True' : 'False'}
-                    color={statusColors[data.is_published]}
-                    sx={{
-                      height: 20,
-                      fontSize: '0.75rem',
-                      fontWeight: 500,
-                      borderRadius: '5px',
-                      textTransform: 'capitalize'
-                    }}
-                  />
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
-                    Verified:
-                  </Typography>
-                  <CustomChip
-                    skin='light'
-                    size='small'
-                    label={data.is_verified ? 'True' : 'False'}
-                    color={statusColors[data.is_verified]}
-                    sx={{
-                      height: 20,
-                      fontSize: '0.75rem',
-                      fontWeight: 500,
-                      borderRadius: '5px',
-                      textTransform: 'capitalize'
-                    }}
-                  />
-                </Box> */}
                 
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Phone Number:</Typography>
-                  <Typography variant='body2'>{data.phone || '-'}</Typography>
+                  <Typography variant='body2'>{business.phone || '-'}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7  }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Registration Date:</Typography>
-                  <Typography variant='body2'>{data.registration_date || '-'}</Typography>
+                  <Typography variant='body2'>{business.registration_date || '-'}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7  }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>US Dot Number:</Typography>
-                  <Typography variant='body2'>{data.us_dot_number || '-'}</Typography>
+                  <Typography variant='body2'>{business.us_dot_number || '-'}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', mb: 2.7  }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>MC Number:</Typography>
-                  <Typography variant='body2'>{data.mc_number || '-'}</Typography>
+                  <Typography variant='body2'>{business.mc_number || '-'}</Typography>
                 </Box>
               </Box>
             </CardContent>
@@ -321,8 +267,8 @@ const UserViewLeft = ({ data, set_data }) => {
             {
               ['owner', 'representative'].includes(auth.user.role.name) ? (
                 <CardActions sx={{ display: 'flex', justifyContent: 'center', flexDirection:'column' }}>
-                  <ShowMoreDialog business={data}  />
-                  <AddReviewDialog business={data}  />
+                  <ShowMoreDialog business={business}  />
+                  <AddReviewDialog business={business}  />
                   
                 </CardActions>
               ) : auth.user.role.name === 'administrator' && (
@@ -334,23 +280,23 @@ const UserViewLeft = ({ data, set_data }) => {
                 Verify
               </Button> */}
               {
-                data.is_enabled ? (
-                  <Button color='error' disabled={loading} onClick={()=>handleStatus(data.is_enabled)} variant='outlined'>
+                business.is_enabled ? (
+                  <Button color='error' disabled={loading} onClick={()=>handleStatus(business.is_enabled)} variant='outlined'>
                     Disable
                   </Button>
                 ) : (
-                  <Button color='success' disabled={loading} onClick={()=>handleStatus(data.is_enabled)} variant='outlined'>
+                  <Button color='success' disabled={loading} onClick={()=>handleStatus(business.is_enabled)} variant='outlined'>
                     Enable
                   </Button>
                 )
               }
               {/* {
-                data.is_published ? (
-                  <Button color='error' disabled={loading} onClick={()=>handlePublish(data.is_published)} variant='outlined'>
+                business.is_published ? (
+                  <Button color='error' disabled={loading} onClick={()=>handlePublish(business.is_published)} variant='outlined'>
                     UNPUBLISH
                   </Button>
                 ) : (
-                  <Button color='success' disabled={loading} onClick={()=>handlePublish(data.is_published)} variant='outlined'>
+                  <Button color='success' disabled={loading} onClick={()=>handlePublish(business.is_published)} variant='outlined'>
                     PUBLISH
                   </Button>
                 )
@@ -378,25 +324,25 @@ const UserViewLeft = ({ data, set_data }) => {
                 <form>
                   <Grid container spacing={6}>
                     <Grid item xs={12} sm={6}>
-                      <TextField fullWidth label='Full Name' defaultValue={data.fullName} />
+                      <TextField fullWidth label='Full Name' defaultValue={business.fullName} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
                         fullWidth
                         label='Username'
-                        defaultValue={data.username}
+                        defaultValue={business.username}
                         InputProps={{ startAdornment: <InputAdornment position='start'>@</InputAdornment> }}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <TextField fullWidth type='email' label='Billing Email' defaultValue={data.email} />
+                      <TextField fullWidth type='email' label='Billing Email' defaultValue={business.email} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>
                         <InputLabel id='user-view-status-label'>Status</InputLabel>
                         <Select
                           label='Status'
-                          defaultValue={data.status}
+                          defaultValue={business.status}
                           id='user-view-status'
                           labelId='user-view-status-label'
                         >
@@ -410,7 +356,7 @@ const UserViewLeft = ({ data, set_data }) => {
                       <TextField fullWidth label='TAX ID' defaultValue='Tax-8894' />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <TextField fullWidth label='Contact' defaultValue={`+1 ${data.contact}`} />
+                      <TextField fullWidth label='Contact' defaultValue={`+1 ${business.contact}`} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <FormControl fullWidth>

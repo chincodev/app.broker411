@@ -91,9 +91,7 @@ const AddCarrierDialog = (props) => {
   const [activeTab, setActiveTab] = useState('detailsTab')
   const [ actionsLoading, setActionsLoading ] = useState(false)
 
-  const [ businessData, setBusinessData ] = useState({
-    type:'carrier'
-  })
+  const [ businessData, setBusinessData ] = useState({})
 
   // ** Hook
   const { settings } = useSettings()
@@ -262,6 +260,9 @@ const AddCarrierDialog = (props) => {
               <TabPanel value='detailsTab' sx={{ flexGrow: 1 }}>
                 <DialogTabDetails
                   title={'Carrier DOT Number'}
+                  startObj={{
+                    type:'carrier'
+                  }}
                   setActiveTab={setActiveTab}
                   businessData={businessData}
                   setBusinessData={setBusinessData}

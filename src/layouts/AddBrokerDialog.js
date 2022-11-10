@@ -266,6 +266,9 @@ const AddBrokerDialog = (props) => {
               <TabPanel value='detailsTab' sx={{ flexGrow: 1 }}>
                 <DialogTabDetails
                   title='Brokerage DOT Number'
+                  startObj={{
+                    type:'carrier'
+                  }}
                   setActiveTab={setActiveTab}
                   businessData={businessData}
                   setBusinessData={setBusinessData}

@@ -18,10 +18,10 @@ import { Button, Card, CardContent, CardHeader, Typography } from '@mui/material
 
 const UserView = ({ id, data, code }) => {
 
-  const [ business_data, set_business_data ] = useState(data)
+  const [ business, setBusiness ] = useState(data)
 
   useEffect(() => {
-    set_business_data(data)
+    setBusiness(data)
   }, [data])
   
 
@@ -60,10 +60,10 @@ const UserView = ({ id, data, code }) => {
     return (
       <Grid container spacing={6}>
         <Grid item xs={12} md={4} lg={3}>
-          <BusinessViewLeft data={business_data} setData={set_business_data} />
+          <BusinessViewLeft business={business} setBusiness={setBusiness} />
         </Grid>
         <Grid item xs={12} md={8} lg={9}>
-          <BusinessViewRight business={business_data} setBusiness={set_business_data} />
+          <BusinessViewRight business={business} setBusiness={setBusiness} />
         </Grid>
       </Grid>
     )

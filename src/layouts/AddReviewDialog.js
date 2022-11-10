@@ -52,7 +52,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 const AddReviewDialog = (props) => {
 
-  const { business } = props
+  const { business, btnText } = props
 
   // ** States
   const [show, setShow] = useState(false)
@@ -73,8 +73,8 @@ const AddReviewDialog = (props) => {
   return (
     <Box style={{marginLeft:0}}>
 <Button color='primary'  onClick={()=>setShow(true)} variant='contained'>
-                    Leave a review
-                  
+                
+                    { props.btnText ? props.btnText : 'Leave a Review'}
                   </Button>
           
 <Dialog
@@ -101,6 +101,7 @@ const AddReviewDialog = (props) => {
           <Box sx={{ mb: 3, textAlign: 'center' }}>
             <Typography variant='h5' sx={{ mb: 8, lineHeight: '2rem' }}>
               Leave a Review
+              
             </Typography>
             {/* <Typography variant='body2'>Provide data with this form to add your business.</Typography> */}
           </Box>

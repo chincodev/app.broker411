@@ -110,7 +110,7 @@ const DialogReviewForm = (props) => {
         <form onSubmit={(e)=>submitData(e)}>
           
           <Grid container>
-          <Grid item xs={12} style={{marginBottom:'2rem'}}>
+          <Grid item xs={12} style={{marginBottom:'0rem'}}>
           <Box
             
                 sx={{
@@ -125,13 +125,13 @@ const DialogReviewForm = (props) => {
               >
                 <Box sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
                   <OfficeBuildingOutline sx={{ mr: 2 }} />
-                  <Typography variant='h6' sx={{ mb: 0}}>
+                  <Typography variant='h7' sx={{ mb: 0}}>
                     Brokerage Name
                   </Typography>
                 </Box>
-                <Typography>
-                  {console.log(props)}
-                  <strong>{business.legal_name}</strong>
+                <Typography sx={{ml:8}} variant='body2'>
+                
+                  {business.legal_name}
                 </Typography>
               </Box>
 
@@ -159,9 +159,9 @@ const DialogReviewForm = (props) => {
 
             </Grid>
             
-            <Grid item xs={12} style={{marginBottom:'1rem'}}>
-              <Typography style={{marginBottom:'0.5rem'}} variant='h6'>Overall experience:</Typography>
-              <ToggleButtonGroup size='large' exclusive color={type === 'good' ? 'success' : 'error'} value={type} onChange={(e)=>{
+            <Grid item xs={12} style={{marginBottom:'1rem', display:'flex', flexDirection:'column'}}>
+              {/* <Typography style={{marginBottom:'0.5rem', fontWeight:'700'}} variant='h7'>Overall experience:</Typography> */}
+              <ToggleButtonGroup size='small' exclusive color={type === 'good' ? 'success' : 'error'} value={type} onChange={(e)=>{
                 setCategories([])
                 setType(e.target.value)
               }}>
@@ -173,30 +173,35 @@ const DialogReviewForm = (props) => {
               <Grid item xs={12} style={{marginBottom:'2rem'}}>
               {/* <Typography variant='h6' >Check the box if any applies to you:</Typography>  */}
             <FormGroup>
-              {console.log(categories)}
+             <Grid container>
+
+             
             {
-              store.data.filter(x => x.type === type).map(x => <FormControlLabel
+              store.data.filter(x => x.type === type).map(x => <Grid xs={12} md={6} item>
+                <FormControlLabel
+                sx={{fontSize:'8px'}}
                 label={x.description}
                 control={<Checkbox
+              
                   checked={categories.find(y => y === x.id) ? true : false}
                   onChange={(e)=>e.target.checked ? categories.find(y => y === x.id) ? '' : setCategories(categories.concat(x.id)) : setCategories(categories.filter(y => y != x.id))}
                   name={x.name} 
                 />}
-              />)
+              />
+              </Grid>)
             }
-          
+          </Grid>
         </FormGroup>
             </Grid>
-            {console.log(categories)}
-            <Grid item xs={12} style={{marginBottom:'2rem'}}>
-            <Typography variant='h6' >Your experience:</Typography>
+            <Grid item xs={12}>
+            <Typography style={{marginBottom:'0.5rem', fontWeight:'700'}} variant='h7'>Your experience:</Typography>
       
             <Box sx={{ mb: 3 }}>
         {/* <Typography sx={{ fontWeight: 500 }}>Your experience</Typography> */}
         <Rating size="large" max={10} value={experience_rate} name='simple-controlled' onChange={(event, newValue) => setExperience_rate(newValue)} />
       </Box>
       <br />
-      <Grid item xs={12} style={{marginBottom:'2rem'}}>
+      <Grid item xs={12} style={{marginBottom:'0.5rem'}}>
               <FormControl fullWidth>
                 
                     <TextField
