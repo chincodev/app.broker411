@@ -332,5 +332,5 @@ const ResetPasswordV2 = () => {
 }
 ResetPasswordV2.getLayout = page => <BlankLayout>{page}</BlankLayout>
 ResetPasswordV2.guestGuard = true
-ResetPasswordV2.authGuard = true
+// ResetPasswordV2.authGuard = true
 export default ResetPasswordV2

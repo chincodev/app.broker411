@@ -409,6 +409,7 @@ const AutocompleteComponent = ({ hidden, settings }) => {
         <DialogActions className='dialog-actions-dense'>
           <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
           <Button disabled={!!!dotSearch} onClick={(e)=>{
+            setDotSeach('')
             router.push('/brokers/[id]', '/brokers/'+dotSearch)
             setOpenDialog(false)
           }}>Search</Button>
