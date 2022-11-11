@@ -23,9 +23,10 @@ const FeedList = () => {
     
 
     return (
-        <Box sx={{ml:6, mr:6}}>
-            <Typography variant='h6'>Reviews By Carriers</Typography>
-            {console.log(feed)}
+        <Box >
+            {/* <Typography variant='h6'>Reviews By Carriers</Typography> */}
+
+            <Typography variant='h7'>LASTEST REVIEWS</Typography>
             <Divider />
             {
                 feed.loading ? (

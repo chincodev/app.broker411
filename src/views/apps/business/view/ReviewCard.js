@@ -75,10 +75,10 @@ const ReviewCard = ({ data, feedMode = false }) => {
       {
         data.categories && data.categories.length > 0 && <>
           <Divider></Divider>
-      <CardContent style={{paddingTop:'3px', paddingBottom:'0px'}}>
-        <Box style={{display:'flex', alignItems:'center'}}>
+      <CardContent style={{paddingBottom:'0px', paddingTop:'0px'}}>
+        <Box style={{display:'flex', alignItems:'center',flexWrap: 'wrap'}}>
           {
-            data.categories.map(x => <CustomChip sx={{mr:'5px'}} label={x.name} size='small' skin='light' color={x.type === 'good' ? 'primary' : 'error'} />)
+            data.categories.map(x => <CustomChip sx={{mr:'5px', mt:'6px'}} label={x.name} size='small' skin='light' color={x.type === 'good' ? 'primary' : 'error'} />)
           }
          </Box>
       </CardContent>

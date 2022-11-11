@@ -28,7 +28,11 @@ const CardUser = () => {
 
 
   return (
-    <Card >
+    <Card sx={{
+      display: { xs: 'none', md: 'block'},
+      position: 'sticky',
+      top: '90px'
+    }}>
       <CardContent>
         <Box
           sx={{
