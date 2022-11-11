@@ -25,7 +25,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 import LinearProgress from '@mui/material/LinearProgress'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import DialogContentText from '@mui/material/DialogContentText'
-
+import toast from 'react-hot-toast'
 // ** Icons Imports
 import Check from 'mdi-material-ui/Check'
 import Circle from 'mdi-material-ui/Circle'
@@ -119,6 +119,7 @@ const UserViewLeft = ({ business, setBusiness }) => {
         set_loading(true)
         await businessService.update(business.id, {is_enabled: !value})
         setBusiness(Object.assign(business, {is_enabled: !value}))
+        toast.success('Status changed!')
         set_loading(false)
       } catch (er) {
         set_loading(false)
@@ -144,6 +145,7 @@ const UserViewLeft = ({ business, setBusiness }) => {
       try {
         set_loading(true)
         await businessService.resetVerification(business.id, {is_published: !value})
+        toast.success('Verification mail sent!')
         setBusiness(Object.assign(business, {is_published: !value}))
         set_loading(false)
       } catch (er) {
@@ -277,9 +279,9 @@ const UserViewLeft = ({ business, setBusiness }) => {
               {/* <Button variant='contained' sx={{ mr: 2 }} onClick={handleEditClickOpen}>
                 Edit
               </Button> */}
-              {/* <Button color='warning' disabled={loading} onClick={()=>handleVerify()} variant='outlined'>
-                Verify
-              </Button> */}
+              <Button color='warning' disabled={loading} onClick={()=>handleVerify()} variant='outlined'>
+                Re-verify
+              </Button>
               {
                 business.is_enabled ? (
                   <Button color='error' disabled={loading} onClick={()=>handleStatus(business.is_enabled)} variant='outlined'>
