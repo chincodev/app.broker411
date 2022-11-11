@@ -40,6 +40,7 @@ import { styled } from '@mui/material/styles'
 import { CardHeader, CardMedia, Divider } from '@mui/material'
 import { businessService } from 'services/business.service'
 import { ViewListOutline } from 'mdi-material-ui'
+import { userService } from 'services/user.service'
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} {...props} />
@@ -108,7 +109,8 @@ const AddCarrierDialog = (props) => {
   const handleSubmit = async () => {
     try {
       setActionsLoading(true)
-      await businessService.create(businessData)
+      console.log(businessData)
+      await userService.request_assign_carrier_owner({us_dot_number:businessData.us_dot_number})
       toast.success('A verification link was sent to your email inbox...')
       props.setVerify(true)
       props.setVerifyType('carrier')

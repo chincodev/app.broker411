@@ -9,7 +9,8 @@ export const userService = {
     update_me,
     get_me,
     delete: _delete,
-    confirm_membership
+    confirm_membership,
+    request_assign_carrier_owner
 };
 
 
@@ -43,4 +44,9 @@ function get_me(params) {
 
 function confirm_membership(id, params) {
     return fetchWrapper.put(`${baseUrl}users/confirm_membership/${id}`, params);
+}
+
+function request_assign_carrier_owner(params) {
+    console.log(params)
+    return fetchWrapper.post(`${baseUrl}users/request_assign_carrier_owner/`, params);
 }
