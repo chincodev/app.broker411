@@ -164,6 +164,7 @@ const LoginPage = () => {
     <Box className='content-right'>
       {!hidden ? (
         <Box sx={{ flex: 1, display: 'flex', position: 'relative', alignItems: 'center', justifyContent: 'center' }}>
+          <h1>Where Carriers Review Brokers</h1>
           <LoginIllustrationWrapper>
             {/* <LoginIllustration
               alt='login-illustration'
