@@ -26,6 +26,7 @@ import { useAuth } from 'src/hooks/useAuth'
 import { KeyOutline, MailboxOutline } from 'mdi-material-ui'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
 import ChangePasswordDialog from 'src/views/apps/profile/ChangePasswordDialog'
+import ChangeEmailDialog from 'src/views/apps/profile/ChangeEmailDialog'
 // ** Context
 
 // ** Styled Components
@@ -141,7 +142,7 @@ const UserDropdown = props => {
             Change password
           </Box>
         </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/apps/user/view/12')}>
+        <MenuItem sx={{ p: 0 }} onClick={() => setOpenEmailDialog(true)}>
           <Box sx={styles}>
             <MailboxOutline sx={{ mr: 2 }} />
             Change email
@@ -156,6 +157,10 @@ const UserDropdown = props => {
       <ChangePasswordDialog 
         setOpenPasswordDialog={setOpenPasswordDialog}
         openPasswordDialog={openPasswordDialog}
+      />
+      <ChangeEmailDialog 
+        setOpenDialog={setOpenEmailDialog}
+        openDialog={openEmailDialog}
       />
     </Fragment>
   )
