@@ -36,7 +36,7 @@ const AppBarContent = props => {
         
         
         {
-          auth.user.business.type === 'carrier' && <IconButton onClick={()=>router.push('/brokers')} color='inherit' aria-haspopup='true'>
+          auth.user.business && auth.user.business.type === 'carrier' && <IconButton onClick={()=>router.push('/brokers')} color='inherit' aria-haspopup='true'>
           {
             (window.location.pathname.includes('brokers')) ? (
               <Phone style={{fontSize:'32px'}} />
@@ -47,7 +47,7 @@ const AppBarContent = props => {
         </IconButton>
         }
         {
-          auth.user.business.type === 'broker' && <IconButton color='inherit' aria-haspopup='true'>
+          auth.user.business && auth.user.business.type === 'broker' && <IconButton color='inherit' aria-haspopup='true'>
           <TruckOutline style={{fontSize:'32px'}} />
         </IconButton>
         }

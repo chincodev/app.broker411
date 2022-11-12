@@ -73,17 +73,19 @@ const AppBarContent = props => {
          
       )
       }
-       <form onSubmit={(e)=>onSubmit(e)} style={{width:'50%'}}>
-       <StyledTextField value={search} onChange={(e) => setSearch(e.target.value)} type='search' variant={'outlined'} size={'small'} placeholder={'Enter Broker\'s DOT Number'} style={{width:'100%'}}
-       InputProps={{
-        startAdornment: (
-          <InputAdornment position='start'>
-            <Magnify />
-          </InputAdornment>
-        )
-      }}
-       ></StyledTextField>
-       </form>
+       {
+        auth.user.business && auth.user.business.type === 'carrier' && <form onSubmit={(e)=>onSubmit(e)} style={{width:'50%'}}>
+        <StyledTextField value={search} onChange={(e) => setSearch(e.target.value)} type='search' variant={'outlined'} size={'small'} placeholder={'Enter Broker\'s DOT Number'} style={{width:'100%'}}
+        InputProps={{
+         startAdornment: (
+           <InputAdornment position='start'>
+             <Magnify />
+           </InputAdornment>
+         )
+       }}
+        ></StyledTextField>
+        </form>
+       }
       {userHorizontalAppBarContent ? userHorizontalAppBarContent(props) : null}
     </Box>
   )
