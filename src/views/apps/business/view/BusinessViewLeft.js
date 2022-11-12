@@ -42,6 +42,7 @@ import { useAuth } from 'src/hooks/useAuth'
 import AddBrokerDialog from 'src/layouts/AddBrokerDialog'
 import AddReviewDialog from 'src/layouts/AddReviewDialog'
 import ShowMoreDialog from 'src/layouts/ShowMoreDialog'
+import { Avatar } from '@mui/material'
 
 // ** Styled <sup> component
 const Sup = styled('sup')(({ theme }) => ({
@@ -168,7 +169,6 @@ const UserViewLeft = ({ business, setBusiness }) => {
             color={business.avatarColor}
             sx={{ width: 120, height: 120, fontWeight: 600, mb: 4, fontSize: '3rem' }}
           >
-            {console.log(business)}
             {getInitials(business.legal_name)}
           </CustomAvatar>
         )
@@ -185,7 +185,7 @@ const UserViewLeft = ({ business, setBusiness }) => {
           <Card>
             <CardContent sx={{ pt: 15, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
               {renderUserAvatar()}
-              <Typography variant='h6' sx={{ mb: 4 }}>
+              <Typography style={{textAlign:'center'}} variant='h6' sx={{ mb: 4 }}>
                 {business.legal_name}
               </Typography>
               <CustomChip

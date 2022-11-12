@@ -21,6 +21,7 @@ const TabDetails = (props) => {
 
 
   const handleValues = (name, value) => {
+    console.log({ ...props.startObj, [name]:value })
     props.setBusinessData({ ...props.startObj, [name]:value })
   }
 

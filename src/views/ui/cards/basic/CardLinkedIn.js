@@ -24,7 +24,7 @@ const CardLinkedIn = () => {
         </Typography>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
           <Box sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
-            <Avatar alt='Anne Burke' src='https://avatars.dicebear.com/api/adventurer-neutral/8.png' sx={{ width: 34, height: 34, mr: 2.75 }} />
+            <Avatar alt='Anne Burke' src='https://avatars.dicebear.com/api/bottts/8.png' sx={{ width: 34, height: 34, mr: 2.75 }} />
             <Typography variant='body2' sx={{ color: 'common.white' }}>
               Anne Burke
             </Typography>

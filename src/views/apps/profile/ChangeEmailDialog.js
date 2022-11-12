@@ -27,7 +27,7 @@ const ChangeEmailDialog = ({setOpenDialog, openDialog}) => {
             setActionsLoading(true)
             await userService.update_me(values)
             setActionsLoading(false)
-            toast.success('Pasword updated.')
+            toast.success('Email updated.')
             reset()
             setOpenDialog(false)
         } catch (er) {

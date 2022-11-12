@@ -5,9 +5,9 @@ import Avatar from '@mui/material/Avatar'
 const AvatarsSizes = () => {
   return (
     <Box className='demo-space-x' sx={{ display: 'flex', alignItems: 'center' }}>
-      <Avatar alt='Victor Anderson' sx={{ width: 25, height: 25 }} src='https://avatars.dicebear.com/api/adventurer-neutral/3.png' />
-      <Avatar alt='Victor Anderson' src='https://avatars.dicebear.com/api/adventurer-neutral/3.png' />
-      <Avatar alt='Victor Anderson' sx={{ width: 56, height: 56 }} src='https://avatars.dicebear.com/api/adventurer-neutral/3.png' />
+      <Avatar alt='Victor Anderson' sx={{ width: 25, height: 25 }} src='https://avatars.dicebear.com/api/bottts/3.png' />
+      <Avatar alt='Victor Anderson' src='https://avatars.dicebear.com/api/bottts/3.png' />
+      <Avatar alt='Victor Anderson' sx={{ width: 56, height: 56 }} src='https://avatars.dicebear.com/api/bottts/3.png' />
     </Box>
   )
 }

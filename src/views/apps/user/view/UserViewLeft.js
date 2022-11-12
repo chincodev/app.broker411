@@ -154,7 +154,7 @@ const UserViewLeft = ({ data, set_data }) => {
             color={data.avatarColor}
             sx={{ width: 120, height: 120, fontWeight: 600, mb: 4, fontSize: '3rem' }}
           >
-            <img style={{width:'100%'}} src={`https://avatars.dicebear.com/api/adventurer-neutral/${data.id}.png`}></img>
+            <img style={{width:'100%'}} src={`https://avatars.dicebear.com/api/bottts/${data.id}.png`}></img>
           </CustomAvatar>
         )
       }

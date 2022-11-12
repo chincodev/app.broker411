@@ -267,7 +267,7 @@ const AddBrokerDialog = (props) => {
                 <DialogTabDetails
                   title='Brokerage DOT Number'
                   startObj={{
-                    type:'carrier'
+                    type:'broker'
                   }}
                   setActiveTab={setActiveTab}
                   businessData={businessData}

@@ -65,10 +65,10 @@ const CardFinanceApp = () => {
         <LinearProgress value={68} color='success' sx={{ mb: 5.75 }} variant='determinate' />
         <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
           <AvatarGroup sx={{ mr: 2 }}>
-            <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/3.png' alt='Olivia Sparks' />
-            <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/5.png' alt='Howard Lloyd' />
-            <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/4.png' alt='Hallie Richards' />
-            <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/2.png' alt='Alice Cobb' />
+            <Avatar src='https://avatars.dicebear.com/api/bottts/3.png' alt='Olivia Sparks' />
+            <Avatar src='https://avatars.dicebear.com/api/bottts/5.png' alt='Howard Lloyd' />
+            <Avatar src='https://avatars.dicebear.com/api/bottts/4.png' alt='Hallie Richards' />
+            <Avatar src='https://avatars.dicebear.com/api/bottts/2.png' alt='Alice Cobb' />
           </AvatarGroup>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Paperclip sx={{ mr: 1, fontSize: '1.375rem', color: 'text.secondary' }} />

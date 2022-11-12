@@ -31,7 +31,7 @@ const ListWithCheckbox = () => {
       <ListItem disablePadding>
         <ListItemButton onClick={handleToggle(0)}>
           <ListItemAvatar>
-            <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/2.png' alt='Caroline Black' />
+            <Avatar src='https://avatars.dicebear.com/api/bottts/2.png' alt='Caroline Black' />
           </ListItemAvatar>
           <ListItemText id='checkbox-list-label-0' primary='Caroline Black' />
           <ListItemSecondaryAction>
@@ -49,7 +49,7 @@ const ListWithCheckbox = () => {
       <ListItem disablePadding>
         <ListItemButton onClick={handleToggle(1)}>
           <ListItemAvatar>
-            <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/1.png' alt='Alfred Copeland' />
+            <Avatar src='https://avatars.dicebear.com/api/bottts/1.png' alt='Alfred Copeland' />
           </ListItemAvatar>
           <ListItemText id='checkbox-list-label-1' primary='Alfred Copeland' />
           <ListItemSecondaryAction>
@@ -67,7 +67,7 @@ const ListWithCheckbox = () => {
       <ListItem disablePadding>
         <ListItemButton onClick={handleToggle(2)}>
           <ListItemAvatar>
-            <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/8.png' alt='Celia Schneider' />
+            <Avatar src='https://avatars.dicebear.com/api/bottts/8.png' alt='Celia Schneider' />
           </ListItemAvatar>
           <ListItemText id='checkbox-list-label-2' primary='Celia Schneider' />
           <ListItemSecondaryAction>

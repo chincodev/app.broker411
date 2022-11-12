@@ -24,7 +24,7 @@ const CardTwitter = () => {
         </Typography>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
           <Box sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
-            <Avatar alt='Mary Vaughn' src='https://avatars.dicebear.com/api/adventurer-neutral/6.png' sx={{ width: 34, height: 34, mr: 2.75 }} />
+            <Avatar alt='Mary Vaughn' src='https://avatars.dicebear.com/api/bottts/6.png' sx={{ width: 34, height: 34, mr: 2.75 }} />
             <Typography variant='body2' sx={{ color: 'common.white' }}>
               Mary Vaughn
             </Typography>

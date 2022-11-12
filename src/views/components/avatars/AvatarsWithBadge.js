@@ -24,7 +24,7 @@ const AvatarsWithBadge = () => {
           horizontal: 'right'
         }}
       >
-        <Avatar alt='Marie Garza' src='https://avatars.dicebear.com/api/adventurer-neutral/2.png' />
+        <Avatar alt='Marie Garza' src='https://avatars.dicebear.com/api/bottts/2.png' />
       </Badge>
       <Badge
         overlap='circular'
@@ -35,12 +35,12 @@ const AvatarsWithBadge = () => {
         badgeContent={
           <Avatar
             alt='Marie Garza'
-            src='https://avatars.dicebear.com/api/adventurer-neutral/2.png'
+            src='https://avatars.dicebear.com/api/bottts/2.png'
             sx={{ width: 22, height: 22, border: theme => `2px solid ${theme.palette.background.paper}` }}
           />
         }
       >
-        <Avatar alt='Olivia Sparks' src='https://avatars.dicebear.com/api/adventurer-neutral/4.png' />
+        <Avatar alt='Olivia Sparks' src='https://avatars.dicebear.com/api/bottts/4.png' />
       </Badge>
     </Box>
   )

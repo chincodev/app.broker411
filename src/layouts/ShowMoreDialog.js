@@ -103,7 +103,7 @@ const ShowMoreDialog = (props) => {
 
   return (
     <Box style={{marginBottom:'10px'}}>
-<Button color='secondary' fullWidth onClick={()=>setShow(true)} size={'small'} variant='contained'>
+<Button color='secondary' fullWidth onClick={()=>setShow(true)} variant='contained'>
                     More Info
                   
                   </Button>

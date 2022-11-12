@@ -44,12 +44,11 @@ const CardUser = () => {
         >
           <Avatar
             alt='Robert Meyer'
-            src={`https://avatars.dicebear.com/api/adventurer-neutral/${auth.user.id}.png`}
+            src={`https://avatars.dicebear.com/api/bottts/${auth.user.id}.png`}
             sx={{
               width: 78,
               height: 78,
               marginRight:'1em',
-              border: theme => `5px solid ${theme.palette.common.white}`
             }}
           />
           <Box sx={{ mr: 2, mb: 1, display: 'flex', flexDirection: 'column', justifyContent:'center' }}>

@@ -92,7 +92,7 @@ const CardActivityTimeline = () => {
                 Invoices have been paid to the company.
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/1.png' sx={{ mr: 2.5, width: 24, height: 24 }} />
+                <Avatar src='https://avatars.dicebear.com/api/bottts/1.png' sx={{ mr: 2.5, width: 24, height: 24 }} />
                 <Typography sx={{ fontWeight: 600, fontSize: '0.875rem' }}>John Doe (Client)</Typography>
               </Box>
             </TimelineContent>

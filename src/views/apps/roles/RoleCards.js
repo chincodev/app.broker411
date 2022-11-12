@@ -89,7 +89,7 @@ const RolesCards = () => {
                 }}
               >
                 {item.avatars.map((img, index) => (
-                  <Avatar key={index} alt={item.title} src={`https://avatars.dicebear.com/api/adventurer-neutral/${img}`} />
+                  <Avatar key={index} alt={item.title} src={`https://avatars.dicebear.com/api/bottts/${img}`} />
                 ))}
               </AvatarGroup>
             </Box>

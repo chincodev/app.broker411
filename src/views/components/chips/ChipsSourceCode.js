@@ -10,11 +10,11 @@ import Avatar from '@mui/material/Avatar'
 const ChipsArray = () => {
   // ** State
   const [chipData, setChipData] = useState([
-    { key: 0, avatar: 'https://avatars.dicebear.com/api/adventurer-neutral/1.png', avatarAlt: 'User Avatar', label: 'Norman Santiago' },
-    { key: 1, avatar: 'https://avatars.dicebear.com/api/adventurer-neutral/2.png', avatarAlt: 'User Avatar', label: 'Cecelia Tucker' },
+    { key: 0, avatar: 'https://avatars.dicebear.com/api/bottts/1.png', avatarAlt: 'User Avatar', label: 'Norman Santiago' },
+    { key: 1, avatar: 'https://avatars.dicebear.com/api/bottts/2.png', avatarAlt: 'User Avatar', label: 'Cecelia Tucker' },
     { key: 2, label: 'Max Burns' },
-    { key: 3, avatar: 'https://avatars.dicebear.com/api/adventurer-neutral/4.png', avatarAlt: 'User Avatar', label: 'Ellen Nguyen' },
-    { key: 4, avatar: 'https://avatars.dicebear.com/api/adventurer-neutral/5.png', avatarAlt: 'User Avatar', label: 'Edward Francis' }
+    { key: 3, avatar: 'https://avatars.dicebear.com/api/bottts/4.png', avatarAlt: 'User Avatar', label: 'Ellen Nguyen' },
+    { key: 4, avatar: 'https://avatars.dicebear.com/api/bottts/5.png', avatarAlt: 'User Avatar', label: 'Edward Francis' }
   ])
 
   const handleDelete = chipToDelete => () => {
@@ -76,7 +76,7 @@ const ChipsAvatar = () => {
   return (
     <div className='demo-space-x'>
       <Chip label='Default' avatar={<Avatar />} />
-      <Chip label='Howard Paul' avatar={<Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/7.png' alt='User Avatar' />} />
+      <Chip label='Howard Paul' avatar={<Avatar src='https://avatars.dicebear.com/api/bottts/7.png' alt='User Avatar' />} />
       <Chip label='Maurice Bell' avatar={<Avatar>M</Avatar>} />
       <Chip
         label='Archived'

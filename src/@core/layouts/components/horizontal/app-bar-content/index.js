@@ -8,9 +8,12 @@ import { styled, useTheme } from '@mui/material/styles'
 
 // ** Theme Config Import
 import themeConfig from 'src/configs/themeConfig'
-import { Button, IconButton } from '@mui/material'
-import { CameraIris } from 'mdi-material-ui'
+import { Button, IconButton, Input, InputAdornment, TextField } from '@mui/material'
+import { CameraIris, Magnify, Router } from 'mdi-material-ui'
 import { useAuth } from 'src/hooks/useAuth'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
+import toast from 'react-hot-toast'
 
 const StyledLink = styled('a')(({ theme }) => ({
   display: 'flex',
@@ -19,12 +22,33 @@ const StyledLink = styled('a')(({ theme }) => ({
   marginRight: theme.spacing(8)
 }))
 
+const StyledTextField = styled(TextField)`
+ 
+    background-color: ${({theme, value}) => 
+      !value && theme.palette.background.paper};
+  
+`
+
 const AppBarContent = props => {
   // ** Props
   const {
     horizontalAppBarContent: userHorizontalAppBarContent,
     horizontalAppBarBranding: userHorizontalAppBarBranding
   } = props
+
+  const [ search, setSearch ] = useState('')
+
+  const router = useRouter()
+
+  const onSubmit = (e) => {
+    e.preventDefault()
+    let isnum = /^\d+$/.test(search);
+    if(search === ''){toast.error('Search field can not be empty.')} else if(isnum){
+      router.push('/brokers/[id]', '/brokers/'+search)
+    } else {
+      toast.error('Only numbers allowed.')
+    }
+  }
 
   const auth = useAuth() 
 
@@ -36,61 +60,30 @@ const AppBarContent = props => {
       {userHorizontalAppBarBranding ? (
         userHorizontalAppBarBranding(props)
       ) : (
-        <Link href='/' passHref>
+        <Box>
+          <Link href='/' passHref>
           <StyledLink>
             <img height={28} src='/images/logos/logo.png' />
             <Typography variant='h6' sx={{ ml: 2, mr: 2, fontWeight: 700, lineHeight: 1.2 }}>
               {themeConfig.templateName}
             </Typography>
-            {
-              auth.user.role.name === 'guest' ? (
-                <>
-                   <Button  color="primary" style={{marginLeft:'0.5rem', paddingRight:'1rem', paddingLeft:'1rem'}} variant={window.location.pathname === '/admin/' ? 'contained' : ''} aria-label='capture screenshot'>
-                    Home
-                  </Button>
-                </>
-              ) : auth.user.role.name === 'administrator' ? (
-                <>
-                   <Button  color="primary" style={{marginLeft:'0.5rem', paddingRight:'1rem', paddingLeft:'1rem'}} variant={window.location.pathname === '/admin/' ? 'contained' : ''} aria-label='capture screenshot'>
-                    Home
-                  </Button>
-                  <Link href={'/admin/fields'}>
-                    <Button  color="primary" style={{marginLeft:'0.5rem', paddingRight:'1rem', paddingLeft:'1rem'}} variant={window.location.pathname.includes('/admin/fields/') ? 'contained' : ''} aria-label='capture screenshot'>
-                      Fields
-                    </Button>
-                  </Link>
-                  <Link href={'/admin/businesses'}>
-                    <Button color="primary" style={{marginLeft:'0.5rem', paddingRight:'1rem', paddingLeft:'1rem'}} variant={window.location.pathname.includes('/admin/businesses/') ? 'contained' : ''} aria-label='capture screenshot'>
-                      Businesses
-                    </Button>
-                  </Link>
-                  <Link href={'/admin/users'}>
-                    <Button  color="primary" style={{marginLeft:'0.5rem', paddingRight:'1rem', paddingLeft:'1rem'}} variant={window.location.pathname.includes('/admin/users/') ? 'contained' : ''} aria-label='capture screenshot'>
-                      Users
-                    </Button>
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Button color="primary" style={{marginLeft:'0.5rem', paddingRight:'1rem', paddingLeft:'1rem'}} variant={window.location.pathname.includes('/admin/') ? 'contained' : ''} aria-label='capture screenshot'>
-                    Home
-                  </Button>
-                  {/* <Button color="primary" style={{marginLeft:'0.5rem', paddingRight:'1rem', paddingLeft:'1rem'}} variant={window.location.pathname.includes('/admin/brokers/') ? 'contained' : ''} aria-label='capture screenshot'>
-                    Brokers
-                  </Button> */}
-                </>
-              )
-            }
-           
-            {/* <Button style={{marginLeft:'0.5rem'}} aria-label='capture screenshot'>
-              Hello
-            </Button>
-            <Button style={{marginLeft:'0.5rem'}} aria-label='capture screenshot'>
-              Hello
-            </Button> */}
           </StyledLink>
-        </Link>
-      )}
+          </Link>
+        </Box>
+         
+      )
+      }
+       <form onSubmit={(e)=>onSubmit(e)} style={{width:'50%'}}>
+       <StyledTextField value={search} onChange={(e) => setSearch(e.target.value)} type='search' variant={'outlined'} size={'small'} placeholder={'Enter Broker\'s DOT Number'} style={{width:'100%'}}
+       InputProps={{
+        startAdornment: (
+          <InputAdornment position='start'>
+            <Magnify />
+          </InputAdornment>
+        )
+      }}
+       ></StyledTextField>
+       </form>
       {userHorizontalAppBarContent ? userHorizontalAppBarContent(props) : null}
     </Box>
   )

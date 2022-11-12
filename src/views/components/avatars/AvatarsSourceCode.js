@@ -43,25 +43,25 @@ const AvatarsGrouped = () => {
   return (
     <div className='demo-space-y'>
       <AvatarGroup max={4}>
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/4.png' alt='Olivia Sparks' />
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/5.png' alt='Howard Lloyd' />
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/6.png' alt='Hallie Richards' />
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/8.png' alt='Alice Cobb' />
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/7.png' alt='Jeffery Warner' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/4.png' alt='Olivia Sparks' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/5.png' alt='Howard Lloyd' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/6.png' alt='Hallie Richards' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/8.png' alt='Alice Cobb' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/7.png' alt='Jeffery Warner' />
       </AvatarGroup>
       <AvatarGroup max={4} sx={{ justifyContent: 'center' }}>
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/4.png' alt='Olivia Sparks' />
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/5.png' alt='Howard Lloyd' />
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/6.png' alt='Hallie Richards' />
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/8.png' alt='Alice Cobb' />
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/7.png' alt='Jeffery Warner' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/4.png' alt='Olivia Sparks' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/5.png' alt='Howard Lloyd' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/6.png' alt='Hallie Richards' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/8.png' alt='Alice Cobb' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/7.png' alt='Jeffery Warner' />
       </AvatarGroup>
       <AvatarGroup max={4} sx={{ justifyContent: 'flex-start' }}>
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/4.png' alt='Olivia Sparks' />
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/5.png' alt='Howard Lloyd' />
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/6.png' alt='Hallie Richards' />
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/8.png' alt='Alice Cobb' />
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/7.png' alt='Jeffery Warner' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/4.png' alt='Olivia Sparks' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/5.png' alt='Howard Lloyd' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/6.png' alt='Hallie Richards' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/8.png' alt='Alice Cobb' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/7.png' alt='Jeffery Warner' />
       </AvatarGroup>
     </div>
   )
@@ -81,9 +81,9 @@ import Avatar from '@mui/material/Avatar'
 const AvatarsSizes = () => {
   return (
     <Box className='demo-space-x' sx={{ display: 'flex', alignItems: 'center' }}>
-      <Avatar alt='Victor Anderson' sx={{ width: 25, height: 25 }} src='https://avatars.dicebear.com/api/adventurer-neutral/3.png' />
-      <Avatar alt='Victor Anderson' src='https://avatars.dicebear.com/api/adventurer-neutral/3.png' />
-      <Avatar alt='Victor Anderson' sx={{ width: 56, height: 56 }} src='https://avatars.dicebear.com/api/adventurer-neutral/3.png' />
+      <Avatar alt='Victor Anderson' sx={{ width: 25, height: 25 }} src='https://avatars.dicebear.com/api/bottts/3.png' />
+      <Avatar alt='Victor Anderson' src='https://avatars.dicebear.com/api/bottts/3.png' />
+      <Avatar alt='Victor Anderson' sx={{ width: 56, height: 56 }} src='https://avatars.dicebear.com/api/bottts/3.png' />
     </Box>
   )
 }
@@ -102,9 +102,9 @@ import Avatar from '@mui/material/Avatar'
 const AvatarsImage = () => {
   return (
     <Box className='demo-space-x' sx={{ display: 'flex' }}>
-      <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/1.png' alt='Victor Anderson' />
-      <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/8.png' alt='Alice Cobb' />
-      <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/7.png' alt='Jeffery Warner' />
+      <Avatar src='https://avatars.dicebear.com/api/bottts/1.png' alt='Victor Anderson' />
+      <Avatar src='https://avatars.dicebear.com/api/bottts/8.png' alt='Alice Cobb' />
+      <Avatar src='https://avatars.dicebear.com/api/bottts/7.png' alt='Jeffery Warner' />
     </Box>
   )
 }
@@ -171,7 +171,7 @@ const AvatarsWithBadge = () => {
           horizontal: 'right'
         }}
       >
-        <Avatar alt='Marie Garza' src='https://avatars.dicebear.com/api/adventurer-neutral/2.png' />
+        <Avatar alt='Marie Garza' src='https://avatars.dicebear.com/api/bottts/2.png' />
       </Badge>
       <Badge
         overlap='circular'
@@ -182,12 +182,12 @@ const AvatarsWithBadge = () => {
         badgeContent={
           <Avatar
             alt='Marie Garza'
-            src='https://avatars.dicebear.com/api/adventurer-neutral/2.png'
+            src='https://avatars.dicebear.com/api/bottts/2.png'
             sx={{ width: 22, height: 22, border: theme => 2px solid {theme.palette.background.paper} }}
           />
         }
       >
-        <Avatar alt='Olivia Sparks' src='https://avatars.dicebear.com/api/adventurer-neutral/4.png' />
+        <Avatar alt='Olivia Sparks' src='https://avatars.dicebear.com/api/bottts/4.png' />
       </Badge>
     </Box>
   )

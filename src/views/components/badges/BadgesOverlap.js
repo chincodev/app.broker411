@@ -14,16 +14,16 @@ const BadgesOverlap = () => {
   return (
     <Wrapper className='demo-space-x'>
       <Badge color='primary' badgeContent=' '>
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/1.png' alt='User Avatar' variant='square' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/1.png' alt='User Avatar' variant='square' />
       </Badge>
       <Badge color='primary' variant='dot'>
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/1.png' alt='User Avatar' variant='square' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/1.png' alt='User Avatar' variant='square' />
       </Badge>
       <Badge color='primary' overlap='circular' badgeContent=' '>
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/1.png' alt='User Avatar' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/1.png' alt='User Avatar' />
       </Badge>
       <Badge color='primary' overlap='circular' variant='dot'>
-        <Avatar src='https://avatars.dicebear.com/api/adventurer-neutral/1.png' alt='User Avatar' />
+        <Avatar src='https://avatars.dicebear.com/api/bottts/1.png' alt='User Avatar' />
       </Badge>
     </Wrapper>
   )

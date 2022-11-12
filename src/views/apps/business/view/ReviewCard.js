@@ -9,7 +9,8 @@ import moment from 'moment'
 import CustomChip from 'src/@core/components/mui/chip'
 import { Avatar, Badge, Divider, IconButton } from '@mui/material'
 import { Star, ThumbUp } from 'mdi-material-ui'
-
+import CustomAvatar from 'src/@core/components/mui/avatar'
+import { getInitials } from 'src/@core/utils/get-initials'
 
 const ReviewCard = ({ data, feedMode = false }) => {
   // ** Vars
@@ -22,9 +23,15 @@ const ReviewCard = ({ data, feedMode = false }) => {
     <Card sx={{ overflow: 'visible', position: 'relative', pb:4 }}>
       <CardContent sx={{ pb: '0 !important' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb:5 }}>
-              
-              <Avatar alt='John Doe' src={'https://avatars.dicebear.com/api/identicon/'+top.id+'.png'} sx={{ width: '2.5rem', height: '2.5rem' }} />
-         
+        <CustomAvatar
+            skin='light'
+            variant='rounded'
+            color={top.avatarColor}
+            sx={{ width: '2.5rem', height: '2.5rem' }}
+          >
+            {getInitials(top.legal_name)}
+          </CustomAvatar>
+           
             <Box sx={{ display: 'flex', ml: 3, alignItems: 'flex-start', flexDirection: 'column', overflow:'hidden' }}>
               <Typography noWrap sx={{ fontWeight: 600, width:'100%', fontSize:'0.9em' }} style={{overflow: "hidden",
                 textOverflow: "ellipsis",
