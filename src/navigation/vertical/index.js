@@ -19,19 +19,79 @@ import CalendarBlankOutline from 'mdi-material-ui/CalendarBlankOutline'
 import PackageVariantClosed from 'mdi-material-ui/PackageVariantClosed'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 import CheckboxMarkedCircleOutline from 'mdi-material-ui/CheckboxMarkedCircleOutline'
-import { FaceAgent } from 'mdi-material-ui'
+import { AccountGroupOutline, FaceAgent, PhoneOutline, TruckOutline, ViewListOutline } from 'mdi-material-ui'
+import { useAuth } from 'src/hooks/useAuth'
 
 const navigation = () => {
-  return [
-    {
-      sectionTitle: 'Menu'
-    },
-    {
-      title: 'Home',
-      icon: HomeOutline,
-      path: '/'
-    },
-  ]
+
+  const auth = useAuth()
+
+  if(auth.user.role.name === 'administrator'){
+    return [
+      {
+        sectionTitle: 'Menu'
+      },
+      {
+        title: 'Home',
+        icon: HomeOutline,
+        path: '/'
+      },{
+        title: 'Users',
+        icon: AccountGroupOutline,
+        path: '/admin/users'
+      },{
+        title: 'Businesses',
+        icon: TruckOutline,
+        path: '/admin/businesses'
+      },{
+        title: 'Fields',
+        icon: ViewListOutline,
+        path: '/admin/fields'
+      },
+    ]
+  } else if(auth.user.business && auth.user.business.type === 'broker') {
+    return [
+      {
+        sectionTitle: 'Menu'
+      },
+      {
+        title: 'Home',
+        icon: HomeOutline,
+        path: '/'
+      },{
+        title: 'Carriers',
+        icon: TruckOutline,
+        path: '/carriers'
+      }
+    ]
+  } else if(auth.user.business && auth.user.business.type === 'carrier'){
+    return [
+      {
+        sectionTitle: 'Menu'
+      },
+      {
+        title: 'Home',
+        icon: HomeOutline,
+        path: '/'
+      },{
+        title: 'Brokers',
+        icon: PhoneOutline,
+        path: '/brokers'
+      }
+    ]
+  } else {
+    return [
+      {
+        sectionTitle: 'Menu'
+      },
+      {
+        title: 'Home',
+        icon: HomeOutline,
+        path: '/'
+      }
+    ]
+  }
+  
 }
 
 export default navigation

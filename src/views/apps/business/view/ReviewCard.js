@@ -11,6 +11,7 @@ import { Avatar, Badge, Divider, IconButton } from '@mui/material'
 import { Star, ThumbUp } from 'mdi-material-ui'
 import CustomAvatar from 'src/@core/components/mui/avatar'
 import { getInitials } from 'src/@core/utils/get-initials'
+import Link from 'next/link'
 
 const ReviewCard = ({ data, feedMode = false }) => {
   // ** Vars
@@ -23,22 +24,25 @@ const ReviewCard = ({ data, feedMode = false }) => {
     <Card sx={{ overflow: 'visible', position: 'relative', pb:4 }}>
       <CardContent sx={{ pb: '0 !important' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb:5 }}>
-        <CustomAvatar
+        <Link href='/brokers/[id]' as={`/brokers/${top.us_dot_number}`}>
+        <a style={{textDecoration:'none'}}><CustomAvatar
             skin='light'
             variant='rounded'
             color={top.avatarColor}
             sx={{ width: '2.5rem', height: '2.5rem' }}
           >
             {getInitials(top.legal_name)}
-          </CustomAvatar>
-           
+          </CustomAvatar></a>
+           </Link>
             <Box sx={{ display: 'flex', ml: 3, alignItems: 'flex-start', flexDirection: 'column', overflow:'hidden' }}>
-              <Typography noWrap sx={{ fontWeight: 600, width:'100%', fontSize:'0.9em' }} style={{overflow: "hidden",
+              <Link href='/brokers/[id]' as={`/brokers/${top.us_dot_number}`}><a style={{textDecoration:'none'}}>
+                <Typography noWrap sx={{fontWeight: 600, width:'100%', fontSize:'0.9em' }} style={{overflow: "hidden",
                 textOverflow: "ellipsis",
-                display: "block"}}>{top.legal_name}</Typography>
-              {/* <Typography variant='body2' sx={{ fontSize: '0.7rem', color: 'text.disabled' }}>
-                {data.user.business.address_line_2}
-              </Typography> */}
+                display: "block"}}>
+                  {top.legal_name}
+                  </Typography>
+                  </a></Link>
+              
               <Typography variant='caption'>
               {top.address_line_2} &bull; {moment(data.createdAt).fromNow()}
               </Typography>
