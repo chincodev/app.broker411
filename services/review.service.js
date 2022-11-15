@@ -10,8 +10,8 @@ export const reviewService = {
 };
 
 
-function list(query = '') {
-    return fetchWrapper.get(`${baseUrl}reviews${query}`);
+function list(query = '', token) {
+    return fetchWrapper.get(`${baseUrl}reviews${query}`, token);
 }
 
 function find(_id, token) {

@@ -9,7 +9,7 @@ import LanguageDropdown from 'src/@core/layouts/components/shared-components/Lan
 import NotificationDropdown from 'src/@core/layouts/components/shared-components/NotificationDropdown'
 import { useAuth } from 'src/hooks/useAuth'
 import { IconButton } from '@mui/material'
-import { AccountTie, AccountTieOutline, AccountTieVoice, FaceAgent, Home, HomeOutline, Laptop, Phone, PhoneOutline, Truck, TruckOutline } from 'mdi-material-ui'
+import { AccountTie, AccountTieOutline, AccountTieVoice, FaceAgent, Home, HomeOutline, Laptop, Phone, PhoneOutline, Star, StarOutline, Truck, TruckOutline } from 'mdi-material-ui'
 import { useRouter } from 'next/router'
 
 const AppBarContent = props => {
@@ -47,9 +47,18 @@ const AppBarContent = props => {
         </IconButton>
         }
         {
-          auth.user.business && auth.user.business.type === 'broker' && <IconButton color='inherit' aria-haspopup='true'>
-          <TruckOutline style={{fontSize:'32px'}} />
-        </IconButton>
+          auth.user.business && auth.user.business.type === 'broker' && <>
+            <IconButton onClick={()=>router.push('/reviews')} color='inherit' aria-haspopup='true'>
+              {
+                window.location.pathname === '/reviews/' 
+                  ? <Star style={{fontSize:'32px'}} />
+                  : <StarOutline style={{fontSize:'32px'}} />  
+              }
+            </IconButton>
+            <IconButton color='inherit' aria-haspopup='true'>
+              <TruckOutline onClick={()=>router.push('/carriers')} style={{fontSize:'32px'}} />
+            </IconButton>
+          </>
         }
      
         
