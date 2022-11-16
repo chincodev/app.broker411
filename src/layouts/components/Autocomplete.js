@@ -164,6 +164,14 @@ const defaultSuggestionsData = [
   }
 ]
 
+
+const StyledTextField = styled(TextField)`
+ 
+    background-color: ${({theme, value}) => 
+      !value && theme.palette.background.paper};
+  
+`
+
 const categoryTitle = {
   dashboards: 'Dashboards',
   appsPages: 'Apps & Pages',
@@ -392,12 +400,16 @@ const AutocompleteComponent = ({ hidden, settings }) => {
         onClick={() => !openDialog && setOpenDialog(true)}
         sx={{ display: 'flex', cursor: 'pointer', alignItems: 'center' }}
       >
-        <IconButton color='inherit' sx={!hidden && layout === 'vertical' ? { mr: 1, ml: -2.75 } : {}}>
-          <Magnify />
-        </IconButton>
-        {!hidden && layout === 'vertical' ? (
-          <Typography sx={{ color: 'text.disabled' }}>Search (Ctrl+/)</Typography>
-        ) : null}
+        <StyledTextField type='search' disabled={true} variant={'outlined'} size={'small'} placeholder={'Search DOT here'} style={{width:'100%', marginLeft:'10px'}}
+        InputProps={{
+          sx: {paddingLeft:'8px'},
+         startAdornment: (
+           <InputAdornment position='start'>
+             <Magnify />
+           </InputAdornment>
+         )
+       }}
+        ></StyledTextField>
         <Dialog open={openDialog} onClose={() => setOpenDialog(false)} style={{height:''}} aria-labelledby='form-dialog-title'>
         <DialogTitle id='form-dialog-title'>Search</DialogTitle>
         <DialogContent>

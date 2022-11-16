@@ -127,18 +127,21 @@ const UserViewLeft = ({ data, set_data }) => {
   const [loading, set_loading] = useState(false)
 
   const approveReq = async () => {
-    if (window.confirm(`Confirm membership of @${data.username} in ${data.request_business.legal_name}?`)) {
-      try {
-        set_loading(true)
-        await userService.confirm_membership(data.id, {request_business_id: null, business_id: data.request_business_id})
-        set_data(Object.assign(data, {request_business_id: null, business_id: data.request_business_id}))
-        set_loading(false)
-      } catch (er) {
-        console.log(er)
-        alert('Error...')
-        set_loading(false)
+      let name = window.prompt(`Whats the name of this @${data.username}?`) 
+      if(name != null){
+        try {
+          set_loading(true)
+          await userService.confirm_membership(data.id, {request_business_id: null, business_id: data.request_business_id, name})
+          set_data(Object.assign(data, {request_business_id: null, business_id: data.request_business_id}))
+          set_loading(false)
+        } catch (er) {
+          console.log(er)
+          alert('Error...')
+          set_loading(false)
+        }
       }
-    }
+      
+    
   }
   const renderUserAvatar = () => {
     if (data) {
@@ -218,6 +221,12 @@ const UserViewLeft = ({ data, set_data }) => {
               {/* <Typography variant='h6'>Details</Typography> */}
               <Divider sx={{ mt: 4 }} />
               <Box sx={{ pt: 2, pb: 1 }}>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
+                    Name:
+                  </Typography>
+                  <Typography variant='body2'>{data.name}</Typography>
+                </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
                     Email:

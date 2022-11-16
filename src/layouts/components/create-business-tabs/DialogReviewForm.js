@@ -116,9 +116,9 @@ const DialogReviewForm = (props) => {
           <Box
             
                 sx={{
-                  py: 3,
+                  py: 2,
                   px: 4,
-                  mb: 4,
+                  mb: 2,
                   borderRadius: 1,
                   border: theme =>
                     `1px solid whitesmoke`,
@@ -127,11 +127,11 @@ const DialogReviewForm = (props) => {
               >
                 <Box sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
                   <OfficeBuildingOutline sx={{ mr: 2 }} />
-                  <Typography variant='h7' sx={{ mb: 0}}>
+                  <Typography variant='body' sx={{ mb: 0, fontSize:'14px'}}>
                     Brokerage Name
                   </Typography>
                 </Box>
-                <Typography sx={{ml:8}} variant='body2'>
+                <Typography sx={{ml:8, fontSize:'12px'}} variant='body2'>
                 
                   {business.legal_name}
                 </Typography>
@@ -178,7 +178,7 @@ const DialogReviewForm = (props) => {
                  
               </FormControl>
             
-            <Grid item xs={12} style={{marginTop:'1rem', marginBottom:'1rem', display:'flex', flexDirection:'column'}}>
+            <Grid item xs={12} style={{marginTop:'0.5rem', marginBottom:'0.5rem', display:'flex', flexDirection:'column'}}>
               {/* <Typography style={{marginBottom:'0.5rem', fontWeight:'700'}} variant='h7'>Overall experience:</Typography> */}
               <ToggleButtonGroup size='small' exclusive color={type === 'good' ? 'success' : 'error'} value={type} onChange={(e)=>{
                 setCategories([])
@@ -189,7 +189,7 @@ const DialogReviewForm = (props) => {
                 <ToggleButton value='bad'>Bad</ToggleButton>
               </ToggleButtonGroup>
               </Grid>
-              <Grid item xs={12} style={{marginBottom:'2rem'}}>
+              <Grid item xs={12} style={{marginBottom:'0.5rem'}}>
               {/* <Typography variant='h6' >Check the box if any applies to you:</Typography>  */}
             <FormGroup>
              <Grid container>
@@ -198,10 +198,12 @@ const DialogReviewForm = (props) => {
             {
               store.data.filter(x => x.type === type).map(x => <Grid xs={12} md={6} item>
                 <FormControlLabel
-                sx={{fontSize:'8px'}}
-                label={x.description}
+               
+                label={<Typography sx={{
+                  
+                }}>{x.description}</Typography>}
                 control={<Checkbox
-              
+               
                   checked={categories.find(y => y === x.id) ? true : false}
                   onChange={(e)=>e.target.checked ? categories.find(y => y === x.id) ? '' : setCategories(categories.concat(x.id)) : setCategories(categories.filter(y => y != x.id))}
                   name={x.name} 
@@ -215,7 +217,7 @@ const DialogReviewForm = (props) => {
             <Grid item xs={12}>
             <Typography style={{marginBottom:'0.5rem', fontWeight:'700'}} variant='h7'>Your experience:</Typography>
       
-            <Box sx={{ mb: 3 }}>
+            <Box>
         {/* <Typography sx={{ fontWeight: 500 }}>Your experience</Typography> */}
         <Rating size="large" max={10} value={experience_rate} name='simple-controlled' onChange={(event, newValue) => setExperience_rate(newValue)} />
       </Box>
@@ -231,7 +233,8 @@ const DialogReviewForm = (props) => {
                       fullWidth
                       multiline
                       sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
-                      minRows={3}
+                      minRows={2}
+                      maxRows={2}
                       minLe
                       aria-describedby='registration_date'
                       inputProps={{

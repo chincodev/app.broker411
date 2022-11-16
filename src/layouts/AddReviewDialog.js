@@ -99,7 +99,7 @@ const AddReviewDialog = (props) => {
             <Close />
           </IconButton>
           <Box sx={{ mb: 3, textAlign: 'center' }}>
-            <Typography variant='h5' sx={{ mb: 8, lineHeight: '2rem' }}>
+            <Typography variant='h5' sx={{ mb: 4, lineHeight: '2rem' }}>
               Leave a Review
               
             </Typography>
