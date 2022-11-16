@@ -12,7 +12,6 @@ const ReviewView = ({ id, data, code }) => {
         data={data} 
         code={code} 
         id={id} 
-        top={data.business} 
     />
 }
 

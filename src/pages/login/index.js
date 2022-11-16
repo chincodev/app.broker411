@@ -143,8 +143,10 @@ const LoginPage = () => {
     setGeneralErrors([])
     const { email, password } = data
     auth.login({ email, password }, (err) => {
+ 
       let _errors = []
       err.errors && err.errors.length > 0 && err.errors.map(x => {
+        console.log(x)
         if(x.path && Array.isArray(x.path) && x.path.length > 0){
           x.path.map(y => setError(y, {
             type: 'manual',
@@ -154,6 +156,7 @@ const LoginPage = () => {
           _errors.push(x.message)
         }
       })
+      console.log(_errors)
       setGeneralErrors(_errors)
       setActionsLoading(false)
     })

@@ -1,4 +1,4 @@
-import { Card } from '@mui/material'
+import { Button, Card, CardContent } from '@mui/material'
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Box from '@mui/material/Box';
@@ -7,7 +7,36 @@ import React from 'react'
 import ReviewDetails from './Details'
 
 const ReviewPageWrapper = (props) => {
-    {console.log(props)}
+    
+    if(props.code === 404){
+        return (
+          <Card>
+          {/* <CardHeader sx={{ textAlign: 'center', fontWeight:'900' }} title='Oooops...' titleTypographyProps={{ variant: 'h6' }} /> */}
+          <CardContent sx={{ textAlign: 'center' }}>
+          <Typography variant='h2' sx={{ mb: 2.5 }}>
+                404
+              </Typography>
+              <Typography variant='h5' sx={{ mb: 2.5, letterSpacing: '0.18px', fontSize: '1.5rem !important' }}>
+                Page Not Found ⚠️
+              </Typography>
+              <Typography variant='body2'>We couldn&prime;t find any reviews.</Typography>
+              <br />
+            <img height='256px' alt='error-illustration' src='/images/pages/misc-under-maintenance.png' />
+            <br /><br />
+              <Link href='/'><Button variant='contained'>Go back to Home</Button></Link>
+          </CardContent>
+        </Card>
+          // <Grid container spacing={6}>
+            
+          //   <Grid item xs={12}>
+          //     <Alert severity='error'>
+          //       User with the id: {id} does not exist. Please check the list of users:{' '}
+          //       <Link href='/admin/businesses'>User List</Link>
+          //     </Alert>
+          //   </Grid>
+          // </Grid>
+        )
+      } else {
     return (
         <>
             <Box sx={{mb:4}}>
@@ -54,10 +83,11 @@ const ReviewPageWrapper = (props) => {
                 </Breadcrumbs>
             </Box>
             <Card>
-                <ReviewDetails {...props} page={true} />
+                <ReviewDetails {...props} page={true}         top={data.business}  />
             </Card>
         </>
     )
+                }
 }
 
 export default ReviewPageWrapper

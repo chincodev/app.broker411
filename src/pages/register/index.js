@@ -152,7 +152,7 @@ const Register = () => {
         if(x.path && Array.isArray(x.path) && x.path.length > 0){
           x.path.map(y => setError(y, {
             type: 'manual',
-            message: x.message
+            message: x.message.includes('pattern') ? 'Username can only use letters, numbers, minimum length is 3 characters, maximum is 16, blank spaces are not allowed' : x.message
           }))
         } else {
           _errors.push(x.message)
@@ -293,6 +293,7 @@ const Register = () => {
                     return (
                       <FormControlLabel
                         sx={{
+                          mb:0,
                           ...(errors.terms ? { color: 'error.main' } : null),
                           '& .MuiFormControlLabel-label': { fontSize: '0.875rem' }
                         }}
@@ -332,7 +333,7 @@ const Register = () => {
                   <FormHelperText sx={{ mt: 0, color: 'error.main' }}>{errors.terms.message}</FormHelperText>
                 )}
               </FormControl>
-              <Button fullWidth size='large' disabled={actionsLoading} type='submit' variant='contained' sx={{ mb: 7 }}>
+              <Button fullWidth size='large' disabled={actionsLoading} type='submit' variant='contained' sx={{ mb: 7, mt:5 }}>
                 {
                   actionsLoading && <CircularProgress
                     size={24}
