@@ -69,6 +69,9 @@ const UserViewRight = ({ business, setBusiness }) => {
         <TabPanel sx={{ p: 0 }} value='loads'>
           <LoadsTab />
         </TabPanel>
+        {/* <TabPanel sx={{ p: 0 }} value='loads'>
+          <UsersTab />
+        </TabPanel> */}
       </Box>
 
     </TabContext>

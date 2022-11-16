@@ -303,7 +303,7 @@ const UserViewLeft = ({ data, set_data }) => {
                     skin='light'
                     size='small'
                     label={data.business_id ? 'Confirmed' : data.request_business_id ? 'Pending' : 'None'}
-                    color={statusColors[data.business_id ? 'true' : data.request_business_id ? 'false' : 'none']}
+                    color={statusColors[data.business_id ? 'true' : data.request_business_id ? 'false' : 'secondary']}
                     sx={{
                       height: 20,
                       fontSize: '0.75rem',

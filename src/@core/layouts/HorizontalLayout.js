@@ -151,7 +151,7 @@ const HorizontalLayout = props => {
         <Box id='react-datepicker-portal'></Box>
       </DatePickerWrapper>
 
-      {themeConfig.disableCustomizer || hidden ? null : <Customizer />}
+      {/* {themeConfig.disableCustomizer || hidden ? null : <Customizer />} */}
 
       {scrollToTop ? (
         scrollToTop(props)

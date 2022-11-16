@@ -63,7 +63,7 @@ const UserView = ({ id, data, code }) => {
           <UserViewLeft data={business_data} set_data={set_business_data} />
         </Grid>
         <Grid item xs={12} md={7} lg={8}>
-          <UserViewRight data={business_data} set_business_data={set_business_data} />
+         
         </Grid>
       </Grid>
     )

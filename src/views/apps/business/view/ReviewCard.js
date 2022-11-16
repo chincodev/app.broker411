@@ -7,8 +7,8 @@ import CardContent from '@mui/material/CardContent'
 import moment from 'moment'
 // ** Custom Components Imports
 import CustomChip from 'src/@core/components/mui/chip'
-import { Avatar, Badge, CardHeader, Divider, IconButton, Menu, MenuItem } from '@mui/material'
-import { DeleteOutline, DotsVertical, ReplyOutline, Star, ThumbUp, Alert, EyeOutline } from 'mdi-material-ui'
+import { Avatar, Badge, CardHeader, Divider, IconButton, Menu, MenuItem, Alert } from '@mui/material'
+import { DeleteOutline, DotsVertical, ReplyOutline, Star, ThumbUp, EyeOutline, AlertBox } from 'mdi-material-ui'
 
 import CustomAvatar from 'src/@core/components/mui/avatar'
 import { getInitials } from 'src/@core/utils/get-initials'
@@ -16,17 +16,19 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useAuth } from 'src/hooks/useAuth'
 import { useRouter } from 'next/router'
-import DialogReviewDetails from '../../review/details'
+import DialogReviewDetails from '../../review/details/DialogWrapper'
 
 const ReviewCard = ({ data, feedMode = false }) => {
   // ** Vars
-  const { title, chipColor, chipText, src, stats, trend, trendNumber } = data
+    const { title, chipColor, chipText, src, stats, trend, trendNumber } = data
 
-  const top = feedMode ? data.business : data.user.business
+    const top = feedMode ? data.business : data.user.business
 
-  const [reviewMenuAnchorEl, setReviewMenuAnchorEl] = useState(null)
+    const [reviewMenuAnchorEl, setReviewMenuAnchorEl] = useState(null)
+    
 
     const [show, setShow] = useState(false)
+    
     
     const [ mode, setMode ] = useState('')
 
@@ -48,7 +50,7 @@ const ReviewCard = ({ data, feedMode = false }) => {
     return (
         <Card sx={{ overflow: 'visible', position: 'relative', pb:4 }}>
             <CardHeader
-                sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}
+                sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', pb:3 }}
                 title={
                     <Link href='/brokers/[id]' as={`/brokers/${top.us_dot_number}`}>
                         <a style={{textDecoration:'none'}}>
@@ -88,6 +90,7 @@ const ReviewCard = ({ data, feedMode = false }) => {
                         >
                             <MenuItem onClick={()=>{
                               setMode('')
+                              setShow(true)
                               handleReviewMenuClose()
                               router.push(`${window.location.pathname}?reviewId=${data.id}`, '/reviews/'+data.id)}}>
                                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
@@ -95,8 +98,10 @@ const ReviewCard = ({ data, feedMode = false }) => {
                             </MenuItem>
                             {
                                 (auth.user.business && auth.user.business.id === data.business.id) && <MenuItem
+                                    disabled={data.replies && data.replies.length > 0 ? true : false} 
                                     onClick={()=>{
                                       handleReviewMenuClose()
+                                      setShow(true)
                                       setMode('reply')
                                       router.push(`${window.location.pathname}?reviewId=${data.id}`, '/reviews/'+data.id)
 
@@ -106,8 +111,8 @@ const ReviewCard = ({ data, feedMode = false }) => {
                                     Reply 
                                 </MenuItem>
                             }
-                            <MenuItem>
-                                <Alert fontSize='small' sx={{ mr: 2 }} />
+                            <MenuItem onClick={()=>alert('This feature is coming soon')}>
+                                <AlertBox fontSize='small' sx={{ mr: 2 }} />
                                 Report Review
                             </MenuItem>
                           
@@ -139,6 +144,13 @@ const ReviewCard = ({ data, feedMode = false }) => {
 
       </CardHeader>
       <CardContent sx={{ pb: '0 !important' }}>
+        {
+          data.representative_name && <Box sx={{mb:3}}>
+            <Typography>
+              Brokerage Representative: <strong>{data.representative_name}</strong>
+            </Typography>
+          </Box>
+        }
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
         
             <Box sx={{ display: 'flex', ml: 3, alignItems: 'flex-start', flexDirection: 'column', overflow:'hidden' }}>
@@ -196,18 +208,61 @@ const ReviewCard = ({ data, feedMode = false }) => {
       <CardContent style={{paddingBottom:'0px', paddingTop:'0px'}}>
         <Box style={{display:'flex', alignItems:'center',flexWrap: 'wrap'}}>
           {
-            data.categories.map(x => <CustomChip sx={{mr:'5px', mt:'6px'}} label={x.name} size='small' skin='light' color={x.type === 'good' ? 'primary' : 'error'} />)
+            data.categories.map(x => <CustomChip sx={{mr:'5px', mt:'3px', mb:'3px'}} label={x.name} size='small' skin='light' color={x.type === 'good' ? 'primary' : 'error'} />)
           }
          </Box>
       </CardContent>
         </>
       }
-    <DialogReviewDetails
+      {
+        show && <DialogReviewDetails
         setMode={setMode}
         mode={mode}
         top={top}
-        data={data}
+        id={data.id}
     />
+      }
+      {
+        data.replies && data.replies.length > 0 && (
+          <>
+            <Divider></Divider>
+            <CardContent style={{paddingBottom:'0px', paddingTop:'0px'}}>
+              <Box style={{paddingTop:'8px'}}>
+               
+                <Alert color='info' icon={false} style={{
+                width:'100%',
+                display:'block'
+              }}>
+                <Box style={{
+                display:'flex',
+                justifyContent:'space-between',
+                width:'100%'
+              }}>
+                <Box style={{
+                display:'flex',
+                alignItems:'center',
+                
+              }}>
+                  <Avatar alt='message' src={`https://avatars.dicebear.com/api/bottts/${data['replies'][0]['user_id']}.png`} />
+                  <Box style={{marginLeft:'1rem', width:'100%'}}>
+                    
+                    <Typography variant='body2' style={{fontWeight:'700'}}>{data['replies'][0]['user']['name'] ? data['replies'][0]['user']['name'] : '@'+data['replies'][0]['user']['username']}</Typography>
+                    <Typography variant='caption'>{data['business']['type'].toUpperCase()} {data['replies'][0]['user']['role']['name'].toUpperCase()}</Typography>
+                     
+                  </Box>
+                </Box>
+                  
+                </Box>
+                <Divider></Divider>
+                <Typography variant='body1' style={{fontSize:'0.9rem'}}>
+                {data['replies'][0]['body']}
+                </Typography>
+                </Alert>
+              </Box>
+            </CardContent>
+          </>
+        )
+      }
     </Card>
   )
 }

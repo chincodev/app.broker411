@@ -5,9 +5,15 @@ import tokenServer from '../../../utils/tokenServer'
 // ** Demo Components Imports
 import BusinessViewPage from 'src/views/apps/business/view/BusinessViewPage'
 import { reviewService } from 'services/review.service'
+import ReviewPageWrapper from 'src/views/apps/review/details/PageWrapper'
 
 const ReviewView = ({ id, data, code }) => {
-    return <h1>ads</h1>
+    return <ReviewPageWrapper 
+        data={data} 
+        code={code} 
+        id={id} 
+        top={data.business} 
+    />
 }
 
 export async function getServerSideProps(context){
@@ -23,7 +29,7 @@ export async function getServerSideProps(context){
         const data = await reviewService.find(id, userToken)
         return {
             props: {
-                data:data.record,
+                data,
                 id
             }
         }

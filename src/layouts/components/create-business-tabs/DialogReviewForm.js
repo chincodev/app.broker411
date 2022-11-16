@@ -68,6 +68,7 @@ const DialogReviewForm = (props) => {
 
   const [ type, setType ] = useState('good')
   const [ body, setBody ] = useState('')
+  const [ representativeName, setRepresentativeName ] = useState('')
   const [ experience_rate, setExperience_rate ] = useState(1)
   const [ categories, setCategories ] = useState([])
 
@@ -86,6 +87,7 @@ const DialogReviewForm = (props) => {
         rating: experience_rate,
         type,
         body,
+        representative_name: representativeName,
         categories,
         business_id: business.id
       })
@@ -158,8 +160,25 @@ const DialogReviewForm = (props) => {
               </Box> */}
 
             </Grid>
+            <FormControl fullWidth>
+                
+                    <TextField
+                      value={representativeName}
+                      label='Representative name (Optional)'
+                      onChange={(e)=>setRepresentativeName(e.target.value)}
+                      placeholder='Ex: John Doe'
+                      fullWidth
+                      sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
+                      aria-describedby='registration_date'
+                      inputProps={{
+                        maxLength: 64,
+                      }}
+                     
+                    />
+                 
+              </FormControl>
             
-            <Grid item xs={12} style={{marginBottom:'1rem', display:'flex', flexDirection:'column'}}>
+            <Grid item xs={12} style={{marginTop:'1rem', marginBottom:'1rem', display:'flex', flexDirection:'column'}}>
               {/* <Typography style={{marginBottom:'0.5rem', fontWeight:'700'}} variant='h7'>Overall experience:</Typography> */}
               <ToggleButtonGroup size='small' exclusive color={type === 'good' ? 'success' : 'error'} value={type} onChange={(e)=>{
                 setCategories([])
