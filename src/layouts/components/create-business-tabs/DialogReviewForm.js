@@ -200,7 +200,12 @@ const DialogReviewForm = (props) => {
                 <FormControlLabel
                
                 label={<Typography sx={{
-                  
+                  fontSize: {
+                    lg: 16,
+                    md: 16,
+                    sm: 12,
+                    xs: 12
+                  }
                 }}>{x.description}</Typography>}
                 control={<Checkbox
                

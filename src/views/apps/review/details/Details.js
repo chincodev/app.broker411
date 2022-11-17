@@ -318,7 +318,8 @@ const ReviewDetails = (props) => {
                     }
                 </List>
               }
-              <small style={{float:'right'}}>Ref#{props.id}</small>
+              <br/>
+              <small style={{float:'right', marginTop:'5px', color:'#cccccc'}}>Ref#{props.id}</small>
         </DialogContent>
         <Divider sx={{ m: 0 }} />
         <DialogContent sx={{ pb: 2, px: [8, 8], pt: [2], position: 'relative' }}>

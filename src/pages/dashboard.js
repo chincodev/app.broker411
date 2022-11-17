@@ -37,6 +37,7 @@ import { useEffect, useState } from 'react'
 import AddBrokerDialog from 'src/layouts/AddBrokerDialog'
 import CardUser from 'src/views/ui/cards/basic/CardUser'
 import Feed from 'src/views/dashboards/feed'
+import BrokerDashboard from 'src/views/apps/broker_dashboard'
 
 const CrmDashboard = () => {
 
@@ -91,9 +92,18 @@ const CrmDashboard = () => {
   }
 
 
-
+  if(auth.user.business.type === 'carrier'){
+    return (
+      <Feed />
+    )
+  }
+  if(auth.user.business.type === 'broker'){
+    return (
+      <BrokerDashboard />
+    )
+  }
   return (
-    <Feed />
+    <h1>Welcome</h1>
   )
 }
 

@@ -83,7 +83,7 @@ const ReviewPageWrapper = (props) => {
                 </Breadcrumbs>
             </Box>
             <Card>
-                <ReviewDetails {...props} page={true}         top={data.business}  />
+                <ReviewDetails {...props} page={true}         top={props.data.business}  />
             </Card>
         </>
     )
