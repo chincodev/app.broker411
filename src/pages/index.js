@@ -14,7 +14,7 @@ import { isEmpty } from 'lodash'
 /**
  *  Set Home URL based on User Roles
  */
-export const getHomeRoute = (role, business) => {
+ export const getHomeRoute = (role, business) => {
   if (role === 'representative' || role === 'owner') {
     if(!isEmpty(business)){
       if(business.type === 'carrier'){
@@ -22,21 +22,25 @@ export const getHomeRoute = (role, business) => {
       } else {
         return '/dashboard'
       }
-    } else if(role === 'guest') {
-      return '/dashboard'
     } else {
-      return '/admin'
+      return '/dashboard'
     }
+  } else if(role === 'guest') {
+    return '/dashboard'
+  } else {
+    return '/admin'
   }
 }
 
 const Home = () => {
- 
+  // ** Hooks
   const auth = useAuth()
   const router = useRouter()
   useEffect(() => {
     if (auth.user && auth.user.role && auth.user.role.name) {
       const homeRoute = getHomeRoute(auth.user.role.name, auth.user.business)
+      console.log(homeRoute)
+      // Redirect user to Home URL
       router.replace(homeRoute)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
