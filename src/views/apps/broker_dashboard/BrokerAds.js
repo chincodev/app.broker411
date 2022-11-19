@@ -62,7 +62,7 @@ const BrokerAds = () => {
     <Card>
       <CardHeader
         sx={{ pb: 3.25 }}
-        title='Attention!'
+        title=''
         titleTypographyProps={{ variant: 'h6' }}
         // action={
         //   <IconButton aria-label='settings' className='card-more-options'>
@@ -83,7 +83,7 @@ const BrokerAds = () => {
       />
       <CardContent>
         <Grid >
-          <Typography sx={{color:"#00adb5"}}>Carriers can win a $100 Amazon Gift Card or the equivalent in Crypto or Paypal! Each review you leave counts as one entry. A winner will be selected on Thanksgiving day at 4:00 PM PST.</Typography>
+          <Typography sx={{color:"#00adb5"}}></Typography>
         </Grid>
       </CardContent>
     </Card>

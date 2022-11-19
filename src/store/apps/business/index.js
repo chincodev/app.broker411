@@ -50,7 +50,8 @@ export const appBusinessesSlice = createSlice({
     params: {},
     allData: [],
     current_page:-1,
-    page_size: 24
+    page_size: 24,
+    starting_at:1
   },
   reducers: {},
   extraReducers: builder => {
@@ -61,6 +62,7 @@ export const appBusinessesSlice = createSlice({
         state.params = action.payload.params
         state.current_page = action.payload.current_page
         state.page_size = action.payload.page_size
+        state.starting_at = action.payload.starting_at
         state.loading = false
       } else {
         state.loading = false

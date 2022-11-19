@@ -23,7 +23,7 @@ import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
 import { useAuth } from 'src/hooks/useAuth'
-import { KeyOutline, MailboxOutline } from 'mdi-material-ui'
+import { KeyOutline, MailboxOutline, StarBoxOutline, StarOffOutline } from 'mdi-material-ui'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
 import ChangePasswordDialog from 'src/views/apps/profile/ChangePasswordDialog'
 import ChangeEmailDialog from 'src/views/apps/profile/ChangeEmailDialog'
@@ -136,13 +136,29 @@ const UserDropdown = props => {
           </Box>
         </Box>
         <Divider sx={{ mt: 0, mb: 1 }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => setOpenPasswordDialog(true)}>
+        <MenuItem sx={{ p: 0 }} onClick={() => {
+            setAnchorEl(null)
+            router.push('/account/reviews')
+          }}>
+          <Box sx={styles}>
+            <StarBoxOutline sx={{ mr: 2 }} />
+            My reviews
+          </Box>
+        </MenuItem>
+        <MenuItem sx={{ p: 0 }} onClick={() => {
+            setAnchorEl(null)
+            setOpenPasswordDialog(true)
+            }}>
           <Box sx={styles}>
             <KeyOutline sx={{ mr: 2 }} />
             Change password
           </Box>
         </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => setOpenEmailDialog(true)}>
+        <MenuItem sx={{ p: 0 }} onClick={() => {
+            setAnchorEl(null)
+            setOpenEmailDialog(true)
+            
+            }}>
           <Box sx={styles}>
             <MailboxOutline sx={{ mr: 2 }} />
             Change email

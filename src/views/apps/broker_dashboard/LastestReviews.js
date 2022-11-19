@@ -2,7 +2,7 @@
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
-import { DataGrid as MuiDataGrid } from '@mui/x-data-grid'
+import { DataGrid as MuiDataGrid} from '@mui/x-data-grid'
 
 // ** Icon Imports
 
@@ -12,12 +12,17 @@ import CustomAvatar from 'src/@core/components/mui/avatar'
 
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
-import { CardHeader } from '@mui/material'
+import { Button, CardHeader, CircularProgress } from '@mui/material'
 import { styled } from '@mui/system'
+import { green } from '@mui/material/colors'
+import { useEffect, useState } from 'react'
+import { reviewService } from 'services/review.service'
+import moment from 'moment'
+import { useRouter } from 'next/router'
 
 const DataGrid = styled(MuiDataGrid)(({ theme }) => ({
-    "& .MuiDataGrid-columnHeaders": { display: "none" },
-    "& .MuiDataGrid-virtualScroller": { marginTop: "0!important" },
+    "& .MuiDataGrid-columnHeaders": { borderTopRightRadius: 0, borderTopLeftRadius: 0  },
+    
   }));
 
 const statusObj = {
@@ -104,81 +109,141 @@ const renderUserAvatar = row => {
   }
 }
 
-const columns = [
-  {
-    flex: 0.25,
-    field: 'name',
-    minWidth: 200,
-    headerName: 'User',
-    renderCell: ({ row }) => {
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderUserAvatar(row)}
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography variant='subtitle2' sx={{ color: 'text.primary' }}>
-              {row.name}
-            </Typography>
-            <Typography variant='caption' sx={{ lineHeight: 1.6667 }}>
-              {row.username}
-            </Typography>
-          </Box>
-        </Box>
-      )
-    }
-  },
-  {
-    flex: 0.3,
-    minWidth: 250,
-    field: 'email',
-    headerName: 'Email',
-    renderCell: ({ row }) => <Typography variant='body2'>{row.email}</Typography>
-  },
-  {
-    flex: 0.2,
-    minWidth: 130,
-    field: 'role',
-    headerName: 'Role',
-    renderCell: ({ row }) => (
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      
-        <Typography sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>{row.role}</Typography>
-      </Box>
-    )
-  },
-  {
-    flex: 0.15,
-    minWidth: 110,
-    field: 'status',
-    headerName: 'Status',
-    renderCell: ({ row }) => (
-      <CustomChip
-        skin='light'
-        size='small'
-        label={row.status}
-        color={statusObj[row.status].color}
-        sx={{ textTransform: 'capitalize', '& .MuiChip-label': { px: 2.5, lineHeight: 1.385 } }}
-      />
-    )
-  }
-]
+
 
 const LastestReviews = () => {
+
+
+    const columns = [
+        {
+          flex: 0.3,
+          field: 'name',
+          minWidth: 300,
+          headerName: 'User',
+          renderCell: ({ row }) => {
+            return (
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                {renderUserAvatar(row)}
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant='subtitle2' sx={{ color: 'text.primary' }}>
+                    {row.business.legal_name}
+                  </Typography>
+                  <Typography variant='caption' sx={{ lineHeight: 1.6667 }}>
+                  {row.business.address_line_2} 
+                              {/* {' '}
+                              &bull;&nbsp;{moment(row.createdAt).fromNow()} */}
+                  </Typography>
+                </Box>
+              </Box>
+            )
+          }
+        },
+        {
+          flex: 0.15,
+          minWidth: 100,
+          field: 'rating',
+          headerName: 'Rating',
+          renderCell: ({ row }) => <Typography color={row.rating < 5 ? 'error.main' : 'primary.main'} variant='body2'>{row.rating}/10 Stars</Typography>
+        },
+        {
+          flex: 0.2,
+          minWidth: 130,
+          field: 'createdAt',
+          headerName: 'Date',
+          renderCell: ({ row }) => (
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            
+              <Typography sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>{moment(row.createdAt).fromNow()}</Typography>
+            </Box>
+          )
+        },
+        {
+          flex: 0.2,
+          minWidth: 50,
+          field: 'replies',
+          headerName: 'Replied',
+          renderCell: ({ row }) => (
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            
+              <Typography sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>{row.replies.length > 0 ? 'Yes' : 'No'}</Typography>
+            </Box>
+          )
+        },{
+          flex: 0.2,
+          minWidth: 130,
+          field: 'actions',
+          headerName: 'Actions',
+          renderCell: ({ row }) => (
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            
+              <Button onClick={()=>router.push('/reviews/[id]', `reviews/${row.id}`)} size='small' variant='contained'>Details</Button>
+            </Box>
+          )
+        },
+      
+      ]
+
+    const router = useRouter()
+
+    const [ loading, setLoading ] = useState(false)
+
+    const [ data, setData ] = useState([])
+
+    const getData = async () => {
+        try {
+            setLoading(true)
+            let data = await reviewService.list('?page_number=1&page_size=10')
+            setData(data.data)
+            setLoading(false)
+        } catch (er) {
+            console.log(er)
+        }
+    }
+
+    useEffect(() => {
+        getData()
+    }, [])
+    
+
+
   return (
-    <Card>
+    <Card style={{position:'relative'}}>
         <CardHeader
-        title='Lastest Reviews'
-        // subheader='Commercial networks'
-        titleTypographyProps={{ variant: 'h6' }}
-        subheaderTypographyProps={{ variant: 'caption', sx: { color: 'text.disabled' } }}
-        sx={{
-          flexDirection: ['column', 'row'],
-          alignItems: ['flex-start', 'center'],
-          '& .MuiCardHeader-action': { mb: 0 },
-          '& .MuiCardHeader-content': { mb: [2, 0] }
-        }}
-       
-      />
-      <DataGrid autoHeight hideFooter  rows={rows} columns={columns}  disableSelectionOnClick pagination={undefined} />
+            title='Lastest Reviews'
+            // subheader='Commercial networks'
+            titleTypographyProps={{ variant: 'h6' }}
+            subheaderTypographyProps={{ variant: 'caption', sx: { color: 'text.disabled' } }}
+            sx={{
+                flexDirection: ['column', 'row'],
+                alignItems: ['flex-start', 'center'],
+                '& .MuiCardHeader-action': { mb: 0 },
+                '& .MuiCardHeader-content': { mb: [2, 0] }
+            }}
+        />
+        <DataGrid disableSelectionOnClick
+disableColumnMenu autoHeight hideFooter  rows={data} columns={columns}  disableSelectionOnClick pagination={undefined} />
+        {
+            loading && <Box sx={{             
+                position: 'absolute',
+                backgroundColor:'rgba(0,0,0,0.35)',
+                top:0,
+                left:0,
+                width: '100%',
+                height: '100%',
+            }}>
+                <CircularProgress
+                    size={24}
+                    sx={{
+                        color: green[500],
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        marginTop: '-12px',
+                        marginLeft: '-12px',
+                    }}
+                />
+            </Box>
+        }
     </Card>
   )
 }

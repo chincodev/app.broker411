@@ -3,9 +3,12 @@ import { Button, CardContent, CardMedia, Divider, Typography } from '@mui/materi
 import CardUser from 'src/views/ui/cards/basic/CardUser'
 import FeedList from './list'
 import { Box, Card } from '@mui/material'
+import { useEffect } from 'react'
 
 const Feed = () => {
 
+  
+  
 
   return (
     <Box className='content-center'>

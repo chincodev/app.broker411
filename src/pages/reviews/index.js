@@ -1,7 +1,12 @@
 import ReviewsList from 'src/views/apps/review/list'
 
 const Reviews = ({ id, data, code }) => {
-    return <ReviewsList id={id} data={data} code={code} />
+    return <ReviewsList 
+        id={id} 
+        data={data} 
+        code={code} 
+        requiredFilter={'?'} 
+    />
 }
 
 // export async function getServerSideProps(context){

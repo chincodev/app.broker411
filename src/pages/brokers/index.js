@@ -1,17 +1,14 @@
-// ** React Imports
 import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import Grid from '@mui/material/Grid'
-import queryString from 'query-string'
 import { Button, CircularProgress, MenuItem, Pagination, Select, Typography } from '@mui/material'
-import urlManager from '../../../../../utils/urlManager'
+import urlManager from '../../../utils/urlManager'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
-import { fetchData } from 'src/store/apps/review'
+import { fetchData } from 'src/store/apps/business'
 import { useDispatch } from 'react-redux'
-import AddReviewDialog from 'src/layouts/AddReviewDialog'
-import ReviewCard from 'src/views/apps/business/view/ReviewCard'
+import BusinessCard from 'src/views/apps/business/list/BusinessCard'
 
 const Img = styled('img')(({ theme }) => ({
 	marginTop: theme.spacing(15),
@@ -26,9 +23,9 @@ const Img = styled('img')(({ theme }) => ({
 	}
 }))
 
-const ReviewsList = (props) => {
+const BrokersList = (props) => {
 
-	const store = useSelector(state => state.review)
+	const store = useSelector(state => state.business)
 
 	const { requiredFilter } = props
 
@@ -51,16 +48,11 @@ const ReviewsList = (props) => {
 		dispatch(fetchData(`${requiredFilter || ''}${url_params ? url_params+'&' : ''}`))
 	}
 
-
 	const dispatch = useDispatch()
 
     useEffect(() => {
 		getData(window.location.search ? window.location.search.replace('?', '') : null)
     }, [])
-
-	const reload = () => {
-		getData(window.location.search ? window.location.search.replace('?', '') : null)
-	}
 
 	useEffect(() => {
 		const handleRouteChange = (url, { shallow }) => {
@@ -78,6 +70,7 @@ const ReviewsList = (props) => {
 
     return (
 		<Box>
+			{console.log(store.data.length)}
 			{
 				store.loading ? (
 					<Box style={{width:'100%', textAlign:'center'}}>
@@ -103,7 +96,7 @@ const ReviewsList = (props) => {
 							<Typography>
 								{`Showing ${store.starting_at} to ${(store.starting_at - 1) + store.data.length} of ${store.total}`}
 							</Typography>
-							<Box>
+							{/* <Box>
 								<Select
         							value={
 										(new URLSearchParams(window.location.search).get('sort_field') && new URLSearchParams(window.location.search).get('sort_order')) 
@@ -140,24 +133,21 @@ const ReviewsList = (props) => {
 										sortOptions.map( x => <MenuItem value={x.value}>{x.label}</MenuItem>)
 									}
         						</Select>
-							</Box>
+							</Box> */}
 						</Box>
 						<Grid container spacing={6} className='match-height'>
 							{
-								store.data && store.data.map(x => <Grid item xs={12} md={6} lg={4} xl={4}>
-									<ReviewCard
-									reload={reload}
-									top={top}
-									feedMode={true}
-									  data={{
-										...x,
-										stats: '8.14k',
-										title: 'Ratings',
-										chipColor: 'primary',
-										trendNumber: '+15.6%',
-										chipText: 'Year of 2022',
-										src: '/images/cards/card-stats-img-1.png'
-									  }}
+								store.data && store.data.map(x => <Grid item xs={12} md={6} lg={4} xl={3}>
+									<BusinessCard
+									    data={{
+								    	...x,
+								    	stats: '8.14k',
+								    	title: 'Ratings',
+								    	chipColor: 'primary',
+								    	trendNumber: '+15.6%',
+								    	chipText: 'Year of 2022',
+								    	src: '/images/cards/card-stats-img-1.png'
+									    }}
 									/>
 								</Grid>)
 							}
@@ -187,4 +177,4 @@ const ReviewsList = (props) => {
 }
 
 
-export default ReviewsList
+export default BrokersList

@@ -6,6 +6,7 @@ export const reviewService = {
     find,
     create,
     update,
+    count,
     delete: _delete,
 };
 
@@ -16,6 +17,10 @@ function list(query = '', token) {
 
 function find(_id, token) {
     return fetchWrapper.get(`${baseUrl}reviews/${_id}`, token);
+}
+
+function count(_id, token) {
+    return fetchWrapper.get(`${baseUrl}reviews/${_id}/count`, token);
 }
 
 function create(params) {

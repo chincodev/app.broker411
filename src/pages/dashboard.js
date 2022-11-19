@@ -46,18 +46,7 @@ const CrmDashboard = () => {
   const [verify, setVerify] = useState(false)
   const [verifyType, setVerifyType] = useState('')
 
-  const Img = styled('img')(({ theme }) => ({
-    marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5),
-    [theme.breakpoints.down('lg')]: {
-      height: 450,
-      marginTop: theme.spacing(5),
-      marginBottom: theme.spacing(5)
-    },
-    [theme.breakpoints.down('md')]: {
-      height: 400
-    }
-  }))
+
 
   useEffect(() => {
     if(verify){
@@ -70,7 +59,6 @@ const CrmDashboard = () => {
     return <VerifyBusinessDialog verifyType={verifyType} />
   }
 
-  {console.log(auth.user)}
 
   if(isEmpty(auth.user.business) && isEmpty(auth.user.request_business)){
     return <Grid container spacing={4}>
@@ -103,7 +91,7 @@ const CrmDashboard = () => {
     )
   }
   return (
-    <h1>Welcome</h1>
+    <Feed />
   )
 }
 

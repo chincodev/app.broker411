@@ -17,8 +17,9 @@ import { useState } from 'react'
 import { useAuth } from 'src/hooks/useAuth'
 import { useRouter } from 'next/router'
 import DialogReviewDetails from '../../review/details/DialogWrapper'
+import DeleteReviewDialog from '../../review/dialog/DeleteReviewDialog'
 
-const ReviewCard = ({ data, feedMode = false }) => {
+const ReviewCard = ({ data, feedMode = false, reload }) => {
   // ** Vars
     const { title, chipColor, chipText, src, stats, trend, trendNumber } = data
 
@@ -46,9 +47,11 @@ const ReviewCard = ({ data, feedMode = false }) => {
 
     const router = useRouter()
 
+    const [ showDeleteDialog, setShowDeleteDialog ] = useState(false)
+
 
     return (
-        <Card sx={{ overflow: 'visible', position: 'relative', pb:4 }}>
+        <Card sx={{ overflow: ' ', position: 'relative', pb:4, display: "flex", flexDirection: "column" }}>
             <CardHeader
                 sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', pb:3 }}
                 title={
@@ -117,7 +120,13 @@ const ReviewCard = ({ data, feedMode = false }) => {
                             </MenuItem>
                           
                             {
-                                (auth.user.id === data.user.id) && <><Divider/><MenuItem sx={{ color: 'error.main' }}>
+                                (auth.user.id === data.user.id) && <><Divider/><MenuItem 
+                                  onClick={()=>{
+                                    handleReviewMenuClose()
+                                    setShowDeleteDialog(true)
+                                  }}
+                                  sx={{ color: 'error.main' }}
+                                >
                                     <DeleteOutline fontSize='small' sx={{ mr: 2 }} />
                                     Delete
                                 </MenuItem></>
@@ -202,6 +211,7 @@ const ReviewCard = ({ data, feedMode = false }) => {
         </Box>
       </CardContent>
 
+      <Box style={{ marginTop: "auto" }}>
       {
         data.categories && data.categories.length > 0 && <>
           <Divider></Divider>
@@ -262,6 +272,15 @@ const ReviewCard = ({ data, feedMode = false }) => {
             </CardContent>
           </>
         )
+      }
+      </Box>
+      {
+        showDeleteDialog && <DeleteReviewDialog 
+          open={showDeleteDialog}
+          setOpen={setShowDeleteDialog}
+          reload={reload}
+          data={data}
+        />
       }
     </Card>
   )

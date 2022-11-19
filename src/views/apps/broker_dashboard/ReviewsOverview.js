@@ -17,29 +17,37 @@ import AccountOutline from 'mdi-material-ui/AccountOutline'
 // ** Custom Components Imports
 import CustomAvatar from 'src/@core/components/mui/avatar'
 import { MessageOutline, ReplyAllOutline, StarOutline } from 'mdi-material-ui'
+import { useEffect, useState } from 'react'
+import { reviewService } from 'services/review.service'
+import { businessService } from 'services/business.service'
+import { useAuth } from 'src/hooks/useAuth'
+import { replyService } from 'services/reply.service'
+import { CircularProgress } from '@mui/material'
+import { green } from '@mui/material/colors'
 
-const salesData = [
+const _salesData = [
   {
-    stats: '8,458',
+    stats: '0',
     color: 'primary',
     title: 'Reviews',
     icon: <MessageOutline />
   },
   {
     color: 'info',
-    stats: '2,450',
+    stats: '0',
     icon: <ReplyAllOutline />,
     title: 'Replies'
   },
   {
     icon: <StarOutline />,
-    stats: '9.4',
+    stats: '0',
     color: 'warning',
     title: 'Rating'
   }
 ]
 
-const renderStats = () => {
+const renderStats = (salesData) => {
+
   return salesData.map((sale, index) => (
     <Grid item xs={12} sm={4} key={index}>
       <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
@@ -58,34 +66,81 @@ const renderStats = () => {
 }
 
 const ReviewsOverview = () => {
+
+	const auth = useAuth()
+
+	const getData = async () => {
+		try {
+			setLoading(true)
+			const _business_info = await businessService.find_broker_in_fmcsa(auth.user.business.us_dot_number)
+	
+			setSalesData([
+				{
+				  stats: _business_info.record.reviewCount,
+				  color: 'primary',
+				  title: 'Reviews',
+				  icon: <MessageOutline />
+				},
+				{
+				  color: 'info',
+				  stats: '0',
+				  icon: <ReplyAllOutline />,
+				  title: 'Replies'
+				},
+				{
+				  icon: <StarOutline />,
+				  stats: _business_info.record.avgRating ? _business_info.record.avgRating : 0,
+				  color: 'warning',
+				  title: 'Rating'
+				}
+			])
+			setLoading(false)
+		} catch (er) {
+			console.log(er)
+		}
+	}
+	const [ loading, setLoading ] = useState(true)
+  	const [ salesData, setSalesData ] = useState(_salesData)
+	  
+
+  	useEffect(() => {
+  	  	getData()
+  	}, [])
+
   return (
-    <Card>
+    <Card sx={{position: 'relative',}}>
       <CardHeader
         sx={{ pb: 3.25 }}
         title='Reviews Overview'
         titleTypographyProps={{ variant: 'h6' }}
-        // action={
-        //   <IconButton aria-label='settings' className='card-more-options'>
-        //     <DotsVertical />
-        //   </IconButton>
-        // }
-        // subheader={
-        //   <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        //     <Typography variant='caption' sx={{ mr: 1.5 }}>
-        //       Brokerage Stats
-        //     </Typography>
-        //     {/* <Typography variant='subtitle2' sx={{ color: 'success.main' }}>
-        //       +18%
-        //     </Typography> */}
-        //     {/* <ChevronUp fontSize='small' sx={{ color: 'success.main' }} /> */}
-        //   </Box>
-        // }
       />
       <CardContent>
         <Grid container spacing={6}>
-          {renderStats()}
+          {renderStats(salesData)}
         </Grid>
       </CardContent>
+	  	{
+			loading && <Box sx={{
+				position: 'absolute',
+				backgroundColor:'rgba(0,0,0,0.35)',
+				top:0,
+				left:0,
+				width: '100%',
+				height: '100%',
+			}}>
+				  <CircularProgress
+					size={24}
+					sx={{
+						  color: green[500],
+						  position: 'absolute',
+						  top: '50%',
+						  left: '50%',
+						  marginTop: '-12px',
+						  marginLeft: '-12px',
+					}}
+				/>
+			</Box> 
+		}     
     </Card>
   )
 }

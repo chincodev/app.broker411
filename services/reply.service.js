@@ -5,11 +5,16 @@ export const replyService = {
     create,
     update,
     delete: _delete,
+    count
 };
 
 
 function create(params) {
     return fetchWrapper.post(`${baseUrl}replies`, params);
+}
+
+function count(_id, token) {
+    return fetchWrapper.get(`${baseUrl}replies/${_id}/count`, token);
 }
 
 function _delete(id) {

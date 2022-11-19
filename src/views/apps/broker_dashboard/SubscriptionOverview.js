@@ -73,7 +73,23 @@ const renderStats = () => {
   ))
 }
 
+const AvatarImg = styled('img')(({ theme }) => ({
+
+  textAlign:'center',
+  height: 162,
+
+  [theme.breakpoints.down('md')]: {
+    height: 154
+  },
+  [theme.breakpoints.down('sm')]: {
+    height: 149
+  }
+}))
+
 const SubscriptionOverview = () => {
+
+
+
   return (
     <Card style={{display:'flex', flexDirection:'column'}}>
       <CardHeader
@@ -84,8 +100,8 @@ const SubscriptionOverview = () => {
           <CustomChip
                 skin='light'
                 size='small'
-                color='primary'
-                label='Standard'
+                color='error'
+                label='Not Found'
                 sx={{ fontSize: '0.75rem', borderRadius: '4px' }}
               />
         }
@@ -102,80 +118,31 @@ const SubscriptionOverview = () => {
         // }
       />
       <Box style={{display:'flex', flexDirection:'column', justifyContent:'space-between', flexGrow:'1'}}>
-      <CardContent
-              sx={{ display: 'flex', flexWrap: 'wrap', pb: '0 !important', }}
-            >
-              
-              <Box sx={{ display: 'flex', position: 'relative' }}>
-                <Sup>$</Sup>
-                <Typography
-                  variant='h3'
-                  sx={{
-                    mb: -1.2,
-                    lineHeight: 1,
-                    color: 'primary.main'
-                  }}
-                >
-                  9,99
-                </Typography>
-                <Sub>/ month</Sub>
-              </Box>
-            </CardContent>
+        <div></div>
       <CardContent>
-      <Box sx={{ mt: 0, mb: 5 }}>
-                <Box
-                  sx={{ display: 'flex', mb: 2.5, alignItems: 'center', '& svg': { mr: 2, color: 'text.secondary' } }}
-                >
-               
-                  <Typography component='span' sx={{ fontSize: '0.875rem' }}>
-                    10 Users
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    mt: 2.5,
-                    display: 'flex',
-                    mb: 2.5,
-                    alignItems: 'center',
-                    '& svg': { mr: 2, color: 'text.secondary' }
-                  }}
-                >
+      <Box sx={{ mt: 0, mb: 0 }}>
                 
-                  <Typography component='span' sx={{ fontSize: '0.875rem' }}>
-                    Up to 10GB storage
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    mt: 2.5,
-                    display: 'flex',
-                    mb: 2.5,
-                    alignItems: 'center',
-                    '& svg': { mr: 2, color: 'text.secondary' }
-                  }}
-                >
-                 
-                  <Typography component='span' sx={{ fontSize: '0.875rem' }}>
-                    Basic Support
-                  </Typography>
-                </Box>
+      <Box style={{textAlign:'center'}}>
+      <AvatarImg alt='Upgrade Account' src='/images/cards/illustration-upgrade-account.png' />
+
+      </Box>
+        <Typography variant='h5' style={{ textAlign:'center'}}>Upgrade Account Now</Typography>
+        <Typography sx={{ mb: 1, textAlign:'center' }} variant='body2'>
+          Get access to awesome features
+        </Typography>
+        <Typography variant='h5' sx={{ fontWeight: 600, color: 'primary.main', mt:2, mb:4, textAlign:'center' }}>
+          $9,99
+        </Typography>
+
+        <Button size='small' onClick={()=>alert('Feature comming soon')} fullWidth variant='contained'>
+          Subscribe
+        </Button>
+       
+      
               </Box>
-              <Box sx={{ display: 'flex', mb: 1.5, justifyContent: 'space-between' }}>
-                <Typography variant='body2' sx={{ fontWeight: 600, color: 'text.secondary' }}>
-                  Days
-                </Typography>
-                <Typography variant='body2' sx={{ fontWeight: 600, color: 'text.secondary' }}>
-                  26 of 30 Days
-                </Typography>
-              </Box>
-              <LinearProgress value={86.66} variant='determinate' sx={{ height: 8, borderRadius: '5px' }} />
-              <Typography variant='caption' sx={{ mt: 1.5, mb: 6 }}>
-                4 days remaining
-              </Typography>
+             
           
-              <Button variant='contained' sx={{ width: '100%', marginTop:'1em' }} >
-                  More info
-              </Button>
+             
       </CardContent>
       </Box>
     </Card>
@@ -183,3 +150,99 @@ const SubscriptionOverview = () => {
 }
 
 export default SubscriptionOverview
+
+
+
+// <Card style={{display:'flex', flexDirection:'column'}}>
+// <CardHeader
+//   sx={{ pb: 3.25 }}
+//   title='Subscription Overview'
+//   titleTypographyProps={{ variant: 'h6' }}
+//   action={
+//     <CustomChip
+//           skin='light'
+//           size='small'
+//           color='primary'
+//           label='Standard'
+//           sx={{ fontSize: '0.75rem', borderRadius: '4px' }}
+//         />
+//   }
+// />
+// <Box style={{display:'flex', flexDirection:'column', justifyContent:'space-between', flexGrow:'1'}}>
+// <CardContent
+//         sx={{ display: 'flex', flexWrap: 'wrap', pb: '0 !important', }}
+//       >
+        
+//         <Box sx={{ display: 'flex', position: 'relative' }}>
+//           <Sup>$</Sup>
+//           <Typography
+//             variant='h3'
+//             sx={{
+//               mb: -1.2,
+//               lineHeight: 1,
+//               color: 'primary.main'
+//             }}
+//           >
+//             9,99
+//           </Typography>
+//           <Sub>/ month</Sub>
+//         </Box>
+//       </CardContent>
+// <CardContent>
+// <Box sx={{ mt: 0, mb: 5 }}>
+//           <Box
+//             sx={{ display: 'flex', mb: 2.5, alignItems: 'center', '& svg': { mr: 2, color: 'text.secondary' } }}
+//           >
+         
+//             <Typography component='span' sx={{ fontSize: '0.875rem' }}>
+//               10 Users
+//             </Typography>
+//           </Box>
+//           <Box
+//             sx={{
+//               mt: 2.5,
+//               display: 'flex',
+//               mb: 2.5,
+//               alignItems: 'center',
+//               '& svg': { mr: 2, color: 'text.secondary' }
+//             }}
+//           >
+          
+//             <Typography component='span' sx={{ fontSize: '0.875rem' }}>
+//               Up to 10GB storage
+//             </Typography>
+//           </Box>
+//           <Box
+//             sx={{
+//               mt: 2.5,
+//               display: 'flex',
+//               mb: 2.5,
+//               alignItems: 'center',
+//               '& svg': { mr: 2, color: 'text.secondary' }
+//             }}
+//           >
+           
+//             <Typography component='span' sx={{ fontSize: '0.875rem' }}>
+//               Basic Support
+//             </Typography>
+//           </Box>
+//         </Box>
+//         <Box sx={{ display: 'flex', mb: 1.5, justifyContent: 'space-between' }}>
+//           <Typography variant='body2' sx={{ fontWeight: 600, color: 'text.secondary' }}>
+//             Days
+//           </Typography>
+//           <Typography variant='body2' sx={{ fontWeight: 600, color: 'text.secondary' }}>
+//             26 of 30 Days
+//           </Typography>
+//         </Box>
+//         <LinearProgress value={86.66} variant='determinate' sx={{ height: 8, borderRadius: '5px' }} />
+//         <Typography variant='caption' sx={{ mt: 1.5, mb: 6 }}>
+//           4 days remaining
+//         </Typography>
+    
+//         <Button variant='contained' sx={{ width: '100%', marginTop:'1em' }} >
+//             More info
+//         </Button>
+// </CardContent>
+// </Box>
+// </Card>
