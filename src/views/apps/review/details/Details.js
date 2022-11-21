@@ -328,9 +328,9 @@ const ReviewDetails = (props) => {
             <ThumbUp sx={{mr:2}}></ThumbUp>
             Like
           </Button>
-    
+              
           {
-            (data.replies && data.replies.length > 0) || auth.user.business || (auth.user.business.id != data.business.id) ? '' : <Button onClick={()=>mode === 'reply' ? setMode('') : setMode('reply')} type='button' size={'large'} color={mode === 'reply' ? 'primary' : 'secondary'} >
+            (data.replies && data.replies.length > 0) || !auth.user.business || (auth.user.business.id != data.business.id) ? '' : <Button onClick={()=>mode === 'reply' ? setMode('') : setMode('reply')} type='button' size={'large'} color={mode === 'reply' ? 'primary' : 'secondary'} >
             <Reply sx={{mr:2}}></Reply>
             Reply
           </Button>

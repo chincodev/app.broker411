@@ -23,6 +23,7 @@ const DeleteReviewDialog = (props) => {
             reload()
             handleClose()
         } catch (er) {
+            console.log(er)
             setLoading(false)
             if(er && er.errors && er.errors[0] && er.errors[0]['message']){
               toast.error(er.errors[0]['message'])

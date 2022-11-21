@@ -78,6 +78,7 @@ const ReviewsList = (props) => {
 
     return (
 		<Box>
+			{console.log(store)}
 			{
 				store.loading ? (
 					<Box style={{width:'100%', textAlign:'center'}}>
@@ -146,6 +147,7 @@ const ReviewsList = (props) => {
 							{
 								store.data && store.data.map(x => <Grid item xs={12} md={6} lg={4} xl={4}>
 									<ReviewCard
+									
 									reload={reload}
 									top={top}
 									feedMode={true}

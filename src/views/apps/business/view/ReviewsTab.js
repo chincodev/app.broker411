@@ -74,6 +74,10 @@ const ReviewsTab = (props) => {
 		dispatch(fetchData(`?${url_params ? url_params+'&' : ''}${queryString.stringify(requiredFilter, {arrayFormat:'bracket'})}`))
 	}
 
+	const reload = () => {
+		getData(window.location.search ? window.location.search.replace('?', '') : null)
+	}
+
 	const requiredFilter = {
 		filter_type: ['eq'],
 		filter_field: ['business_id'],
@@ -104,7 +108,7 @@ const ReviewsTab = (props) => {
 
     return (
 		<Box>
-			{console.log(store)}
+	
 			{
 				store.loading ? (
 					<Box style={{width:'100%', textAlign:'center'}}>
@@ -175,6 +179,7 @@ const ReviewsTab = (props) => {
 							{
 								store.data && store.data.map(x => <Grid item xs={12} md={6} lg={6}>
 									<ReviewCard
+										reload={reload}
 									  data={{
 										...x,
 										stats: '8.14k',

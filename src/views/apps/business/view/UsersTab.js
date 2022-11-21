@@ -29,6 +29,7 @@ const Img = styled('img')(({ theme }) => ({
 }))
 
 const ReviewsTab = (props) => {
+	
 
 	const store = useSelector(state => state.review)
 
@@ -154,6 +155,7 @@ const ReviewsTab = (props) => {
 							{
 								store.data && store.data.map(x => <Grid item xs={12} md={6} lg={6}>
 									<ReviewCard
+									
 									  data={{
 										...x,
 										stats: '8.14k',
