@@ -127,21 +127,18 @@ const UserViewLeft = ({ data, set_data }) => {
   const [loading, set_loading] = useState(false)
 
   const approveReq = async () => {
-      let name = window.prompt(`Whats the name of this @${data.username}?`) 
-      if(name != null){
-        try {
-          set_loading(true)
-          await userService.confirm_membership(data.id, {request_business_id: null, business_id: data.request_business_id, name})
-          set_data(Object.assign(data, {request_business_id: null, business_id: data.request_business_id}))
-          set_loading(false)
-        } catch (er) {
-          console.log(er)
-          alert('Error...')
-          set_loading(false)
-        }
+    if (window.confirm(`Confirm membership of @${data.username} in ${data.request_business.legal_name}?`)) {
+      try {
+        set_loading(true)
+        await userService.confirm_membership(data.id, {request_business_id: null, business_id: data.request_business_id})
+        set_data(Object.assign(data, {request_business_id: null, business_id: data.request_business_id}))
+        set_loading(false)
+      } catch (er) {
+        console.log(er)
+        alert('Error...')
+        set_loading(false)
       }
-      
-    
+    }
   }
   const renderUserAvatar = () => {
     if (data) {
@@ -221,24 +218,19 @@ const UserViewLeft = ({ data, set_data }) => {
               {/* <Typography variant='h6'>Details</Typography> */}
               <Divider sx={{ mt: 4 }} />
               <Box sx={{ pt: 2, pb: 1 }}>
+            
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
-                    Name:
-                  </Typography>
-                  <Typography variant='body2'>{data.name}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
-                  <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
-                    Email:
+                    Account Email:
                   </Typography>
                   <Typography variant='body2'>{data.email}</Typography>
                 </Box>
-                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                {/* <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
                     Phone Number:
                   </Typography>
                   <Typography variant='body2'>{data.phone}</Typography>
-                </Box>
+                </Box> */}
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
                     Enabled:
@@ -275,6 +267,30 @@ const UserViewLeft = ({ data, set_data }) => {
                     }}
                   />
                 </Box>
+                {
+                  isEmpty(data.request_business) && (<>
+           
+                  
+                    <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
+                    Contact Email:
+                  </Typography>
+                  <Typography variant='body2'>{data.contact_email}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
+                    Name & Last Name:
+                  </Typography>
+                  <Typography variant='body2'>{data.name}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
+                    Phone:
+                  </Typography>
+                  <Typography variant='body2'>{data.phone ? '+1 '+data.phone : ''}</Typography>
+                </Box>
+                  </>)
+                }
                 <Divider sx={{ mt: 4, mb: 4 }} />
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
@@ -300,10 +316,23 @@ const UserViewLeft = ({ data, set_data }) => {
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
                     Business Type:
                   </Typography>
-                 
-                  
+                {console.log(data)}
+                  <CustomChip
+                    skin='light'
+                    size='small'
+                    label={data.business ? data.business.type : 'None'}
+                    color={'info'}
+                    sx={{
+                      height: 20,
+                      fontSize: '0.75rem',
+                      fontWeight: 500,
+                      borderRadius: '5px',
+                      textTransform: 'capitalize'
+                    }}
+                  />
                 
                 </Box>
+                {console.log(data)}
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
                     Membership:
@@ -311,8 +340,8 @@ const UserViewLeft = ({ data, set_data }) => {
                   <CustomChip
                     skin='light'
                     size='small'
-                    label={data.business_id ? 'Confirmed' : data.request_business_id ? 'Pending' : 'None'}
-                    color={statusColors[data.business_id ? 'true' : data.request_business_id ? 'false' : 'secondary']}
+                    label={data.business_id &&  data.business.is_verified ? 'Confirmed' : (data.request_business_id || data.business_id) ? 'Pending' : 'None'}
+                    color={statusColors[data.business_id &&  data.business.is_verified? 'true' : (data.request_business_id || data.business_id) ? 'false' : 'secondary']}
                     sx={{
                       height: 20,
                       fontSize: '0.75rem',
@@ -322,6 +351,37 @@ const UserViewLeft = ({ data, set_data }) => {
                     }}
                   />
                 </Box>
+                
+                
+                {
+                  !isEmpty(data.request_business) && (<>
+                    <Divider sx={{ mt: 4 }} />
+                    <Box sx={{ display: 'flex', mb: 2.7 }}>
+                      <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
+                        Join Request:
+                      </Typography>
+                      <Link href={'/admin/businesses/[id]'} as={`/admin/businesses/${data.request_business.id}`}><Typography sx={{color:'info.main', cursor:'pointer'}}>{data.request_business.legal_name}</Typography></Link>
+                    </Box>
+                    <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
+                    Contact Email:
+                  </Typography>
+                  <Typography variant='body2'>{data.contact_email}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
+                    Name & Last Name:
+                  </Typography>
+                  <Typography variant='body2'>{data.name}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', mb: 2.7 }}>
+                  <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
+                    Phone:
+                  </Typography>
+                  <Typography variant='body2'>{data.phone ? '+1 '+data.phone : ''}</Typography>
+                </Box>
+                  </>)
+                }
                 {
                   data.request_business_id && !data.business_id ? (
                     <><br />

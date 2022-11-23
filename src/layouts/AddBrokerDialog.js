@@ -36,10 +36,11 @@ import DialogTabDetails from 'src/layouts/components/create-business-tabs/Dialog
 import DialogTabBilling from 'src/layouts/components/create-business-tabs/DialogTabBilling'
 import DialogTabDatabase from 'src/layouts/components/create-business-tabs/DialogTabDatabase'
 import DialogTabFramework from 'src/layouts/components/create-business-tabs/DialogTabFramework'
+import DialogTabContact from 'src/layouts/components/create-business-tabs/DialogTabContact'
 import { styled } from '@mui/material/styles'
 import { CardHeader, CardMedia, Divider } from '@mui/material'
 import { businessService } from 'services/business.service'
-import { ViewListOutline } from 'mdi-material-ui'
+import { OfficeBuildingCogOutline, PhoneOutline, ViewListOutline } from 'mdi-material-ui'
 import { userService } from 'services/user.service'
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -84,16 +85,23 @@ const TabLabel = props => {
     </Box>
   )
 }
-const tabsArr = ['detailsTab', 'frameworkTab', 'submitTab']
+const tabsArr = ['detailsTab', 'frameworkTab', 'contactTab', 'submitTab']
 
 const AddBrokerDialog = (props) => {
   // ** States
   const [show, setShow] = useState(false)
   const [activeTab, setActiveTab] = useState('detailsTab')
   const [ actionsLoading, setActionsLoading ] = useState(false)
+  const [ errors, setErrors ] = useState(null)
 
   const [ businessData, setBusinessData ] = useState({
     type:'broker'
+  })
+
+  const [ userData, setUserData ] = useState({
+    phone: '',
+    contact_email: '',
+    name: '',
   })
 
   // ** Hook
@@ -110,9 +118,10 @@ const AddBrokerDialog = (props) => {
 
   const handleSubmit = async () => {
     try {
+      setErrors(null)
       setActionsLoading(true)
       console.log(businessData)
-      await userService.update_me({request_business_id: businessData.id})
+      await userService.update_me({...userData, request_business_id: businessData.id})
       toast.success('Wait until an administrator review your request...')
       props.setVerify(true)
       props.setVerifyType('broker')
@@ -120,10 +129,20 @@ const AddBrokerDialog = (props) => {
       setActionsLoading(false)
       setActiveTab('detailsTab')
     } catch (er) {
-      toast.error(er.errors[0].message)
-      setShow(false)
+      er.errors && Array.isArray(er.errors) && er.errors.map(x => toast.error(x.message))
+      
+      if(er && er.errors && er.errors.length > 0){
+        setErrors(er.errors)
+        let isFormError = er.errors.some(x => {
+          if(x.path && Array.isArray(x.path) && x.path.length > 0){
+            return true
+          } 
+        })
+        if(isFormError){
+          setActiveTab('contactTab')
+        }
+      }
       setActionsLoading(false)
-      setActiveTab('detailsTab')
     }
   }
 
@@ -247,10 +266,23 @@ const AddBrokerDialog = (props) => {
                   value='frameworkTab'
                   label={
                     <TabLabel
-                      title='Details'
-                      icon={<ViewListOutline />}
-                      subtitle='Broker Details'
+                      title='Brokerage'
+                      icon={<OfficeBuildingCogOutline />}
+                      subtitle='Brokerage Details'
                       active={activeTab === 'frameworkTab'}
+                    />
+                  }
+                />
+                <Tab
+                  disabled={true}
+                  disableRipple
+                  value='contactTab'
+                  label={
+                    <TabLabel
+                      title='Contact'
+                      icon={<PhoneOutline />}
+                      subtitle='Broker Contact'
+                      active={activeTab === 'contactTab'}
                     />
                   }
                 />
@@ -277,6 +309,18 @@ const AddBrokerDialog = (props) => {
               </TabPanel>
               <TabPanel value='frameworkTab' sx={{ flexGrow: 1 }}>
                 <DialogTabFramework
+                  setActiveTab={setActiveTab}
+                  businessData={businessData}
+                  setBusinessData={setBusinessData}
+                />
+                {renderTabFooter()}
+              </TabPanel>
+
+              <TabPanel value='contactTab' sx={{ flexGrow: 1 }}>
+                <DialogTabContact
+                  userData={userData}
+                  errors={errors}
+                  setUserData={setUserData}
                   setActiveTab={setActiveTab}
                   businessData={businessData}
                   setBusinessData={setBusinessData}

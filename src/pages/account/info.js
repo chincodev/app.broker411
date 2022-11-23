@@ -1,13 +1,10 @@
 import { Typography } from '@mui/material'
 import Link from 'next/link'
 import Breadcrumbs from '@mui/material/Breadcrumbs';
-import { useAuth } from 'src/hooks/useAuth'
-import ReviewsList from 'src/views/apps/review/list'
 import AccountSettings from 'src/views/pages/account-settings/AccountSettings';
 
-const Reviews = (props) => {
 
-    const auth = useAuth()
+const UserSettings = () => {
 
     return <>
         <Breadcrumbs aria-label="breadcrumb" sx={{mb:5}}>
@@ -26,17 +23,13 @@ const Reviews = (props) => {
                     <Typography color="secondary">Account</Typography>
                 </a>
             </Link>
-            <Typography color="text.primary">My Reviews</Typography>
+            <Typography color="text.primary">Basic Info</Typography>
         </Breadcrumbs>
-        {/* <AccountSettings 
-            tab = 'settings'
-        /> */}
-        <AccountSettings
-            tab={'reviews'}
-            {...props}
+        <AccountSettings 
+            tab = 'info'
         />
     </>
 }
 
 
-export default Reviews
+export default UserSettings
