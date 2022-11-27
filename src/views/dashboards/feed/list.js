@@ -30,7 +30,7 @@ const FeedList = () => {
     return (
         <Box >
             {/* <Typography variant='h6'>Reviews By Carriers</Typography> */}
-
+          
             <Typography variant='h7'>LASTEST REVIEWS</Typography>
             <Divider />
             {

@@ -28,7 +28,7 @@ import ThemeComponent from 'src/@core/theme/ThemeComponent'
 import AuthGuard from 'src/@core/components/auth/AuthGuard'
 import GuestGuard from 'src/@core/components/auth/GuestGuard'
 import WindowWrapper from 'src/@core/components/window-wrapper'
-
+import Script from "next/script";
 // ** Spinner Import
 import Spinner from 'src/@core/components/spinner'
 
@@ -101,6 +101,15 @@ const App = props => {
           />
           <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
           <meta name='viewport' content='initial-scale=1, width=device-width' />
+          <Script src="https://scripts.simpleanalyticscdn.com/latest.js"  />
+          <noscript>
+            {/* eslint-disable @next/next/no-img-element */}
+            <img
+              src="https://queue.simpleanalyticscdn.com/noscript.gif"
+              alt=""
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </noscript>
         </Head>
 
         <AuthProvider>

@@ -11,6 +11,7 @@ export const fetchData = createAsyncThunk('appFeeds/fetchData', async (params = 
   try {
     await dispatch(setLoading())
     const response = await reviewService.list('?'+params)
+    console.log(response)
     return response
   } catch (er){
     er.errors && er.errors.map(x => toast.error(x.message))

@@ -191,7 +191,7 @@ const UserViewLeft = ({ business, setBusiness }) => {
               <CustomChip
                 skin='light'
                 size='small'
-                label={business.type}
+                label={business.type.toLowerCase() === 'broker' ? 'brokerage' : business.type}
                 color={typeColors[business.type]}
                 sx={{
                   borderRadius: '4px',

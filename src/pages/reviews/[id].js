@@ -8,6 +8,8 @@ import { reviewService } from 'services/review.service'
 import ReviewPageWrapper from 'src/views/apps/review/details/PageWrapper'
 
 const ReviewView = ({ id, data, code }) => {
+
+    console.log(data)
     return <ReviewPageWrapper 
         data={data} 
         code={code} 

@@ -36,7 +36,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { getInitials } from 'src/@core/utils/get-initials'
 import moment from 'moment'
-import { Reply, Star, ThumbUp, Send, Check, AlertBox } from 'mdi-material-ui'
+import { Reply, Star, ThumbUp, Send, Check, AlertBox, AlertCircleOutline } from 'mdi-material-ui'
 import { AlertTitle, CircularProgress, List, ListItem, ListItemText, Rating, Alert, DialogTitle, DialogContentText, DialogActions, Avatar } from '@mui/material'
 import toast from 'react-hot-toast'
 import { green } from '@mui/material/colors'
@@ -308,9 +308,9 @@ const ReviewDetails = (props) => {
                     <br />
                     {
                         data.categories.map(x => <ListItem sx={{display:'flex', alignItems:'center'}} >
-                       <CustomAvatar skin='light' color={data.type === 'good' ? 'success' : 'error'} sx={{ width: 34, height: 34, mr:2 }}>
-                       {data.type === 'good' ? <Check sx={{ fontSize: '1.25rem' }} /> : <Alert sx={{ fontSize: '1.25rem' }} /> }
-          
+                       <CustomAvatar color={data.type === 'good' ? 'success' : 'error'} sx={{ width: 34, height: 34, mr:2 }}>
+                       {data.type === 'good' ? <Check sx={{ fontSize: '1.25rem' }} /> : <AlertCircleOutline sx={{ fontSize: '1.25rem' }} /> } 
+                       
           </CustomAvatar>
                             <ListItemText><Typography style={{fontSize:'1.1rem'}}>{x.description}</Typography></ListItemText>
                             

@@ -7,7 +7,7 @@ import CardContent from '@mui/material/CardContent'
 import moment from 'moment'
 // ** Custom Components Imports
 import CustomChip from 'src/@core/components/mui/chip'
-import { Avatar, Badge, CardHeader, Divider, IconButton, Menu, MenuItem, Alert } from '@mui/material'
+import { Avatar, Badge, CardHeader, Divider, IconButton, Menu, MenuItem, Alert, Button } from '@mui/material'
 import { DeleteOutline, DotsVertical, ReplyOutline, Star, ThumbUp, EyeOutline, AlertBox } from 'mdi-material-ui'
 
 import CustomAvatar from 'src/@core/components/mui/avatar'
@@ -18,6 +18,7 @@ import { useAuth } from 'src/hooks/useAuth'
 import { useRouter } from 'next/router'
 import DialogReviewDetails from '../../review/details/DialogWrapper'
 import DeleteReviewDialog from '../../review/dialog/DeleteReviewDialog'
+import LikeButton from './LikeButton'
 
 const ReviewCard = ({ data, feedMode = false, reload }) => {
   // ** Vars
@@ -51,7 +52,7 @@ const ReviewCard = ({ data, feedMode = false, reload }) => {
 
 
     return (
-        <Card sx={{ overflow: ' ', position: 'relative', pb:4, display: "flex", flexDirection: "column" }}>
+        <Card sx={{ overflow: ' ', position: 'relative', display: "flex", flexDirection: "column" }}>
             <CardHeader
                 sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', pb:3 }}
                 title={
@@ -273,6 +274,17 @@ const ReviewCard = ({ data, feedMode = false, reload }) => {
           </>
         )
       }
+      <>
+            <Divider></Divider>
+            <CardContent style={{paddingBottom:'10px', paddingTop:'0px'}}>
+              <Box>
+                <LikeButton 
+                  size='small'
+                  data={data}
+                />
+              </Box>
+            </CardContent>
+          </>
       </Box>
       {
         showDeleteDialog && <DeleteReviewDialog 
