@@ -64,11 +64,10 @@ const CardUser = () => {
           
         </Box>
         
-        {/* <Divider />
+
         <Box>
-          <Button sx={{mb:3, mt: 3}} fullWidth variant='contained'>Write a review</Button>
-          <Button fullWidth color='secondary' variant='contained'>Search Broker</Button>
-        </Box> */}
+          <Button sx={{mt: 1}} fullWidth variant='contained'>Write a review</Button>
+        </Box> 
       </CardContent>
     </Card>
   )

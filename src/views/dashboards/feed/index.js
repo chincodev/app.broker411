@@ -18,13 +18,13 @@ const Feed = () => {
         </Grid>
         <Grid item xs={12} sm={12} md={5} lg={3} order={{ md: 3, xs: 2 }}>
           <Box sx={{
-      display: { xs: 'none', md: 'block'},
-      position: 'sticky',
-      top: '88px'
+      display: { xs: 'block', md: 'block'},
+      position: { xs: 'relative', md: 'sticky'},
+      top: { xs: 'relative', md: '88px'}
     }}>
 
 <CardUser />
-          <Card sx={{mt:4}}>
+          {/* <Card sx={{mt:4}}>
           <CardContent>
             <Box
               sx={{
@@ -40,9 +40,9 @@ const Feed = () => {
                     </Typography>
               </Box>
               </CardContent>
-          </Card>
+          </Card> */}
     </Box>
-    <Card sx={{mt:4, display: {md: 'none'}}}>
+    {/* <Card sx={{mt:4, display: {md: 'none'}}}>
           <CardContent>
             <Box
               sx={{
@@ -59,7 +59,7 @@ const Feed = () => {
                     </Typography>
               </Box>
               </CardContent>
-          </Card>
+          </Card> */}
           
         </Grid>
         <Grid item xs={12} sm={12} md={7} lg={5} order={{ md: 2, xs: 3 }}>
