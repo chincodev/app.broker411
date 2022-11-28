@@ -1,4 +1,4 @@
-import { useState, forwardRef, useEffect } from 'react'
+import { useState, forwardRef, useEffect, useRef } from 'react'
 import React from 'react'
 import Box from '@mui/material/Box'
 import Dialog from '@mui/material/Dialog'
@@ -15,6 +15,9 @@ import { useDispatch } from 'react-redux'
 import ReviewForm from './ReviewForm'
 import { isEmpty } from 'lodash'
 import { Autocomplete, CircularProgress, TextField } from '@mui/material'
+import { businessService } from 'services/business.service'
+import { useDebounce } from 'use-debounce';
+import ReviewFormAutocomplete from './ReviewFormAutocomplete'
 
 const Transition = forwardRef(function Transition(props, ref) {
     return <Fade ref={ref} {...props} />
@@ -24,56 +27,9 @@ const ReviewFormDialog = (props) => {
 
     const store = useSelector(state => state.business)
 
-    const { business, btnText } = props
-    const [ actionsLoading, setActionsLoading ] = useState(false)
-    const [ scopedBusiness, setScopedBusiness ] = useState(null)
     const dispatch = useDispatch()
 
-    const [open, setOpen] = React.useState(false);
-    const [options, setOptions] = React.useState([]);
-    const loading = open && options.length === 0;
-
-    useEffect(() => {
-        if(!business || isEmpty(business)){
-            setScopedBusiness(null)
-        } else {
-            setScopedBusiness(business)
-        }
-    }, [business])
-
-
-    React.useEffect(() => {
-        if (!open) {
-            setOptions([]);
-        }
-    }, [open]);
-
-    function sleep(delay = 0) {
-        return new Promise((resolve) => {
-          setTimeout(resolve, delay);
-        });
-      }
-
-    React.useEffect(() => {
-        let active = true;
-    
-        if (!loading) {
-          return undefined;
-        }
-    
-        (async () => {
-          await sleep(1e3); // For demo purposes.
-    
-          if (active) {
-            setOptions([...topFilms]);
-          }
-        })();
-    
-        return () => {
-          active = false;
-        };
-      }, [loading]);
-
+    const [ business, setBusiness ] = useState(null) 
 
     return (
         <Dialog
@@ -81,8 +37,18 @@ const ReviewFormDialog = (props) => {
             open={store.isReviewDialogOpen}
             scroll='body'
             maxWidth='md'
-            onClose={()=>dispatch(closeReviewDialog())}
-            onBackdropClick={()=>dispatch(closeReviewDialog())}
+            onClose={()=>{{
+                dispatch(closeReviewDialog())
+                setTimeout(() => {
+                    setBusiness(null)
+                }, 500);
+            }}}
+            onBackdropClick={()=>{
+                dispatch(closeReviewDialog())
+                setTimeout(() => {
+                    setBusiness(null)
+                }, 500);
+            }}
             TransitionComponent={Transition}
         >
             <DialogContent
@@ -94,7 +60,12 @@ const ReviewFormDialog = (props) => {
                     pb: { xs: 5, sm: 12.5 }
                 }}
             >
-                <IconButton size='small' onClick={()=>dispatch(closeReviewDialog())} sx={{ position: 'absolute', right: '1rem', top: '1rem' }}>
+                <IconButton size='small' onClick={()=>{
+                    dispatch(closeReviewDialog())
+                    setTimeout(() => {
+                        setBusiness(null)
+                    }, 500);
+                }} sx={{ position: 'absolute', right: '1rem', top: '1rem' }}>
                     <Close />
                 </IconButton>
                 <Box sx={{ mb: 3, textAlign: 'center' }}>
@@ -102,48 +73,28 @@ const ReviewFormDialog = (props) => {
                         Leave a Review
                     </Typography>
                 </Box>
-                <Box sx={{ width:'100%', display: 'flex', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
-                    {
-                        scopedBusiness ? <ReviewForm 
-                            business={scopedBusiness}
-                            handleClose={()=>dispatch(closeReviewDialog())}
-                            setVerify={props.setVerify}
-                        /> : <Box sx={{width:'100%'}}>
-                            <Autocomplete
-                                id="asynchronous-demo"
-                                sx={{ width: 300, width: '100%' }}
-                                open={open}
-                                fullWidth
-                                onOpen={() => {
-                                    setOpen(true);
-                                }}
-                                onClose={() => {
-                                    setOpen(false);
-                                }}
-                                isOptionEqualToValue={(option, value) => option.title === value.title}
-                                getOptionLabel={(option) => option.title}
-                                options={options}
-                                loading={loading}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Search a broker"
-                                        InputProps={{
-                                            ...params.InputProps,
-                                            endAdornment: (
-                                                <React.Fragment>
-                                                    {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                                    {params.InputProps.endAdornment}
-                                                </React.Fragment>
-                                            ),
-                                        }}
-                                    />
-                                )}
-                            />
-                        </Box>
-                        
-                    }
-                </Box>
+                {
+                    !isEmpty(business) ? (
+                        <ReviewForm 
+                            business={business} 
+                            allowResetBusiness={true}
+                            setBusiness={setBusiness}
+                            handleClose={
+                                ()=>{
+                                    dispatch(closeReviewDialog())
+                                    setTimeout(() => {
+                                        setBusiness(null)
+                                    }, 500)
+                                }
+                            }
+                        />
+                    ) : (
+                        <ReviewFormAutocomplete
+                            setBusiness={setBusiness}
+  
+                        />
+                    )
+                }
             </DialogContent>
         </Dialog>
     )

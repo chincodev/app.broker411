@@ -1,9 +1,6 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
 import queryString from 'query-string'
-import { useDebounce } from 'use-debounce';
-import Cookies from 'js-cookie';
-
 
 const usePaginationController = (props) => {
     

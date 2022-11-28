@@ -30,7 +30,7 @@ const schema = yup.object().shape({
 
 const ReviewForm = (props) => {
 
-  const { business } = props
+  const { business, allowResetBusiness, setBusiness } = props
 
   const bgClasses = useBgColor()
   
@@ -110,6 +110,7 @@ const ReviewForm = (props) => {
                   <Typography variant='body' sx={{ mb: 0, fontSize:'14px'}}>
                     Brokerage Name
                   </Typography>
+                  
                 </Box>
                 <Typography sx={{ml:8, fontSize:'12px'}} variant='body2'>
                 
@@ -217,11 +218,14 @@ const ReviewForm = (props) => {
             </Grid>
             </Grid>
            
-            <Grid item xs={12} style={{textAlign:'end', paddingTop:'1em'}}>
-              <Button type='button' disabled={submitting} color='secondary' onClick={()=>reset()} variant='contained' size='large'>
-                Reset
-              </Button>&nbsp;&nbsp;
-              <Button type='submit' disabled={submitting} variant='contained' size='large'>
+            <Box sx={{pt:0,display:'flex', flexDirection:{xs:'column-reverse', md:'row'}, width:'100%', justifyContent:'flex-end', paddingTop:'1em'}}>
+              <Button sx={{mt:{xs:1, md:0}, mr:{xs:0, md:1}}} type='button' disabled={submitting} color='secondary'  onClick={()=>{
+                reset()
+                setBusiness(null)
+              }} variant='contained'>
+                Search another Brokerage
+              </Button>
+              <Button type='submit' disabled={submitting} variant='contained'  >
                 {
                   submitting && <CircularProgress
                     size={24}
@@ -237,7 +241,7 @@ const ReviewForm = (props) => {
                 }
                 Submit
               </Button>
-            </Grid> 
+            </Box> 
           </Grid>
         </form>
       </Box>

@@ -67,9 +67,9 @@ const CardUser = () => {
         </Box>
         
 
-        {/* <Box>
+        <Box>
           <Button sx={{mt: 1}} onClick={()=>dispatch(openReviewDialog())} fullWidth variant='contained'>Write a review</Button>
-        </Box>  */}
+        </Box> 
       </CardContent>
     </Card>
   )
