@@ -27,6 +27,18 @@ export const addBusiness = createAsyncThunk('appBusinesses/addBusiness', async (
   return response.data
 })
 
+export const openReviewDialog = createAsyncThunk('appBusinesses/openReviewDialog', async (data, { getState, dispatch }) => {
+  return {
+    isReviewDialogOpen:true
+  }
+})
+
+export const closeReviewDialog = createAsyncThunk('appBusinesses/closeReviewDialog', async (data, { getState, dispatch }) => {
+  return {
+    isReviewDialogOpen:false
+  }
+})
+
 
 export const deleteBusiness = createAsyncThunk('appBusinesses/deleteBusiness', async (id, { getState, dispatch }) => {
   const response = await axios.delete('/apps/businesss/delete', {
@@ -45,6 +57,8 @@ export const appBusinessesSlice = createSlice({
   name: 'appBusinesses',
   initialState: {
     data: [],
+    isReviewDialogOpen: false,
+    profile:{},
     loading: true,
     total: null,
     params: {},
@@ -70,6 +84,15 @@ export const appBusinessesSlice = createSlice({
     }),
     builder.addCase(setLoading.fulfilled, (state, action) => {
       state.loading = true
+    })
+
+  
+    builder.addCase(openReviewDialog.fulfilled, (state, action) => {
+      state.isReviewDialogOpen = true
+    })
+
+    builder.addCase(closeReviewDialog.fulfilled, (state, action) => {
+      state.isReviewDialogOpen = false
     })
   }
 })

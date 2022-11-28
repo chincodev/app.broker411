@@ -11,6 +11,8 @@ import { useAuth } from 'src/hooks/useAuth'
 import CustomChip from 'src/@core/components/mui/chip'
 import styled from '@emotion/styled'
 import MuiCard from '@mui/material/Card'
+import { useDispatch } from 'react-redux'
+import { openReviewDialog } from 'src/store/apps/business'
 
 const Card = styled(MuiCard)(({ theme }) => ({
   '& .MuiCard-root': {
@@ -25,7 +27,7 @@ const CardUser = () => {
 
   const auth = useAuth()
 
-
+  const dispatch = useDispatch()
 
   return (
     <Card >
@@ -65,9 +67,9 @@ const CardUser = () => {
         </Box>
         
 
-        <Box>
-          <Button sx={{mt: 1}} fullWidth variant='contained'>Write a review</Button>
-        </Box> 
+        {/* <Box>
+          <Button sx={{mt: 1}} onClick={()=>dispatch(openReviewDialog())} fullWidth variant='contained'>Write a review</Button>
+        </Box>  */}
       </CardContent>
     </Card>
   )

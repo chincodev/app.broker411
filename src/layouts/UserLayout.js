@@ -18,6 +18,7 @@ import HorizontalAppBarContent from './components/horizontal/AppBarContent'
 
 // ** Hook Import
 import { useSettings } from 'src/@core/hooks/useSettings'
+import ReviewFormDialog from './ReviewFormDialog'
 
 const UserLayout = ({ children }) => {
   // ** Hooks
@@ -67,6 +68,7 @@ const UserLayout = ({ children }) => {
             )
           })}
     >
+      <ReviewFormDialog />
       {children}
 
     </Layout>
