@@ -28,6 +28,7 @@ const UserView = ({ id, data, code }) => {
   if(code === 404){
     return (
       <Card>
+        {console.log(business_data)}
       {/* <CardHeader sx={{ textAlign: 'center', fontWeight:'900' }} title='Oooops...' titleTypographyProps={{ variant: 'h6' }} /> */}
       <CardContent sx={{ textAlign: 'center' }}>
       <Typography variant='h2' sx={{ mb: 2.5 }}>
