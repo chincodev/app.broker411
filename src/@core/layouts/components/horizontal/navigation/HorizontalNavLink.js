@@ -71,7 +71,7 @@ const HorizontalNavLink = props => {
   }
 
   return (
-    <CanViewNavLink navLink={item}>
+    // <CanViewNavLink navLink={item}>
       <Wrapper {...(!hasParent ? { component: 'div', sx: { py: settings.skin === 'bordered' ? 2.625 : 2.75 } } : {})}>
         <Link href={`${item.path}`} passHref>
           <ListItem
@@ -131,7 +131,7 @@ const HorizontalNavLink = props => {
           </ListItem>
         </Link>
       </Wrapper>
-    </CanViewNavLink>
+    // </CanViewNavLink>
   )
 }
 

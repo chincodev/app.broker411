@@ -84,9 +84,9 @@ const HorizontalNavGroup = props => {
   const currentURL = router.pathname
   const { skin, direction } = settings
   const { navSubItemIcon, menuTextTruncate, horizontalMenuToggle, horizontalMenuAnimation } = themeConfig
-  const popperOffsetHorizontal = direction === 'rtl' ? 16 : -16
-  const popperPlacement = direction === 'rtl' ? 'bottom-end' : 'bottom-start'
-  const popperPlacementSubMenu = direction === 'rtl' ? 'left-start' : 'right-start'
+  const popperOffsetHorizontal = -16
+  const popperPlacement = 'bottom-start'
+  const popperPlacementSubMenu = 'right-start'
 
   // ** States
   const [menuOpen, setMenuOpen] = useState(false)
@@ -157,7 +157,7 @@ const HorizontalNavGroup = props => {
   }
 
   return (
-    <CanViewNavGroup navGroup={item}>
+    // <CanViewNavGroup navGroup={item}>
       <MainWrapper {...(WrapperCondition ? { onClickAway: handleGroupClose } : { onMouseLeave: handleGroupClose })}>
         <ChildWrapper>
           <List component='div' sx={{ py: skin === 'bordered' ? 2.625 : 2.75 }}>
@@ -257,7 +257,7 @@ const HorizontalNavGroup = props => {
           </List>
         </ChildWrapper>
       </MainWrapper>
-    </CanViewNavGroup>
+    // </CanViewNavGroup>
   )
 }
 

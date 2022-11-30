@@ -10,6 +10,7 @@ import themeConfig from 'src/configs/themeConfig'
 import HorizontalNavItems from './HorizontalNavItems'
 
 const Navigation = props => {
+  {console.log(props)}
   return (
     <Box
       className='menu-content'

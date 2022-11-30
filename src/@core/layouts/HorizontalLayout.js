@@ -114,9 +114,9 @@ const HorizontalLayout = props => {
           </Toolbar>
         </Box>
 
-        {navHidden ? null : (
+        {
           
-          auth.user.business === 'administrator' && <Box className='layout-horizontal-nav' sx={{ width: '100%' }}>
+          auth.user.role.name === 'administrator' && <Box className='layout-horizontal-nav' sx={{ width: '100%' }}>
             <Toolbar
               className='horizontal-nav-content-container'
               sx={{
@@ -129,7 +129,7 @@ const HorizontalLayout = props => {
             </Toolbar>
           </Box>
           
-        )}
+        }
       </AppBar>
 
       <ContentWrapper
