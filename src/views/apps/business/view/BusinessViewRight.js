@@ -65,7 +65,7 @@ const UserViewRight = ({ business, setBusiness }) => {
         <Tab value='connection' label='Connection' icon={<LinkVariant sx={{ fontSize: '18px' }} />} /> */}
       </TabList>
       <Box sx={{ mt: 3 }}>
-        {/* <TabPanel sx={{ p: 0 }} value='reviews'>
+        <TabPanel sx={{ p: 0 }} value='reviews'>
           <ReviewsTab 
             business={business}
             setBusiness={setBusiness}
@@ -73,7 +73,7 @@ const UserViewRight = ({ business, setBusiness }) => {
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='loads'>
           <LoadsTab />
-        </TabPanel> */}
+        </TabPanel>
       </Box>
 
     </TabContext>

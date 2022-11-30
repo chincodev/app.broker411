@@ -193,7 +193,7 @@ const AddBrokerDialog = (props) => {
         <Typography variant='h6' sx={{ mb: 2 }}>
           Brokers
         </Typography>
-        <Typography sx={{ mb: 2 }}>Get Started For $9.99/Month</Typography>
+        <Typography sx={{ mb: 2 }}>Reply to reviews about yourself or your brokerage.</Typography>
         <Typography variant='body2'>
         Sign Up & Get Started Today
         </Typography>

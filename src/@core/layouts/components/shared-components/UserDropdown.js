@@ -23,10 +23,11 @@ import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
 import { useAuth } from 'src/hooks/useAuth'
-import { KeyOutline, MailboxOutline, StarBoxOutline, StarOffOutline } from 'mdi-material-ui'
+import { KeyOutline, MailboxOutline, OfficeBuilding, OfficeBuildingCog, StarBoxOutline, StarOffOutline } from 'mdi-material-ui'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
 import ChangePasswordDialog from 'src/views/apps/profile/ChangePasswordDialog'
 import ChangeEmailDialog from 'src/views/apps/profile/ChangeEmailDialog'
+import BusinessInfoDialog from 'src/views/apps/business/BusinessInfoDialog'
 // ** Context
 
 // ** Styled Components
@@ -85,7 +86,7 @@ const UserDropdown = props => {
 
   const [ openPasswordDialog, setOpenPasswordDialog ] = useState(false)
   const [ openEmailDialog, setOpenEmailDialog ] = useState(false)
-
+  const [ businessInfoDialog, setBusinessInfoDialog ] = useState(false)
   const [ password, setPassword ] = useState('')
 
   return (
@@ -136,6 +137,21 @@ const UserDropdown = props => {
           </Box>
         </Box>
         <Divider sx={{ mt: 0, mb: 1 }} />
+        {
+          auth && auth.user && auth.user.business && auth.user.business.us_dot_number && auth.user.business.us_dot_number > 0 && (
+            <MenuItem sx={{ p: 0 }} onClick={() => {
+                setAnchorEl(null)
+                setBusinessInfoDialog(true)
+
+                }}>
+              <Box sx={styles}>
+                <OfficeBuildingCog sx={{ mr: 2 }} />
+                My business
+              </Box>
+            </MenuItem>
+          )
+        }
+        
         <MenuItem sx={{ p: 0 }} onClick={() => {
             setAnchorEl(null)
             router.push('/account/reviews')
@@ -164,6 +180,7 @@ const UserDropdown = props => {
             Change email
           </Box>
         </MenuItem>
+        
         <Divider />
         <MenuItem sx={{ py: 2 }} onClick={handleLogout}>
           <LogoutVariant sx={{ mr: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
@@ -177,6 +194,12 @@ const UserDropdown = props => {
       <ChangeEmailDialog 
         setOpenDialog={setOpenEmailDialog}
         openDialog={openEmailDialog}
+      />
+
+      <BusinessInfoDialog 
+      handleClose={()=>setBusinessInfoDialog(false)}
+               setOpenDialog={setBusinessInfoDialog}
+               openDialog={businessInfoDialog}
       />
     </Fragment>
   )
