@@ -68,7 +68,10 @@ const CardUser = () => {
         
 
         <Box>
-          <Button sx={{mt: 1}} onClick={()=>dispatch(openReviewDialog())} fullWidth variant='contained'>Write a review</Button>
+          <Button sx={{mt: 1}} onClick={()=>
+          document.getElementById("main-search").focus()
+            
+            } fullWidth variant='contained'>Write a review</Button>
         </Box> 
       </CardContent>
     </Card>
@@ -76,3 +79,4 @@ const CardUser = () => {
 }
 
 export default CardUser
+//// dispatch(openReviewDialog())

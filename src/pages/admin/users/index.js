@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
-import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import { DataGrid } from '@mui/x-data-grid'
@@ -11,12 +10,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import CustomChip from 'src/@core/components/mui/chip'
 import { fetchData, deleteUser } from 'src/store/apps/user'
 import AddUserDrawer from 'src/views/apps/user/list/AddUserDrawer'
-import { TextField, Tooltip } from '@mui/material'
+import { FormControl, InputLabel, MenuItem, TextField, Tooltip, Box, Select } from '@mui/material'
 import { useDebounce } from 'use-debounce';
 import { useRouter } from 'next/router'
 import styled from '@emotion/styled'
 import { isEmpty } from 'lodash'
-
 
 
 const businessMemberTypes = {
@@ -77,7 +75,7 @@ const defaultColumns = [
     renderCell: ({ row }) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.business ? row.business.legal_name : row.request_business ? row.request_business.legal_name : 'None'}
+          {row.business ? row.business.legal_name : row.request_business ? row.request_business.legal_name : '-'}
         </Typography>
       )
     }
@@ -231,6 +229,38 @@ const UserList = () => {
                 placeholder='Search by Username'
                 onChange={(e)=>set_search(e.target.value)}
               />
+            </Box>
+            <Box sx={{display:'flex'}}>
+              <FormControl sx={{mr:1}} size='small'>
+                <InputLabel id='invoice-status-select'>Membership</InputLabel>
+                <Select
+                  sx={{ pr: 4 }}
+                  value={''}
+                  label='Invoice Status'
+                  onChange={()=>console.log('first')}
+                  labelId='invoice-status-select'
+                >
+                  <MenuItem value=''>All</MenuItem>
+                  <MenuItem value='downloaded'>Pending</MenuItem>
+                  <MenuItem value='draft'>Confirmed</MenuItem>
+                  <MenuItem value='paid'>None</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl size='small'>
+                <InputLabel id='invoice-status-select'>Role</InputLabel>
+                <Select
+                  sx={{ pr: 4 }}
+                  value={''}
+                  label='Invoice Status'
+                  onChange={()=>console.log('first')}
+                  labelId='invoice-status-select'
+                >
+                  <MenuItem value=''>All</MenuItem>
+                  <MenuItem value='downloaded'>Pending</MenuItem>
+                  <MenuItem value='draft'>Confirmed</MenuItem>
+                  <MenuItem value='paid'>None</MenuItem>
+                </Select>
+              </FormControl>
             </Box>
           </Box>
           <DataGrid
