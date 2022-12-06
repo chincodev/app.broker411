@@ -96,15 +96,15 @@ const SubscriptionOverview = () => {
         sx={{ pb: 3.25 }}
         title='Subscription Overview'
         titleTypographyProps={{ variant: 'h6' }}
-        action={
-          <CustomChip
-                skin='light'
-                size='small'
-                color='error'
-                label='Not Found'
-                sx={{ fontSize: '0.75rem', borderRadius: '4px' }}
-              />
-        }
+        // action={
+        //   <CustomChip
+        //         skin='light'
+        //         size='small'
+        //         color='error'
+        //         label='Not Found'
+        //         sx={{ fontSize: '0.75rem', borderRadius: '4px' }}
+        //       />
+        // }
         // subheader={
         //   <Box sx={{ display: 'flex', alignItems: 'center' }}>
         //     <Typography variant='caption' sx={{ mr: 1.5 }}>
@@ -127,11 +127,11 @@ const SubscriptionOverview = () => {
 
       </Box>
         <Typography variant='h5' style={{ textAlign:'center'}}>Upgrade Account Now</Typography>
-        <Typography sx={{ mb: 1, textAlign:'center' }} variant='body2'>
+        <Typography sx={{ mb: 1, mt:2, textAlign:'center' }} variant='body2'>
           Get access to awesome features
         </Typography>
         <Typography variant='h5' sx={{ fontWeight: 600, color: 'primary.main', mt:2, mb:4, textAlign:'center' }}>
-          $9,99
+          Coming Soon
         </Typography>
 
         <Button size='small' onClick={()=>alert('Feature comming soon')} fullWidth variant='contained'>

@@ -17,77 +17,62 @@ import AccountOutline from 'mdi-material-ui/AccountOutline'
 // ** Custom Components Imports
 import CustomAvatar from 'src/@core/components/mui/avatar'
 import { MessageOutline, ReplyAllOutline, StarOutline } from 'mdi-material-ui'
+import { Button } from '@mui/material'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
+import { userService } from 'services/user.service'
+import { useAuth } from 'src/hooks/useAuth'
 
-const salesData = [
-  {
-    stats: '8,458',
-    color: 'primary',
-    title: 'Reviews',
-    icon: <MessageOutline />
-  },
-  {
-    color: 'info',
-    stats: '2,450',
-    icon: <ReplyAllOutline />,
-    title: 'Replies'
-  },
-  {
-    icon: <StarOutline />,
-    stats: '9.4',
-    color: 'warning',
-    title: 'Rating'
-  }
-]
 
-const renderStats = () => {
-  return salesData.map((sale, index) => (
-    <Grid item xs={12} sm={4} key={index}>
-      <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
-        <CustomAvatar skin='light' variant='rounded' color={sale.color} sx={{ mr: 4 }}>
-          {sale.icon}
-        </CustomAvatar>
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Typography variant='h6' sx={{ fontWeight: 600 }}>
-            {sale.stats}
-          </Typography>
-          <Typography variant='caption'>{sale.title}</Typography>
-        </Box>
-      </Box>
-    </Grid>
-  ))
-}
+
+
 
 const BrokerAds = () => {
-  return (
-    <Card>
-      <CardHeader
-        sx={{ pb: 3.25 }}
-        title=''
-        titleTypographyProps={{ variant: 'h6' }}
-        // action={
-        //   <IconButton aria-label='settings' className='card-more-options'>
-        //     <DotsVertical />
-        //   </IconButton>
-        // }
-        // subheader={
-        //   <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        //     <Typography variant='caption' sx={{ mr: 1.5 }}>
-        //       Brokerage Stats
-        //     </Typography>
-        //     {/* <Typography variant='subtitle2' sx={{ color: 'success.main' }}>
-        //       +18%
-        //     </Typography> */}
-        //     {/* <ChevronUp fontSize='small' sx={{ color: 'success.main' }} /> */}
-        //   </Box>
-        // }
-      />
-      <CardContent>
-        <Grid >
-          <Typography sx={{color:"#00adb5"}}></Typography>
-        </Grid>
-      </CardContent>
-    </Card>
-  )
+
+  	const [ loading, setLoading ] = useState(false)
+
+	const auth = useAuth()
+
+    const getEarlyAccess =  async () => {
+
+        try {
+            setLoading(true)
+            await userService.update_me({load_early:true})
+            toast.success('Loads early access request sent.')
+            setLoading(false)
+        } catch (er) {
+            if(er.code === 404){
+                toast.error('You already joined.')
+            } else {
+                toast.error('Something went wrong.')
+            }
+            setLoading(false)
+        }
+    
+    }
+  	return (
+  	  	<Card>
+  	  	  	<CardHeader
+  	  	  	  	sx={{ pb: 3.25 }}
+  	  	  	  	title='Post Loads For Box Trucks, Sprinters, & More'
+  	  	  	  	titleTypographyProps={{ variant: 'h6' }}
+  	  	  	/>
+  	  	  	<CardContent>
+  	  	  	  	<Box sx={{mb:4}}>
+  	  	  	  	  	<Typography sx={{color:"#00adb5"}}>Sign up now for free & early access to posting loads on Broker411.</Typography>
+  	  	  	  	</Box>
+  	  	  	  	<Button 
+					variant='contained'
+					onClick={()=>getEarlyAccess()}
+					disabled={loading || auth.user.load_early}
+				>
+					{
+						auth.user.load_early ? `You're in` : "GET EARLY ACCESS TO LOADS"
+					}
+				</Button>
+  	  	  	</CardContent>
+  	  	</Card>
+  	)
 }
 
 export default BrokerAds
