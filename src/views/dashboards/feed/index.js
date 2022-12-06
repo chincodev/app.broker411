@@ -6,10 +6,13 @@ import { Box, Card } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { userService } from 'services/user.service'
 import toast from 'react-hot-toast'
+import { useAuth } from 'src/hooks/useAuth'
 
 const Feed = () => {
 
     const [ loading, setLoading ] = useState(false)
+
+    const auth = useAuth()
 
     const getEarlyAccess =  async () => {
 
@@ -53,7 +56,7 @@ const Feed = () => {
                                     </Typography>
                                 </Box>
                                 <Button 
-                                    disabled={loading || auth.user.load_early}
+                                    disabled={loading || (auth.user && auth.user.load_early)}
                                     onClick={
                                         () => getEarlyAccess()
                                     } 
@@ -61,7 +64,7 @@ const Feed = () => {
                                     variant='contained'
                                 >
                                     {
-					                	auth.user.load_early ? `You're in` : "GET EARLY ACCESS TO LOADS"
+					                	auth.user && auth.user.load_early ? `You're in` : "GET EARLY ACCESS TO LOADS"
 					                }
                                 </Button>
                             </CardContent>

@@ -64,10 +64,10 @@ const BrokerAds = () => {
   	  	  	  	<Button 
 					variant='contained'
 					onClick={()=>getEarlyAccess()}
-					disabled={loading || auth.user.load_early}
+					disabled={loading || (auth.user && auth.user.load_early)}
 				>
 					{
-						auth.user.load_early ? `You're in` : "GET EARLY ACCESS TO LOADS"
+						auth.user && auth.user.load_early ? `You're in` : "GET EARLY ACCESS TO LOADS"
 					}
 				</Button>
   	  	  	</CardContent>
