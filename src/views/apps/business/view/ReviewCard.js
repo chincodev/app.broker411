@@ -282,7 +282,9 @@ const ReviewCard = ({ data, feedMode = false, reload }) => {
                   size='small'
                   data={data}
                 />
+                
               </Box>
+            
             </CardContent>
           </>
       </Box>
