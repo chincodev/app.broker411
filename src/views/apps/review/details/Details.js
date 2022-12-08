@@ -44,6 +44,7 @@ import { reviewService } from 'services/review.service'
 import FallbackSpinner from 'src/@core/components/spinner'
 import { isEmpty } from 'lodash'
 import { useAuth } from 'src/hooks/useAuth'
+import LikeButton from '../../business/view/LikeButton'
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} {...props} />
@@ -324,10 +325,10 @@ const ReviewDetails = (props) => {
         <Divider sx={{ m: 0 }} />
         <DialogContent sx={{ pb: 2, px: [8, 8], pt: [2], position: 'relative' }}>
           <Box sx={{display:'flex', justifyContent:'space-between'}}>
-          <Button onClick={()=>alert('Feature coming soon.')} type='button' size={'large'} color='secondary' >
-            <ThumbUp sx={{mr:2}}></ThumbUp>
-            Like
-          </Button>
+          <LikeButton
+          size='small'
+          data={data}
+          />
               
           {
             (data.replies && data.replies.length > 0) || !auth.user.business || (auth.user.business.id != data.business.id) ? '' : <Button onClick={()=>mode === 'reply' ? setMode('') : setMode('reply')} type='button' size={'large'} color={mode === 'reply' ? 'primary' : 'secondary'} >
