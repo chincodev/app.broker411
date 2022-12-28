@@ -264,6 +264,11 @@ const UserViewLeft = ({ business, setBusiness }) => {
                   <Typography variant='body2'>{business.mc_mx_ff_numbers || '-'}</Typography>
                   
                 </Box>
+                <Box sx={{ display: 'flex', mb: 2.7  }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>DBA Name:</Typography>
+                  <Typography variant='body2'>{business.dba_name}</Typography>
+                  
+                </Box>
               </Box>
             </CardContent>
 
