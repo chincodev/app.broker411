@@ -292,7 +292,7 @@ const AddCarrierDialog = (props) => {
                       <>
                         <Typography variant='h6'>Submit Mail</Typography>
                         <Typography variant='body2'>A verification mail will be sent to your inbox to verify your account.</Typography>
-
+                        <Typography variant='body2'>IMPORTANT: THE VERIFICATION EMAIL IS SENT TO THE EMAIL ADDRESS THAT IS REGISTERED WITH THE FMSCA. CHECK THAT EMAIL TO VERIFY YOUR BROKER411 ACCOUNT.</Typography>
                         <Box sx={{ mt: 5, display: 'flex', justifyContent: 'center' }}>
                           <img alt='submit-img' src={`/images/pages/kb-api.png`} />
                         </Box>

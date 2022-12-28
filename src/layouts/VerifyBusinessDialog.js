@@ -55,9 +55,9 @@ const VerifyBusinessDialog = (props) => {
         }
 
 {
-          props.verifyType === 'carrier' || (auth.user.business && auth.user.business.type === 'carrier') ? <Typography sx={{ mb: 3 }}>
+          props.verifyType === 'carrier' || (auth.user.business && auth.user.business.type === 'carrier') ? <><Typography sx={{ mb: 3 }}>
           Your request to join as carrier {auth.user.business ? <strong>at {auth.user.business.legal_name}</strong> : ''}  is pending<br /><strong>Check your email to complete the verification process. Check your promotions or spam folder if you don't see the email.</strong>
-        </Typography> : ''
+        </Typography><Typography sx={{ mb: 3 }}>IMPORTANT: THE VERIFICATION EMAIL IS SENT TO THE EMAIL ADDRESS THAT IS REGISTERED WITH THE FMSCA. CHECK THAT EMAIL TO VERIFY YOUR BROKER411 ACCOUNT.</Typography></> : ''
         }
         
         <Typography sx={{ mb: 3 }}>
@@ -80,3 +80,4 @@ const VerifyBusinessDialog = (props) => {
 }
 
 export default VerifyBusinessDialog
+
