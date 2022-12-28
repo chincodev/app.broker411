@@ -388,7 +388,7 @@ const AutocompleteComponent = ({ hidden, settings }) => {
     return () => {
       document.removeEventListener('keydown', handleKeydown)
       document.removeEventListener('keyup', handleKeyUp)
-    }
+    } 
   }, [handleKeyUp, handleKeydown])
   if (!isMounted) {
     return null
@@ -400,7 +400,7 @@ const AutocompleteComponent = ({ hidden, settings }) => {
         onClick={() => !openDialog && setOpenDialog(true)}
         sx={{ display: 'flex', cursor: 'pointer', alignItems: 'center' }}
       >
-        <StyledTextField type='search' disabled={true} variant={'outlined'} size={'small'} placeholder={'Search DOT here'} style={{width:'100%', marginLeft:'10px'}}
+        <StyledTextField type='search' id='main-search-two'  variant={'outlined'} size={'small'} placeholder={'Search DOT here'} style={{width:'100%', marginLeft:'10px'}}
         InputProps={{
           sx: {paddingLeft:'8px'},
          startAdornment: (

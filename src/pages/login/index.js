@@ -103,7 +103,7 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  email: yup.string().email().required(),
+  email: yup.string().email('You must login with an email address.').required(),
   password: yup.string().min(5).required()
 })
 

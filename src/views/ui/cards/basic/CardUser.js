@@ -69,10 +69,13 @@ const CardUser = () => {
 
         <Box>
           <Button sx={{mt: 1}} onClick={()=>
-          document.getElementById("main-search").focus()
+          document.getElementById("main-search") ? document.getElementById("main-search").focus() 
+        :
+          document.getElementById("main-search-two").click()
             
             } fullWidth variant='contained'>Write a review</Button>
         </Box> 
+      
       </CardContent>
     </Card>
   )
