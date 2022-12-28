@@ -236,6 +236,11 @@ const UserViewLeft = ({ business, setBusiness }) => {
             <CardContent>
               <Divider sx={{ mt: 4 }} />
               <Box sx={{ pt: 2, pb: 1 }}>
+              <Box sx={{ display: 'flex', mb: 2.7  }}>
+                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>MC Number:</Typography>
+                  <Typography variant='body2'>{business.mc_mx_ff_numbers || '-'}</Typography>
+                  
+                </Box>
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>Address:</Typography>
                   <Typography variant='body2'>{business.address}{' '}{business.address_line_2}</Typography>
@@ -259,11 +264,7 @@ const UserViewLeft = ({ business, setBusiness }) => {
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>US Dot Number:</Typography>
                   <Typography variant='body2'>{business.us_dot_number || '-'}</Typography>
                 </Box>
-                <Box sx={{ display: 'flex', mb: 2.7  }}>
-                  <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>MC Number:</Typography>
-                  <Typography variant='body2'>{business.mc_mx_ff_numbers || '-'}</Typography>
-                  
-                </Box>
+                
                 <Box sx={{ display: 'flex', mb: 2.7  }}>
                   <Typography sx={{ mr: 2, fontWeight: 500, fontSize: '0.875rem' }}>DBA Name:</Typography>
                   <Typography variant='body2'>{business.dba_name}</Typography>
