@@ -14,6 +14,7 @@ import { FormControl, InputLabel, MenuItem, TextField, Tooltip, Box, Select } fr
 import { useDebounce } from 'use-debounce';
 import { useRouter } from 'next/router'
 import styled from '@emotion/styled'
+import getCurrentFilters from '../../../../utils/getCurrentFilters'
 import { isEmpty } from 'lodash'
 
 
@@ -198,7 +199,6 @@ const UserList = () => {
         }
       })
 
-      console.log(currentUrlParams.toString())
     
     router.push('?'+currentUrlParams.toString(), undefined, { shallow: true })
   }
@@ -237,13 +237,50 @@ const UserList = () => {
                   sx={{ pr: 4 }}
                   value={''}
                   label='Invoice Status'
-                  onChange={()=>console.log('first')}
+                  onChange={(e)=>{
+                      if(e.target.value === 'pending'){
+                        urlManager([
+                          {
+                            key: 'filter_field[]',
+                            value: 'request_business_id',
+                            type:'replace'
+                          },
+                          {
+                            key: 'filter_type[]',
+                            value: 'ne',
+                            type:'replace'
+                          },
+                          {
+                            key: 'filter_value[]',
+                            value: 'null',
+                            type:'replace'
+                          }
+                        ])
+                      } else {
+                        urlManager([
+                          {
+                            key: 'filter_field[]',
+                            value: 'request_business_id',
+                            type:'remove'
+                          },
+                          {
+                            key: 'filter_type[]',
+                            value: 'ne',
+                            type:'remove'
+                          },
+                          {
+                            key: 'filter_value[]',
+                            value: 'null',
+                            type:'remove'
+                          }
+                        ])
+                      }
+                    }
+                  }
                   labelId='invoice-status-select'
                 >
                   <MenuItem value=''>All</MenuItem>
-                  <MenuItem value='downloaded'>Pending</MenuItem>
-                  <MenuItem value='draft'>Confirmed</MenuItem>
-                  <MenuItem value='paid'>None</MenuItem>
+                  <MenuItem value='pending'>Pending</MenuItem>
                 </Select>
               </FormControl>
               <FormControl size='small'>
@@ -252,13 +289,14 @@ const UserList = () => {
                   sx={{ pr: 4 }}
                   value={''}
                   label='Invoice Status'
-                  onChange={()=>console.log('first')}
+                  onChange={()=>getCurrentFilters()}
                   labelId='invoice-status-select'
                 >
                   <MenuItem value=''>All</MenuItem>
-                  <MenuItem value='downloaded'>Pending</MenuItem>
-                  <MenuItem value='draft'>Confirmed</MenuItem>
-                  <MenuItem value='paid'>None</MenuItem>
+                  <MenuItem value='1'>Admin</MenuItem>
+                  <MenuItem value='4'>Guest</MenuItem>
+                  <MenuItem value='2'>Owner</MenuItem>
+                  <MenuItem value='3'>Representative</MenuItem>
                 </Select>
               </FormControl>
             </Box>
