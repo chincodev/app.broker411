@@ -16,6 +16,7 @@ import { useRouter } from 'next/router'
 import styled from '@emotion/styled'
 import getCurrentFilters from '../../../../utils/getCurrentFilters'
 import { isEmpty } from 'lodash'
+import GetFiltersHook from '../../../../utils/GetFiltersHook'
 
 
 const businessMemberTypes = {
@@ -149,6 +150,9 @@ const columns = [
 ]
 
 const UserList = () => {
+
+  const [ allFilters ] = GetFiltersHook()
+
   // ** State
   const [search, set_search] = useState(new URLSearchParams(window.location.search).get('search') || '')
   const [ debounced_search ] = useDebounce(search, 1000);
@@ -219,6 +223,7 @@ const UserList = () => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
+        {console.log(allFilters)}
         <Card>
           <Box sx={{ p: 5, pb: 3, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
@@ -230,15 +235,16 @@ const UserList = () => {
                 onChange={(e)=>set_search(e.target.value)}
               />
             </Box>
+            
             <Box sx={{display:'flex'}}>
               <FormControl sx={{mr:1}} size='small'>
                 <InputLabel id='invoice-status-select'>Membership</InputLabel>
                 <Select
                   sx={{ pr: 4 }}
-                  value={''}
+                  value={allFilters.find(x => x.filter_type==='ne' && x.filter_field==='request_business_id')?.filter_value || ''}
                   label='Invoice Status'
                   onChange={(e)=>{
-                      if(e.target.value === 'pending'){
+                      if(e.target.value === 'null'){
                         urlManager([
                           {
                             key: 'filter_field[]',
@@ -280,7 +286,7 @@ const UserList = () => {
                   labelId='invoice-status-select'
                 >
                   <MenuItem value=''>All</MenuItem>
-                  <MenuItem value='pending'>Pending</MenuItem>
+                  <MenuItem value='null'>Pending</MenuItem>
                 </Select>
               </FormControl>
               <FormControl size='small'>
