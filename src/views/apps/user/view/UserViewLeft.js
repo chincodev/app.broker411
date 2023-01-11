@@ -400,7 +400,7 @@ const UserViewLeft = ({ data, set_data }) => {
                   </>)
                 }
                 {
-                  !data.business_id && data.request_business.type === 'carrier' ? (
+                  !data.business_id && data.request_business &&  data.request_business.type === 'carrier' ? (
                     <><br />
                     <Button fullWidth onClick={()=>handleVerify()} disabled={loading} color='info' variant='contained'>
                     {/* <Button size='large' onClick={()=>approveReq()} fullWidth variant='outlined' color='primary' > */}
