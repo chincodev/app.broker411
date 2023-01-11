@@ -21,7 +21,7 @@ import CardSnippet from 'src/@core/components/card-snippet'
 import Grid from '@mui/material/Grid'
 import toast from 'react-hot-toast'
 import { Button, CardContent, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, FormHelperText, InputAdornment, Rating, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material'
-import { AccountOutline, DeleteOutline, Email, EmailOutline, FaceAgent, LocationEnter, Map, Marker, MessageOutline, OfficeBuildingOutline, Phone, Pin, ThumbDown, ThumbUp } from 'mdi-material-ui'
+import { AccountOutline, DeleteOutline, Email, EmailOutline, FaceAgent, LocationEnter, Map, Marker, MessageOutline, OfficeBuildingOutline, Phone, Pin, ThumbDown, ThumbUp, Upload } from 'mdi-material-ui'
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -34,6 +34,18 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { size } from 'lodash'
 import { reviewService } from 'services/review.service'
+import PageHeader from 'src/@core/components/page-header'
+import FileUploaderMultiple from 'src/views/forms/form-elements/file-uploader/FileUploaderMultiple'
+import FileUploaderSingle from 'src/views/forms/form-elements/file-uploader/FileUploaderSingle'
+import DropzoneWrapper from 'src/@core/styles/libs/react-dropzone'
+import Link from 'next/link'
+import * as source from 'src/views/forms/form-elements/file-uploader/FileUploaderSourceCode'
+import FileUploaderRestrictions from 'src/views/forms/form-elements/file-uploader/FileUploaderRestrictions'
+
+
+const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dktj4vsgn/image/upload';
+const CLOUDINARY_UPLOAD_PRESET = 'to5mrjqd';
+
 
 
 const schema = yup.object().shape({
@@ -79,13 +91,44 @@ const DialogReviewForm = (props) => {
     setCategories([])
   }
 
+  const [files, setFiles] = useState([])
+
   const submitData = async (e) => {
     try {
       e.preventDefault()
+
+      
+      console.log('asdas');
+      console.log(files);
+
+      let imageUrls = []
+
+        await Promise.all(files.map(async image => {
+          const formData = new FormData();
+          files.map(x => formData.append('file', image))
+          formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+          try {
+            let response = await fetch(CLOUDINARY_URL, {
+              method: 'POST',
+              body: formData,
+            })
+            let data = await response.json()
+
+            if (data.secure_url !== '') {
+              const uploadedFileUrl = data.secure_url;
+              imageUrls.push(uploadedFileUrl)
+            }
+          } catch(er) {
+            console.error(er)
+          }
+            
+        }))
+
       setSubmitting(true)
       await reviewService.create({
         rating: experience_rate,
         type,
+        ...(imageUrls.length > 0 && {pictures:imageUrls}),
         body,
         representative_name: representativeName,
         categories,
@@ -238,8 +281,8 @@ const DialogReviewForm = (props) => {
                       fullWidth
                       multiline
                       sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
-                      minRows={2}
-                      maxRows={2}
+                      minRows={3}
+                      maxRows={3}
                       minLe
                       aria-describedby='registration_date'
                       inputProps={{
@@ -270,7 +313,34 @@ const DialogReviewForm = (props) => {
         <Rating  size="large" max={10} value={1} name='simple-controlled' onChange={(event, newValue) => console.log(newValue)} />
       </Box> */}
             </Grid>
-           
+            
+            <br />
+
+            <Box style={{width:'100%'}} sx={{mt:4}}>
+              <Typography style={{marginBottom:'0.5rem', fontWeight:'700'}} variant='h7'>Add an Image</Typography>
+              <DropzoneWrapper style={{display:'grid'}}>
+      
+        
+                    <Box
+                      style={{width:'100%'}}
+                      title='Upload Files with Restrictions'
+                      code={{
+                        tsx: null,
+                        jsx: source.FileUploaderRestrictionsJSXCode
+                      }}
+                    >
+                      <FileUploaderRestrictions
+                        files={files}
+                        setFiles={setFiles}
+                      />
+                    </Box>
+                    
+                    
+              </DropzoneWrapper>
+            </Box>
+
+
+
             <Grid item xs={12} style={{textAlign:'end', paddingTop:'1em'}}>
               <Button type='button' disabled={submitting} color='secondary' onClick={()=>reset()} variant='contained' size='large'>
                 Reset

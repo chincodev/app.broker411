@@ -26,6 +26,7 @@ import { CircularProgress, Divider } from '@mui/material'
 import { green } from '@mui/material/colors'
 import { useEffect, useState } from 'react'
 import { businessService } from 'services/business.service'
+import { userService } from 'services/user.service'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -53,7 +54,7 @@ const VerifyBusiness = () => {
       if(!token){
         setNoToken(true)
       }
-      await businessService.verify(token)
+      await userService.confirm_membership_by_mail(token)
       setActionsLoading(false)
       setTimeout(() => {
         window.location.replace('/')

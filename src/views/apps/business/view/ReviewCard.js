@@ -8,17 +8,19 @@ import moment from 'moment'
 // ** Custom Components Imports
 import CustomChip from 'src/@core/components/mui/chip'
 import { Avatar, Badge, CardHeader, Divider, IconButton, Menu, MenuItem, Alert, Button } from '@mui/material'
-import { DeleteOutline, DotsVertical, ReplyOutline, Star, ThumbUp, EyeOutline, AlertBox } from 'mdi-material-ui'
+import { DeleteOutline, DotsVertical, ReplyOutline, Star, ThumbUp, EyeOutline, AlertBox, Clipboard, Attachment } from 'mdi-material-ui'
 
 import CustomAvatar from 'src/@core/components/mui/avatar'
 import { getInitials } from 'src/@core/utils/get-initials'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useInsertionEffect, useLayoutEffect, useState } from 'react'
 import { useAuth } from 'src/hooks/useAuth'
 import { useRouter } from 'next/router'
-import DialogReviewDetails from '../../review/details/DialogWrapper'
+
 import DeleteReviewDialog from '../../review/dialog/DeleteReviewDialog'
 import LikeButton from './LikeButton'
+import { useDispatch } from 'react-redux'
+import { openDetailsReviewDialog } from 'src/store/apps/review'
 
 const ReviewCard = ({ data, feedMode = false, reload }) => {
   // ** Vars
@@ -28,7 +30,7 @@ const ReviewCard = ({ data, feedMode = false, reload }) => {
 
     const [reviewMenuAnchorEl, setReviewMenuAnchorEl] = useState(null)
     
-
+    const dispatch = useDispatch()
     const [show, setShow] = useState(false)
     
     
@@ -49,6 +51,9 @@ const ReviewCard = ({ data, feedMode = false, reload }) => {
     const router = useRouter()
 
     const [ showDeleteDialog, setShowDeleteDialog ] = useState(false)
+
+
+   
 
 
     return (
@@ -94,9 +99,10 @@ const ReviewCard = ({ data, feedMode = false, reload }) => {
                         >
                             <MenuItem onClick={()=>{
                               setMode('')
-                              setShow(true)
+                              dispatch(openDetailsReviewDialog())
                               handleReviewMenuClose()
-                              router.push(`${window.location.pathname}?reviewId=${data.id}`, '/reviews/'+data.id)}}>
+                              router.push(`${window.location.pathname}?reviewId=${data.id}`, '/reviews/'+data.id)
+                            }}>
                                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
                                 View Details
                             </MenuItem>
@@ -105,7 +111,7 @@ const ReviewCard = ({ data, feedMode = false, reload }) => {
                                     disabled={data.replies && data.replies.length > 0 ? true : false} 
                                     onClick={()=>{
                                       handleReviewMenuClose()
-                                      setShow(true)
+                                      
                                       setMode('reply')
                                       router.push(`${window.location.pathname}?reviewId=${data.id}`, '/reviews/'+data.id)
 
@@ -210,6 +216,19 @@ const ReviewCard = ({ data, feedMode = false, reload }) => {
       </IconButton> */}
 
         </Box>
+        {
+          data.pictures.length > 0 && <Box style={{display:'flex', alignItems:'center', marginTop:'1.5em', cursor:'pointer'}} onClick={()=>{
+            setMode('')
+            setShow(true)
+            handleReviewMenuClose()
+            router.push(`${window.location.pathname}?reviewId=${data.id}`, '/reviews/'+data.id)}} >
+<Attachment sx={{fontSize:'18px'}} />
+&nbsp;
+<Typography variant='caption'>
+<strong>{data.pictures.length} Attached Images</strong>
+</Typography>
+</Box>
+        }
       </CardContent>
 
       <Box style={{ marginTop: "auto" }}>
@@ -225,14 +244,15 @@ const ReviewCard = ({ data, feedMode = false, reload }) => {
       </CardContent>
         </>
       }
-      {
+      {/* {
         show && <DialogReviewDetails
         setMode={setMode}
+        setShow={setShow}
         mode={mode}
         top={top}
         id={data.id}
     />
-      }
+      } */}
       {
         data.replies && data.replies.length > 0 && (
           <>

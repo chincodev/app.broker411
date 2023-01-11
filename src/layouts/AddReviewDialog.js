@@ -108,10 +108,10 @@ const AddReviewDialog = (props) => {
           <Box sx={{ display: 'flex', flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
            
           <DialogTabBrokerDetails
-                  business={business}
-                  handleClose={handleClose}
-                  setVerify={props.setVerify}
-                />
+            business={business}
+            handleClose={handleClose}
+            setVerify={props.setVerify}
+          />
           </Box>
         </DialogContent>
       </Dialog>

@@ -84,9 +84,22 @@ const defaultColumns = [
   },
   {
     flex: 0.2,
-    minWidth: 250,
+    minWidth: 100,
+    field: 'business.type',
+    headerName: 'Business Type',
+    renderCell: ({ row }) => {
+      return (
+        <Typography noWrap variant='body2'>
+          <strong>{row.business ? row.business.type.toUpperCase() : row.request_business ? row.request_business.type.toUpperCase() : '-'}</strong>
+        </Typography>
+      )
+    }
+  },
+  {
+    flex: 0.2,
+    minWidth: 150,
     field: 'business',
-    headerName: 'Membership status',
+    headerName: 'Membership',
     renderCell: ({ row }) => {
       return (
           <CustomChip
@@ -101,7 +114,7 @@ const defaultColumns = [
     }
   },{
     flex: 0.2,
-    minWidth: 250,
+    minWidth: 120,
     field: 'role',
     headerName: 'Role',
     renderCell: ({ row }) => {
@@ -289,7 +302,7 @@ const UserList = () => {
                   <MenuItem value='null'>Pending</MenuItem>
                 </Select>
               </FormControl>
-              <FormControl size='small'>
+              {/* <FormControl size='small'>
                 <InputLabel id='invoice-status-select'>Role</InputLabel>
                 <Select
                   sx={{ pr: 4 }}
@@ -304,7 +317,7 @@ const UserList = () => {
                   <MenuItem value='2'>Owner</MenuItem>
                   <MenuItem value='3'>Representative</MenuItem>
                 </Select>
-              </FormControl>
+              </FormControl> */}
             </Box>
           </Box>
           <DataGrid

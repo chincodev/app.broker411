@@ -285,7 +285,7 @@ const UserViewLeft = ({ business, setBusiness }) => {
               {/* <Button variant='contained' sx={{ mr: 2 }} onClick={handleEditClickOpen}>
                 Edit
               </Button> */}
-              <Button color='warning' disabled={loading} onClick={()=>handleVerify()} variant='outlined'>
+              {/* <Button color='warning' disabled={loading} onClick={()=>handleVerify()} variant='outlined'>
                 Re-verify
               </Button>
               {
@@ -298,7 +298,7 @@ const UserViewLeft = ({ business, setBusiness }) => {
                     Enable
                   </Button>
                 )
-              }
+              } */}
               {/* {
                 business.is_published ? (
                   <Button color='error' disabled={loading} onClick={()=>handlePublish(business.is_published)} variant='outlined'>

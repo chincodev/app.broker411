@@ -20,6 +20,19 @@ export const fetchData = createAsyncThunk('appReviews/fetchData', async (params 
 })
 
 
+export const openDetailsReviewDialog = createAsyncThunk('appBusinesses/openDetailsReviewDialog', async (data, { getState, dispatch }) => {
+  return {
+    isDetailsReviewDialogOpen:true
+  }
+})
+
+export const closeDetailsReviewDialog = createAsyncThunk('appBusinesses/closeDetailsReviewDialog', async (data, { getState, dispatch }) => {
+  return {
+    isDetailsReviewDialogOpen:false
+  }
+})
+
+
 export const create = createAsyncThunk('appReviews/create', async (data, { getState, dispatch }) => {
   
   try {
@@ -43,6 +56,7 @@ export const appReviewsSlice = createSlice({
     loading: true,
     total: null,
     starting_at: null,
+    isDetailsReviewDialogOpen: false,
     params: {},
     allData: [],
     current_page:-1,
@@ -68,9 +82,13 @@ export const appReviewsSlice = createSlice({
       state.loading = true
     })
 
-    // builder.addCase(create.fulfilled, (state, action) => {
-    //   state.loading = true
-    // })
+    builder.addCase(openDetailsReviewDialog.fulfilled, (state, action) => {
+      state.isDetailsReviewDialogOpen = true
+    })
+
+    builder.addCase(closeDetailsReviewDialog.fulfilled, (state, action) => {
+      state.isDetailsReviewDialogOpen = false
+    })
   }
 })
 

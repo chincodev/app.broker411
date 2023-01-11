@@ -45,6 +45,9 @@ import FallbackSpinner from 'src/@core/components/spinner'
 import { isEmpty } from 'lodash'
 import { useAuth } from 'src/hooks/useAuth'
 import LikeButton from '../../business/view/LikeButton'
+import Image from 'next/image'
+import LightboxWrapper from './LightboxWrapper'
+import Lightbox from 'react-image-lightbox'
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} {...props} />
@@ -77,8 +80,6 @@ const LinkedInBtn = styled(IconButton)(({ theme }) => {
 
 const ReviewDetails = (props) => {
 
-  console.log(props)
-
     const { id, top, mode, setMode } = props
 
     const router = useRouter()
@@ -89,12 +90,15 @@ const ReviewDetails = (props) => {
 
     const [ loadingData, setLoadingData ] = useState(true)
 
-    const [ data, setData ] = useState(true)
+    const [ data, setData ] = useState({})
 
+    const [ picturesUrl, setPicturesUrl ] = useState([])
+ 
     const getData = async (id) => {
       try {
         setLoadingData(true)
         let response = await reviewService.find(id)
+        setPicturesUrl(response.pictures.map(x => x.url))
         setData(response)
         setLoadingData(false)
       } catch (er) {
@@ -105,13 +109,19 @@ const ReviewDetails = (props) => {
     const [ isEdit, setIsEdit ] = useState(false)
 
     useEffect(() => {
+     
+      setPicturesUrl([])
+      setData({})
       if(!isEmpty(props.data)){
         setIsEdit(false)
+        setPicturesUrl(props.data.pictures.map(x => x.url))
         setData(props.data)
         setLoadingData(false)
+        
       } else {
         setIsEdit(false)
         getData(id)
+        
       }
     }, [id])
     
@@ -187,9 +197,37 @@ const ReviewDetails = (props) => {
       }
     }
 
+    const [ openLightbox, setOpenLightbox ] = useState(false)
+
+    const [ photoIndex, setPhotoIndex ] = useState(0)
 
   return (
       <>
+          {
+            picturesUrl && picturesUrl.length > 0 && <>
+              {openLightbox && (
+          <Lightbox
+          reactModalStyle={{
+              zIndex:'1500',
+              position: 'fixed',
+              inset: '0px',
+              backgroundColor: 'transparent'
+            
+          }}
+            mainSrc={picturesUrl[photoIndex]}
+            nextSrc={picturesUrl[(photoIndex + 1) % picturesUrl.length]}
+            prevSrc={picturesUrl[(photoIndex + picturesUrl.length - 1) % picturesUrl.length]}
+            onCloseRequest={() => setOpenLightbox(false)}
+            onMovePrevRequest={() =>
+              setPhotoIndex(photoIndex + picturesUrl.length - 1) % picturesUrl.length
+            }
+            onMoveNextRequest={() =>
+                setPhotoIndex((photoIndex + 1) % picturesUrl.length)
+            }
+          />
+        )}
+            </>
+          }
           {
             !isEmpty(data) && data.replies.length > 0 && <Dialog
             open={openDeleteDialog}
@@ -238,7 +276,10 @@ const ReviewDetails = (props) => {
                 {
                   !props.page && <IconButton
                   size='small'
-                  onClick={() => router.back()}
+                  onClick={() => {
+                    // props.setShow(false)
+                    router.back()
+                  }}
                   sx={{ position: 'absolute', right: '1rem', top: '1rem' }}
                 >
                   <Close />
@@ -319,7 +360,25 @@ const ReviewDetails = (props) => {
                     }
                 </List>
               }
-              <br/>
+              {
+                data.pictures.length > 0 && <Box><Typography variant='caption' >Attachments</Typography><Box style={{display:'flex', marginTop:'0.40rem'}}>
+                  {
+                data.pictures.map((x, i) => <Box style={{marginRight:'1rem', cursor:'pointer'}} onClick={()=>{
+                  setPhotoIndex(i)
+                  setOpenLightbox(true)
+                }}><Image 
+                src={x.url.replace('https://res.cloudinary.com/dktj4vsgn/image/upload/','')}
+              
+                width={64}
+                height={64}
+                >
+
+                  </Image></Box>)
+              }
+              
+                </Box></Box>
+              }
+              
               <small style={{float:'right', marginTop:'5px', color:'#cccccc'}}>Ref#{props.id}</small>
         </DialogContent>
         <Divider sx={{ m: 0 }} />
@@ -395,7 +454,6 @@ const ReviewDetails = (props) => {
         }
 
 
-        {console.log(data)}
       {
           (auth.user.business.id != data.business.id) && data.replies && data.replies.length > 0 && <>
             <Divider sx={{ m: 0 }} />

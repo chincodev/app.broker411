@@ -71,10 +71,6 @@ const CrmDashboard = () => {
     </Grid>
   }
 
-  if(auth.user.business && auth.user.business.type === 'carrier' && !auth.user.business.is_verified){
-    return <VerifyBusinessDialog verifyType={verifyType} />
-  }
-
   if(!isEmpty(auth.user.request_business)){
     return <VerifyBusinessDialog verifyType={verifyType} />
   }

@@ -10,7 +10,9 @@ export const userService = {
     get_me,
     delete: _delete,
     confirm_membership,
-    request_assign_carrier_owner
+    confirm_membership_by_mail,
+    request_assign_carrier_owner,
+    resend_verification_to_carrier_member
 };
 
 
@@ -46,7 +48,18 @@ function confirm_membership(id, params) {
     return fetchWrapper.put(`${baseUrl}users/confirm_membership/${id}`, params);
 }
 
+function confirm_membership_by_mail(token) {
+    return fetchWrapper.get(`${baseUrl}users/confirm_membership_by_mail/${token}`);
+}
+
+function verify(token) {
+    return fetchWrapper.get(`${baseUrl}businesses/verify/${token}`);
+}
+
 function request_assign_carrier_owner(params) {
-    console.log(params)
     return fetchWrapper.post(`${baseUrl}users/request_assign_carrier_owner/`, params);
+}
+
+function resend_verification_to_carrier_member(id){
+    return fetchWrapper.get(`${baseUrl}users/verify_carrier/${id}`);
 }

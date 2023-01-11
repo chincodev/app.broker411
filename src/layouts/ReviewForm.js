@@ -14,6 +14,10 @@ import { fetchData } from 'src/store/apps/field'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { reviewService } from 'services/review.service'
+import DropzoneWrapper from 'src/@core/styles/libs/react-dropzone'
+import PageHeader from 'src/@core/components/page-header'
+import CardSnippet from 'src/@core/components/card-snippet'
+import FileUploaderSingle from 'src/views/forms/form-elements/file-uploader/FileUploaderSingle'
 
 
 const schema = yup.object().shape({
@@ -217,7 +221,17 @@ const ReviewForm = (props) => {
               <small>{body.length} of 250 Characters Used</small>
             </Grid>
             </Grid>
-           
+            <Grid>
+              
+              
+
+            
+
+
+
+
+
+            </Grid>
             <Box sx={{pt:0,display:'flex', flexDirection:{xs:'column-reverse', md:'row'}, width:'100%', justifyContent:'flex-end', paddingTop:'1em'}}>
               <Button sx={{mt:{xs:1, md:0}, mr:{xs:0, md:1}}} type='button' disabled={submitting} color='secondary'  onClick={()=>{
                 reset()

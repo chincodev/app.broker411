@@ -1,3 +1,7 @@
 .custom-alert .MuiAlert-message{
     width: 100%;
 }
+
+.ReactModalPortal.ReactModal__Overlay{
+    z-index: 1600 !important;
+}

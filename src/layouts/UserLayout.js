@@ -19,6 +19,9 @@ import HorizontalAppBarContent from './components/horizontal/AppBarContent'
 // ** Hook Import
 import { useSettings } from 'src/@core/hooks/useSettings'
 import ReviewFormDialog from './ReviewFormDialog'
+import ReviewDialogWrapper from 'src/views/apps/review/details/ReviewDialogWrapper'
+import { useSelector } from 'react-redux'
+import { useRouter } from 'next/router'
 
 const UserLayout = ({ children }) => {
   // ** Hooks
@@ -33,6 +36,10 @@ const UserLayout = ({ children }) => {
    *  ! Do not change this value unless you know what you are doing. It can break the template.
    */
   const hidden = useMediaQuery(theme => theme.breakpoints.down('lg'))
+
+  const state = useSelector(e => e)
+
+  const router = useRouter()
 
   return (
     <Layout
@@ -69,6 +76,7 @@ const UserLayout = ({ children }) => {
           })}
     >
       <ReviewFormDialog />
+      { !!router.query.reviewId  && <ReviewDialogWrapper />}
       {children}
 
     </Layout>

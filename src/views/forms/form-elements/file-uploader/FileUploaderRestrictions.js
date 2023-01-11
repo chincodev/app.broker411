@@ -39,22 +39,22 @@ const HeadingTypography = styled(Typography)(({ theme }) => ({
   }
 }))
 
-const FileUploaderRestrictions = () => {
+const FileUploaderRestrictions = ({files, setFiles}) => {
   // ** State
-  const [files, setFiles] = useState([])
+  
 
   // ** Hooks
   const { getRootProps, getInputProps } = useDropzone({
-    maxFiles: 2,
+    maxFiles: 6,
     maxSize: 2000000,
     accept: {
-      'image/*': ['.png', '.jpg', '.jpeg', '.gif']
+      'image/*': ['.png', '.jpg', '.jpeg']
     },
     onDrop: acceptedFiles => {
       setFiles(acceptedFiles.map(file => Object.assign(file)))
     },
     onDropRejected: () => {
-      toast.error('You can only upload 2 files & maximum size of 2 MB.', {
+      toast.error('You can only upload 6 files & maximum size of 2 MB.', {
         duration: 2000
       })
     }
@@ -100,13 +100,12 @@ const FileUploaderRestrictions = () => {
   return (
     <Fragment>
       <div {...getRootProps({ className: 'dropzone' })}>
-        <input {...getInputProps()} />
+        <input id='images-proof' {...getInputProps()} />
         <Box sx={{ display: 'flex', flexDirection: ['column', 'column', 'row'], alignItems: 'center' }}>
-          <Img width={300} alt='Upload img' src='/images/misc/upload.png' />
+       
           <Box sx={{ display: 'flex', flexDirection: 'column', textAlign: ['center', 'center', 'inherit'] }}>
-            <HeadingTypography variant='h5'>Drop files here or click to upload.</HeadingTypography>
-            <Typography color='textSecondary'>Allowed *.jpeg, *.jpg, *.png, *.gif</Typography>
-            <Typography color='textSecondary'>Max 2 files and max size of 2 MB</Typography>
+            <HeadingTypography variant='h6' style={{marginBottom:'0rem'}}>Drop files here or click to upload.</HeadingTypography>
+            <Typography color='textSecondary' style={{fontSize:'12px'}}>Max 6 files and max size of 2 MB</Typography>
           </Box>
         </Box>
       </div>
@@ -114,11 +113,13 @@ const FileUploaderRestrictions = () => {
         <Fragment>
           <List>{fileList}</List>
           <div className='buttons'>
-            <Button color='error' variant='outlined' onClick={handleRemoveAllFiles}>
-              Remove All
-            </Button>
-            <Button variant='contained'>Upload Files</Button>
+            {/* <Button color='error' variant='outlined' onClick={handleRemoveAllFiles}>
+              Remove All Images
+            </Button> */}
+            
+            {/* <Button variant='contained'>Upload Files</Button> */}
           </div>
+          
         </Fragment>
       ) : null}
     </Fragment>

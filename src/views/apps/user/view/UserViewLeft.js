@@ -46,8 +46,9 @@ import Link from 'next/link'
 import { userService } from 'services/user.service'
 import FallbackSpinner from 'src/@core/components/spinner'
 import { Chip, CircularProgress } from '@mui/material'
-import { green } from '@mui/material/colors'
+import { blue, green } from '@mui/material/colors'
 import { clockPickerClasses } from '@mui/lab'
+import toast from 'react-hot-toast'
 
 // ** Styled <sup> component
 const Sup = styled('sup')(({ theme }) => ({
@@ -125,6 +126,22 @@ const UserViewLeft = ({ data, set_data }) => {
   const handlePlansClose = () => setOpenPlans(false)
 
   const [loading, set_loading] = useState(false)
+
+  const [loading_verification, set_loading_verification] = useState(false)
+
+  const handleVerify = async (value) => {
+    if (window.confirm(`A verification mail will be sent to the business email address, do you want to continue?`)) {
+      try {
+        set_loading_verification(true)
+        await userService.resend_verification_to_carrier_member(data.id)
+        toast.success('Verification mail sent!')
+        // setBusiness(Object.assign(business, {is_published: !value}))
+        set_loading_verification(false)
+      } catch (er) {
+        console.log(er)
+      }
+    }
+  }
 
   const approveReq = async () => {
     if (window.confirm(`Confirm membership of @${data.username} in ${data.request_business.legal_name}?`)) {
@@ -296,14 +313,14 @@ const UserViewLeft = ({ data, set_data }) => {
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
                     Business:
                   </Typography>
-                  {console.log(data)}
+                  
                   {
-                    !isEmpty(data.business) ? (
+                    !isEmpty(data.business) || !isEmpty(data.request_business) ? (
                       <Link 
                         href={`/admin/businesses/[id]`} 
-                        as={`/admin/businesses/${data.business.id}`}
+                        as={`/admin/businesses/${data.business ? data.business.id : data.request_business.id }`}
                       >
-                        <StyledLink>{data.business.legal_name}</StyledLink>
+                        <StyledLink>{data.business ? data.business.legal_name : data.request_business.legal_name}</StyledLink>
                       </Link>
                     ) : (
                       <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
@@ -316,11 +333,11 @@ const UserViewLeft = ({ data, set_data }) => {
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
                     Business Type:
                   </Typography>
-                {console.log(data)}
+               
                   <CustomChip
                     skin='light'
                     size='small'
-                    label={data.business ? data.business.type : 'None'}
+                    label={data.business ? data.business.type : data.request_business ? data.request_business.type : 'None'}
                     color={'info'}
                     sx={{
                       height: 20,
@@ -332,7 +349,7 @@ const UserViewLeft = ({ data, set_data }) => {
                   />
                 
                 </Box>
-                {console.log(data)}
+               
                 <Box sx={{ display: 'flex', mb: 2.7 }}>
                   <Typography variant='subtitle2' sx={{ mr: 2, color: 'text.primary' }}>
                     Membership:
@@ -340,8 +357,8 @@ const UserViewLeft = ({ data, set_data }) => {
                   <CustomChip
                     skin='light'
                     size='small'
-                    label={data.business_id &&  data.business.is_verified ? 'Confirmed' : (data.request_business_id || data.business_id) ? 'Pending' : 'None'}
-                    color={statusColors[data.business_id &&  data.business.is_verified? 'true' : (data.request_business_id || data.business_id) ? 'false' : 'secondary']}
+                    label={data.business_id ? 'Confirmed' : data.request_business_id ? 'Pending' : 'None'}
+                    color={statusColors[data.business_id ? 'true' : data.request_business_id ? 'false' : 'secondary']}
                     sx={{
                       height: 20,
                       fontSize: '0.75rem',
@@ -381,6 +398,26 @@ const UserViewLeft = ({ data, set_data }) => {
                   <Typography variant='body2'>{data.phone ? '+1 '+data.phone : ''}</Typography>
                 </Box>
                   </>)
+                }
+                {
+                  !data.business_id && data.request_business.type === 'carrier' ? (
+                    <><br />
+                    <Button fullWidth onClick={()=>handleVerify()} disabled={loading} color='info' variant='contained'>
+                    {/* <Button size='large' onClick={()=>approveReq()} fullWidth variant='outlined' color='primary' > */}
+                      {
+                      loading_verification ? <>`<CircularProgress
+                      size={24}
+                      sx={{
+                        color: green[500],
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        marginTop: '-12px',
+                        marginLeft: '-12px',
+                      }}
+                    /></> : 'RESEND VERIFICATION MAIL' 
+                    }</Button><br /></>
+                  ) : ('')
                 }
                 {
                   data.request_business_id && !data.business_id ? (
