@@ -19,7 +19,7 @@ import CalendarBlankOutline from 'mdi-material-ui/CalendarBlankOutline'
 import PackageVariantClosed from 'mdi-material-ui/PackageVariantClosed'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 import CheckboxMarkedCircleOutline from 'mdi-material-ui/CheckboxMarkedCircleOutline'
-import { AccountGroupOutline, CartOutline, ChartTimeline, FaceAgent, PhoneOutline, TruckOutline, ViewListOutline } from 'mdi-material-ui'
+import { AccountGroupOutline, AlertOutline, CartOutline, ChartTimeline, FaceAgent, PhoneOutline, StarOutline, TruckOutline, ViewListOutline } from 'mdi-material-ui'
 import { useAuth } from 'src/hooks/useAuth'
 
 const navigation = () => {
@@ -41,6 +41,14 @@ const navigation = () => {
         title: 'Fields',
         icon: ViewListOutline,
         path: '/admin/fields'
+      },{
+        title: 'Reviews',
+        icon: StarOutline,
+        path: '/admin/reviews'
+      },{
+        title: 'Reports',
+        icon: AlertOutline,
+        path: '/admin/reports'
       }
   ]
 

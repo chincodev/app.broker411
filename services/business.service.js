@@ -54,4 +54,3 @@ function resendVerification(params) {
 function resetVerification(id) {
     return fetchWrapper.post(`${baseUrl}businesses/reset_verification/${id}`);
   }
-

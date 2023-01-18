@@ -21,7 +21,8 @@ const BusinessCard = (props) => {
             us_dot_number,
             address_line_2,
             mc_mx_ff_numbers,
-            rating
+            avgRating,
+            reviewCount
         } 
     } = props
 
@@ -80,7 +81,13 @@ const BusinessCard = (props) => {
                             <Typography color='info.main' variant='subtitle' sx={{textAlign:'center', marginBottom:'1rem'}}>
                                 {mc_mx_ff_numbers}
                             </Typography>
-                            {/* <Rating size="small" readOnly max={10} value={rating} name='simple-controlled'  /> */}
+                            {
+                                reviewCount ? <Box style={{display:'flex', alignItems:'center'}}>
+                                    <Rating size="small" readOnly max={10} value={avgRating} name='simple-controlled'  /> 
+                                    &nbsp;
+                                    <small>({reviewCount})</small>
+                                </Box> : ''
+                            }
                         </Box>
                     </CardContent>
                 </Box>

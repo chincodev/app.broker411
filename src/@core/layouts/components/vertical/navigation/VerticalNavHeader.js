@@ -118,7 +118,7 @@ const VerticalNavHeader = props => {
       ) : (
         <Link href='/' passHref>
           <StyledLink>
-          <img height={25} src='/images/logos/logo.png' />
+          <img width={40} src='/images/logos/logo.png' />
             <HeaderTitle variant='h6' sx={{ ...menuCollapsedStyles, ...(navCollapsed && !navHover ? {} : { ml: 2 }) }}>
               {themeConfig.templateName}
             </HeaderTitle>
@@ -126,7 +126,7 @@ const VerticalNavHeader = props => {
         </Link>
       )}
 
-      {hidden ? (
+      {/* {hidden ? (
         <IconButton
           disableRipple
           disableFocusRipple
@@ -172,7 +172,7 @@ const VerticalNavHeader = props => {
             </Box>
           )}
         </IconButton>
-      )}
+      )} */}
     </MenuHeaderWrapper>
   )
 }

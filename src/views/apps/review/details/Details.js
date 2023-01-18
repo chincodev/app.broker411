@@ -49,6 +49,7 @@ import Image from 'next/image'
 import LightboxWrapper from './LightboxWrapper'
 import Lightbox from 'react-image-lightbox'
 
+
 const Transition = forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} {...props} />
 })
@@ -80,7 +81,9 @@ const LinkedInBtn = styled(IconButton)(({ theme }) => {
 
 const ReviewDetails = (props) => {
 
-    const { id, top, mode, setMode } = props
+    const { id } = props
+
+    const [ mode, setMode ] = useState('')
 
     const router = useRouter()
 
@@ -110,19 +113,23 @@ const ReviewDetails = (props) => {
 
     useEffect(() => {
      
-      setPicturesUrl([])
-      setData({})
-      if(!isEmpty(props.data)){
-        setIsEdit(false)
-        setPicturesUrl(props.data.pictures.map(x => x.url))
-        setData(props.data)
-        setLoadingData(false)
+      // setPicturesUrl([])
+      // setData({})
+      // if(!isEmpty(props.data)){
+      //   setIsEdit(false)
+      //   setPicturesUrl(props.data.pictures.map(x => x.url))
+      //   setData(props.data)
+      //   setLoadingData(false)
         
-      } else {
+      // } else {
         setIsEdit(false)
         getData(id)
+        if(window.location.hash === '#reply'){
+          setMode('reply')
+        }
+        console.log();
         
-      }
+      // }
     }, [id])
     
 
@@ -201,8 +208,10 @@ const ReviewDetails = (props) => {
 
     const [ photoIndex, setPhotoIndex ] = useState(0)
 
+    if(loadingData && isEmpty(data)) return <div className='mt-6 mb-6' style={{textAlign:'center'}}><CircularProgress disableShrink sx={{ mt: 6, mb: 6 }} /></div>
   return (
       <>
+      
           {
             picturesUrl && picturesUrl.length > 0 && <>
               {openLightbox && (
@@ -278,7 +287,7 @@ const ReviewDetails = (props) => {
                   size='small'
                   onClick={() => {
                     // props.setShow(false)
-                    router.back()
+                    router.push(router.route, undefined, {scroll:false})
                   }}
                   sx={{ position: 'absolute', right: '1rem', top: '1rem' }}
                 >
@@ -287,27 +296,27 @@ const ReviewDetails = (props) => {
                 }
           
           <Box sx={{ display: 'flex', alignItems: 'center', mb:5, px: [8, 8] }}>
-        <Link href='/brokers/[id]' as={`/brokers/${top.us_dot_number}`}>
+        <Link href='/brokers/[id]' as={`/brokers/${data.business.us_dot_number}`}>
         <a style={{textDecoration:'none'}}><CustomAvatar
             skin='light'
             variant='rounded'
-            color={top.avatarColor}
+            // color={data.avatarColor}
             sx={{ width: '3.5rem', height: '3.5rem' }}
           >
-            {getInitials(top.legal_name)}
+            {getInitials(data.business.legal_name)}
           </CustomAvatar></a>
            </Link>
             <Box sx={{ display: 'flex', ml: 3, alignItems: 'flex-start', flexDirection: 'column', overflow:'hidden' }}>
-              <Link href='/brokers/[id]' as={`/brokers/${top.us_dot_number}`}><a style={{textDecoration:'none'}}>
+              <Link href='/brokers/[id]' as={`/brokers/${data.business.us_dot_number}`}><a style={{textDecoration:'none'}}>
                 <Typography noWrap sx={{fontWeight: 600, width:'100%', fontSize:'1.1em' }} style={{overflow: "hidden",
                 textOverflow: "ellipsis",
                 display: "block"}}>
-                  {top.legal_name}
+                  {data.business.legal_name}
                   </Typography>
                   </a></Link>
               
               <Typography variant='caption'>
-              {top.address_line_2} &bull; {moment(data.createdAt).fromNow()}
+              {data.business.address_line_2} &bull; {moment(data.createdAt).fromNow()}
               </Typography>
              
             </Box>
@@ -382,13 +391,14 @@ const ReviewDetails = (props) => {
               <small style={{float:'right', marginTop:'5px', color:'#cccccc'}}>Ref#{props.id}</small>
         </DialogContent>
         <Divider sx={{ m: 0 }} />
-        <DialogContent sx={{ pb: 2, px: [8, 8], pt: [2], position: 'relative' }}>
+       {
+        auth.user.role.name != 'administrator' && <DialogContent sx={{ pb: 2, px: [8, 8], pt: [2], position: 'relative' }}>
           <Box sx={{display:'flex', justifyContent:'space-between'}}>
           <LikeButton
           size='small'
           data={data}
           />
-              
+
           {
             (data.replies && data.replies.length > 0) || !auth.user.business || (auth.user.business.id != data.business.id) ? '' : <Button onClick={()=>mode === 'reply' ? setMode('') : setMode('reply')} type='button' size={'large'} color={mode === 'reply' ? 'primary' : 'secondary'} >
             <Reply sx={{mr:2}}></Reply>
@@ -401,7 +411,9 @@ const ReviewDetails = (props) => {
           </Button>
           </Box>
         </DialogContent>
-        {console.log(mode)}
+       }
+        
+        
         {
           ((data.replies && data.replies.length === 0 && mode === 'reply') || isEdit) &&  <>
           <Divider sx={{ m: 0 }} />
@@ -426,7 +438,7 @@ const ReviewDetails = (props) => {
           </>
         }
         {
-          (auth.user.business.id === data.business.id) && data.replies && data.replies.length > 0 && !isEdit && <>
+          auth.user.business && (auth.user.business.id === data.business.id) && data.replies && data.replies.length > 0 && !isEdit && <>
             <Divider sx={{ m: 0 }} />
             <DialogContent sx={{ pb: 4, px: [8, 8], pt: [4], position: 'relative' }}>
               <Box>
@@ -453,9 +465,9 @@ const ReviewDetails = (props) => {
           </>
         }
 
-
+       
       {
-          (auth.user.business.id != data.business.id) && data.replies && data.replies.length > 0 && <>
+          auth.user.business && (auth.user.business.id != data.business.id) && data.replies && data.replies.length > 0 && <>
             <Divider sx={{ m: 0 }} />
             <DialogContent sx={{ pb: 4, px: [8, 8], pt: [4], position: 'relative' }}>
               

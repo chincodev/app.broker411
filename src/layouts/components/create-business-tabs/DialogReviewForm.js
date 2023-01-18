@@ -62,6 +62,8 @@ const schema = yup.object().shape({
 
 const DialogReviewForm = (props) => {
 
+  console.log(props);
+
   const { business } = props
 
   const bgClasses = useBgColor()
@@ -239,7 +241,7 @@ const DialogReviewForm = (props) => {
 
              
             {
-              store.data.filter(x => x.type === type).map(x => <Grid xs={12} md={6} item>
+              store.data.filter(x => x.context === 'review').filter(x => x.type === type).map(x => <Grid xs={12} md={6} item>
                 <FormControlLabel
                
                 label={<Typography sx={{

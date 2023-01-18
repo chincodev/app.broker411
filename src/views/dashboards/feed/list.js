@@ -1,5 +1,5 @@
 import Grid from '@mui/material/Grid'
-import { Button, CardContent, CardMedia, Divider, Typography } from '@mui/material'
+import { Avatar, Button, Card, CardContent, CardMedia, Divider, Input, TextField, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import CardUser from 'src/views/ui/cards/basic/CardUser'
 import { fetchData, fetchNext } from 'src/store/apps/feed'
@@ -7,8 +7,10 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import CircularProgress from '@mui/material/CircularProgress'
 import ReviewCard from 'src/views/apps/business/view/ReviewCard'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import { useAuth } from 'src/hooks/useAuth'
+import NewReviewWidget from 'src/views/ui/cards/basic/NewReviewWidget'
 
 const FeedList = () => {
 
@@ -16,10 +18,7 @@ const FeedList = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-
-        if(!feed.data.length > 0){
-            dispatch(fetchData())
-        }
+        if(!feed.data.length > 0) dispatch(fetchData())
     }, [])
 
     const getNext = () => {
@@ -31,8 +30,8 @@ const FeedList = () => {
         <Box >
             {/* <Typography variant='h6'>Reviews By Carriers</Typography> */}
 
-            <Typography variant='h7'>LASTEST REVIEWS</Typography>
-            <Divider />
+            <NewReviewWidget />
+            {/* <Divider /> */}
             {
                 feed.loading && feed.data.length === 0 ? (
                     <Box style={{textAlign:'center', marginTop:'2rem'}}>

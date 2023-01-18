@@ -19,7 +19,7 @@ import CalendarBlankOutline from 'mdi-material-ui/CalendarBlankOutline'
 import PackageVariantClosed from 'mdi-material-ui/PackageVariantClosed'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 import CheckboxMarkedCircleOutline from 'mdi-material-ui/CheckboxMarkedCircleOutline'
-import { AccountGroupOutline, FaceAgent, PhoneOutline, TruckOutline, ViewListOutline } from 'mdi-material-ui'
+import { AccountGroupOutline, AlertOutline, FaceAgent, Home, PhoneOutline, ShippingPallet, StarOutline, TruckOutline, ViewListOutline } from 'mdi-material-ui'
 import { useAuth } from 'src/hooks/useAuth'
 
 const navigation = () => {
@@ -47,7 +47,15 @@ const navigation = () => {
         title: 'Fields',
         icon: ViewListOutline,
         path: '/admin/fields'
-      },
+      },{
+        title: 'Reviews',
+        icon: StarOutline,
+        path: '/admin/reviews'
+      },{
+        title: 'Reports',
+        icon: AlertOutline,
+        path: '/admin/reports'
+      }
     ]
   } else if(auth.user.business && auth.user.business.type === 'broker') {
     return [
@@ -62,6 +70,10 @@ const navigation = () => {
         title: 'Carriers',
         icon: TruckOutline,
         path: '/carriers'
+      },{
+        title: 'Reviews',
+        icon: StarOutline,
+        path: '/reviews'
       }
     ]
   } else if(auth.user.business && auth.user.business.type === 'carrier'){
@@ -71,12 +83,16 @@ const navigation = () => {
       },
       {
         title: 'Home',
-        icon: HomeOutline,
+        icon: Home,
         path: '/'
       },{
         title: 'Brokers',
-        icon: PhoneOutline,
+        icon: FaceAgent,
         path: '/brokers'
+      },{
+        title: 'Loadboard',
+        icon: ShippingPallet,
+        path: '/loadboard'
       }
     ]
   } else {

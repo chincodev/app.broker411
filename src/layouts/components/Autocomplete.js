@@ -1,5 +1,6 @@
 // ** React Imports
 import { useEffect, useCallback, useRef, useState } from 'react'
+import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 
 // ** Next Imports
 import Link from 'next/link'
@@ -47,6 +48,8 @@ import { useDebounce } from 'use-debounce'
 
 // ** Third Party Imports
 import axios from 'axios'
+
+import Icon from 'src/@core/components/icon'
 
 // ** Configs Imports
 import themeConfig from 'src/configs/themeConfig'
@@ -400,16 +403,33 @@ const AutocompleteComponent = ({ hidden, settings }) => {
         onClick={() => !openDialog && setOpenDialog(true)}
         sx={{ display: 'flex', cursor: 'pointer', alignItems: 'center' }}
       >
-        <StyledTextField type='search' id='main-search-two'  variant={'outlined'} size={'small'} placeholder={'Search DOT here'} style={{width:'100%', marginLeft:'10px'}}
-        InputProps={{
-          sx: {paddingLeft:'8px'},
-         startAdornment: (
-           <InputAdornment position='start'>
-             <Magnify />
-           </InputAdornment>
-         )
-       }}
-        ></StyledTextField>
+
+        
+
+       {
+        isMobile ? (
+          <StyledTextField type='search' id='main-search-two'  variant={'outlined'} size={'small'} placeholder={'Search DOT here'} style={{width:'100%', marginLeft:'10px'}}
+            InputProps={{
+              sx: {paddingLeft:'8px'},
+             startAdornment: (
+               <InputAdornment position='start'>
+                 <Magnify />
+               </InputAdornment>
+             )
+           }}
+            ></StyledTextField>
+        ) : (
+          <IconButton color='inherit' sx={!hidden && layout === 'vertical' ? { mr: 1, ml: -2.75 } : {}}>
+            <Icon icon='mdi:magnify' />
+          </IconButton>
+        )
+       }
+        
+
+
+        {!hidden && layout === 'vertical' ? (
+          <Typography sx={{ userSelect: 'none', color: 'text.disabled' }}>Search (Ctrl+/)</Typography>
+        ) : null}
         <Dialog open={openDialog} onClose={() => setOpenDialog(false)} style={{height:''}} aria-labelledby='form-dialog-title'>
         <DialogTitle id='form-dialog-title'>Search</DialogTitle>
         <DialogContent>

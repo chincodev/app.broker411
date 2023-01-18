@@ -5,39 +5,45 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
 import moment from 'moment'
-// ** Custom Components Imports
 import CustomChip from 'src/@core/components/mui/chip'
 import { Avatar, Badge, CardHeader, Divider, IconButton, Menu, MenuItem, Alert, Button } from '@mui/material'
 import { DeleteOutline, DotsVertical, ReplyOutline, Star, ThumbUp, EyeOutline, AlertBox, Clipboard, Attachment } from 'mdi-material-ui'
-
 import CustomAvatar from 'src/@core/components/mui/avatar'
 import { getInitials } from 'src/@core/utils/get-initials'
 import Link from 'next/link'
 import { useEffect, useInsertionEffect, useLayoutEffect, useState } from 'react'
 import { useAuth } from 'src/hooks/useAuth'
 import { useRouter } from 'next/router'
-
 import DeleteReviewDialog from '../../review/dialog/DeleteReviewDialog'
 import LikeButton from './LikeButton'
 import { useDispatch } from 'react-redux'
 import { openDetailsReviewDialog } from 'src/store/apps/review'
+import { openReviewDialog } from 'src/store/apps/business'
+import { openReportDialog } from 'src/store/apps/report'
+
 
 const ReviewCard = ({ data, feedMode = false, reload }) => {
-  // ** Vars
-    const { title, chipColor, chipText, src, stats, trend, trendNumber } = data
+
+	const { 
+    	title, 
+		chipColor, 
+		chipText, 
+		src, 
+		stats, 
+		trend, 
+		trendNumber 
+	} = data
 
     const top = feedMode ? data.business : data.user.business
 
-    const [reviewMenuAnchorEl, setReviewMenuAnchorEl] = useState(null)
+    const [ reviewMenuAnchorEl, setReviewMenuAnchorEl ] = useState(null)
+	const [ show, setShow ] = useState(false)
+    const [ mode, setMode ] = useState('')
+	const [ showDeleteDialog, setShowDeleteDialog ] = useState(false)
     
     const dispatch = useDispatch()
-    const [show, setShow] = useState(false)
-    
-    
-    const [ mode, setMode ] = useState('')
-
+	const router = useRouter()
     const auth = useAuth()
-
     const menuOpen = Boolean(reviewMenuAnchorEl)
 
     const handleReviewMenuClick = event => {
@@ -48,9 +54,9 @@ const ReviewCard = ({ data, feedMode = false, reload }) => {
         setReviewMenuAnchorEl(null)
     }
 
-    const router = useRouter()
+    
 
-    const [ showDeleteDialog, setShowDeleteDialog ] = useState(false)
+    
 
 
    
@@ -101,7 +107,14 @@ const ReviewCard = ({ data, feedMode = false, reload }) => {
                               setMode('')
                               dispatch(openDetailsReviewDialog())
                               handleReviewMenuClose()
-                              router.push(`${window.location.pathname}?reviewId=${data.id}`, '/reviews/'+data.id)
+                              if(window.location.pathname === '/feed/' || window.location.pathname === '/dashboard/' || window.location.pathname === '/reviews/'){
+                               
+                                router.push(`${window.location.pathname}?reviewId=${data.id}`, '/reviews/'+data.id, { scroll: false, shallow: true })
+                              } else {
+                          
+                                router.push(`/reviews/[id]`, '/reviews/'+data.id, { scroll: false })
+                              }
+                              
                             }}>
                                 <EyeOutline fontSize='small' sx={{ mr: 2 }} />
                                 View Details
@@ -112,8 +125,13 @@ const ReviewCard = ({ data, feedMode = false, reload }) => {
                                     onClick={()=>{
                                       handleReviewMenuClose()
                                       
-                                      setMode('reply')
-                                      router.push(`${window.location.pathname}?reviewId=${data.id}`, '/reviews/'+data.id)
+                                     
+                                      if(window.location.pathname === '/feed/' || window.location.pathname === '/dashboard/' || window.location.pathname === '/reviews/'){
+                                        router.push(`${window.location.pathname}?reviewId=${data.id}`, '/reviews/'+data.id+'#reply', { scroll: false, shallow: true })
+                                      } else {
+                                        router.push(`/reviews/[id]`, '/reviews/'+data.id+'#reply', { scroll: false })
+                                      }
+                                      
 
                                     }}
                                 >
@@ -121,7 +139,10 @@ const ReviewCard = ({ data, feedMode = false, reload }) => {
                                     Reply 
                                 </MenuItem>
                             }
-                            <MenuItem onClick={()=>alert('This feature is coming soon')}>
+                            <MenuItem onClick={()=>{
+								dispatch(openReportDialog(data.id))
+								handleReviewMenuClose()
+							}}>
                                 <AlertBox fontSize='small' sx={{ mr: 2 }} />
                                 Report Review
                             </MenuItem>

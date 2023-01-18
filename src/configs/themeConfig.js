@@ -10,7 +10,7 @@ import Circle from 'mdi-material-ui/Circle'
 const themeConfig = {
   // ** Layout Configs
   templateName: 'Broker411' /* App Name */,
-  layout: 'horizontal' /* vertical | horizontal */,
+  layout: 'vertical' /* vertical | horizontal */,
   mode: 'dark' /* light | dark */,
   direction: 'ltr' /* ltr | rtl */,
   skin: 'semi-dark' /* default | bordered | semi-dark /*! Note: semi-dark value will only work for Vertical Layout */,

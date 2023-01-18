@@ -22,6 +22,8 @@ import ReviewFormDialog from './ReviewFormDialog'
 import ReviewDialogWrapper from 'src/views/apps/review/details/ReviewDialogWrapper'
 import { useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
+import { RobotAngry } from 'mdi-material-ui'
+import ReportFormDialog from './ReportFormDialog'
 
 const UserLayout = ({ children }) => {
   // ** Hooks
@@ -76,7 +78,8 @@ const UserLayout = ({ children }) => {
           })}
     >
       <ReviewFormDialog />
-      { !!router.query.reviewId  && <ReviewDialogWrapper />}
+      <ReportFormDialog />
+      <ReviewDialogWrapper id={router.query.reviewId ? router.query.reviewId : null} />
       {children}
 
     </Layout>

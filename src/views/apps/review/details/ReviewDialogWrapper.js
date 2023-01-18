@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 import ReviewDetails from './Details'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { closeDetailsReviewDialog } from 'src/store/apps/review'
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} {...props} />
@@ -23,21 +22,19 @@ const ReviewDialogWrapper = (props) => {
         <Dialog
 
           fullWidth
-          open={true}
+          open={!!router.query.reviewId && router.pathname.substr(0, '/review/'.length) != '/review/'}
           maxWidth='md'
-         
-          scroll='paper'
+
           TransitionComponent={Transition}
           onBackdropClick={() => {
-        
-            dispatch(closeDetailsReviewDialog())
-            router.back()
+          
+            router.push(router.route, undefined, {scroll:false})
           }}
         >
-          {console.log(state.review)}
-            {/* <ReviewDetails 
+          
+            <ReviewDetails 
                 {...props}
-            /> */}
+            />
         </Dialog>
     )
 }

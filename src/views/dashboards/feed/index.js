@@ -44,8 +44,8 @@ const Feed = () => {
                         position: { xs: 'relative', md: 'sticky'},
                         top: { xs: 'relative', md: '88px'}
                     }}>
-                        <CardUser />
-                        <Card sx={{mt:4}}>
+                        {/* <CardUser /> */}
+                        <Card>
                             <CardContent>
                                 <Box>
                                     <Typography sx={{textAlign:'center'}} variant='h6'>
