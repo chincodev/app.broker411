@@ -13,6 +13,7 @@ import fields from 'src/store/apps/field'
 import feed from 'src/store/apps/feed'
 import review from 'src/store/apps/review'
 import report from 'src/store/apps/report'
+import load from 'src/store/apps/load'
 
 export const store = configureStore({
   reducer: {
@@ -26,7 +27,8 @@ export const store = configureStore({
     report,
     fields,
     feed,
-    review
+    review,
+    load
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

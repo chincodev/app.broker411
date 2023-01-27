@@ -78,9 +78,14 @@ const NewReviewWidget = () => {
 
             {
                 isEmpty(business) && <Dialog open={openDialog} onClose={() => setOpenDialog(false)} style={{height:''}} aria-labelledby='form-dialog-title'>
-                    <DialogTitle id='form-dialog-title'>Enter DOT number of broker</DialogTitle>
+                    <DialogTitle id='form-dialog-title'>To Leave a Review </DialogTitle>
+                   
+                    
                     <DialogContent>
-
+                    <DialogContentText sx={{ mb: 3 }}>
+                    Enter the DOT number of the broker who you want to review
+          </DialogContentText>
+                    {/* <Typography>Enter DOT number of broker</Typography> */}
                         <TextField disabled={loading} value={dotSearch} onChange={(e)=>setDotSearch(e.target.value)} id='name' autoFocus fullWidth type='number' placeholder='DOT Number' />
                     </DialogContent>
                     <DialogActions className='dialog-actions-dense'>

@@ -3,14 +3,12 @@ import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import Grid from '@mui/material/Grid'
-import queryString from 'query-string'
 import { Button, CircularProgress, MenuItem, Pagination, Select, Typography } from '@mui/material'
 import urlManager from '../../../../../utils/urlManager'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import { fetchData } from 'src/store/apps/review'
 import { useDispatch } from 'react-redux'
-import AddReviewDialog from 'src/layouts/AddReviewDialog'
 import ReviewCard from 'src/views/apps/business/view/ReviewCard'
 
 const Img = styled('img')(({ theme }) => ({
@@ -51,7 +49,6 @@ const ReviewsList = (props) => {
 		dispatch(fetchData(`${requiredFilter || ''}${url_params ? url_params+'&' : ''}`))
 	}
 
-
 	const dispatch = useDispatch()
 
     useEffect(() => {
@@ -78,7 +75,6 @@ const ReviewsList = (props) => {
 
     return (
 		<Box>
-			{console.log(store)}
 			{
 				store.loading ? (
 					<Box style={{width:'100%', textAlign:'center'}}>

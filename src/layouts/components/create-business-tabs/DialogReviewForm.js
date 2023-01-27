@@ -62,7 +62,7 @@ const schema = yup.object().shape({
 
 const DialogReviewForm = (props) => {
 
-  console.log(props);
+
 
   const { business } = props
 
@@ -71,6 +71,27 @@ const DialogReviewForm = (props) => {
   const [ actionsLoading, setActionsLoading ] = useState(false)
   const [ submitting, setSubmitting ] = useState(false)
   const store = useSelector(state => state.fields)
+  {
+              store.data.filter(x => x.context === 'review').filter(x => x.type === type).map(x => <Grid xs={12} md={6} item>
+                <FormControlLabel
+               
+                label={<Typography sx={{
+                  fontSize: {
+                    lg: 16,
+                    md: 16,
+                    sm: 12,
+                    xs: 12
+                  }
+                }}>{x.description}</Typography>}
+                control={<Checkbox
+               
+                  checked={categories.find(y => y === x.id) ? true : false}
+                  onChange={(e)=>e.target.checked ? categories.find(y => y === x.id) ? '' : setCategories(categories.concat(x.id)) : setCategories(categories.filter(y => y != x.id))}
+                  name={x.name} 
+                />}
+              />
+              </Grid>)
+            }
   const dispatch = useDispatch()
 
   useEffect(() => {

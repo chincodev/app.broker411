@@ -408,7 +408,7 @@ const AutocompleteComponent = ({ hidden, settings }) => {
 
        {
         isMobile ? (
-          <StyledTextField type='search' id='main-search-two'  variant={'outlined'} size={'small'} placeholder={'Search DOT here'} style={{width:'100%', marginLeft:'10px'}}
+          <StyledTextField type='search' id='main-search-two'  variant={'outlined'} size={'small'} placeholder={'Search broker by DOT number here'} style={{width:'100%', marginLeft:'10px'}}
             InputProps={{
               sx: {paddingLeft:'8px'},
              startAdornment: (
@@ -428,7 +428,7 @@ const AutocompleteComponent = ({ hidden, settings }) => {
 
 
         {!hidden && layout === 'vertical' ? (
-          <Typography sx={{ userSelect: 'none', color: 'text.disabled' }}>Search (Ctrl+/)</Typography>
+          <Typography sx={{ userSelect: 'none', color: 'text.disabled' }}>Search broker by DOT number here</Typography>
         ) : null}
         <Dialog open={openDialog} onClose={() => setOpenDialog(false)} style={{height:''}} aria-labelledby='form-dialog-title'>
         <DialogTitle id='form-dialog-title'>Search</DialogTitle>

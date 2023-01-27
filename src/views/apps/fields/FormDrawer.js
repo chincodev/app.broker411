@@ -51,7 +51,7 @@ const SidebarAddCategory = props => {
 
   // ** State
   const [context, setContext] = useState('review')
-  const [type, setType] = useState('')
+  const [type, setType] = useState('good')
 
   // ** Hooks
   const dispatch = useDispatch()
@@ -59,8 +59,10 @@ const SidebarAddCategory = props => {
   const {
     reset,
     control,
+    watch,
     setValue,
     setError,
+    getValues,
     handleSubmit,
     formState: { errors }
   } = useForm({
@@ -106,7 +108,7 @@ const SidebarAddCategory = props => {
       ModalProps={{ keepMounted: true }}
       sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
     >
-      {console.log(props)}
+     
       <Header>
         <Typography variant='h6'>{isEdit ? 'Edit' : 'Add'} Field</Typography>
         <Close fontSize='small' onClick={handleClose} sx={{ cursor: 'pointer' }} />
@@ -129,6 +131,8 @@ const SidebarAddCategory = props => {
             />
             {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
           </FormControl>
+          
+          
           <FormControl fullWidth sx={{ mb: 6 }}>
             <InputLabel id='role-select'>Select Context</InputLabel>
             <Select
@@ -143,9 +147,32 @@ const SidebarAddCategory = props => {
             >
               <MenuItem value='review'>Review</MenuItem>
               <MenuItem value='report'>Report</MenuItem>
+              <MenuItem value='load'>Load</MenuItem>
+              <MenuItem value='truck'>Truck</MenuItem>
             </Select>
           </FormControl>
-          <FormControl fullWidth sx={{ mb: 6 }}>
+
+          {
+            (context ===  'load' || context ===  'truck') && <FormControl fullWidth sx={{ mb: 6 }}>
+              <Controller
+                name='abbreviation'
+                control={control}
+                render={({ field: { value, onChange } }) => (
+                  <TextField
+                    value={value}
+                    label='Abbreviation'
+                    onChange={onChange}
+                    placeholder='Fast ship'
+                    error={Boolean(errors.abbreviation)}
+                  />
+                )}
+              />
+              {errors.abbreviation && <FormHelperText sx={{ color: 'error.main' }}>{errors.abbreviation.message}</FormHelperText>}
+            </FormControl>
+          }
+          {/* {
+            (context ===  'review') &&  */}
+            <FormControl fullWidth sx={{ mb: 6 }}>
             <InputLabel id='role-select'>Select Type</InputLabel>
             <Select
               fullWidth
@@ -160,6 +187,8 @@ const SidebarAddCategory = props => {
               <MenuItem value='bad'>Bad</MenuItem>
             </Select>
           </FormControl>
+          {/* } */}
+          
           
           
             <FormControl fullWidth sx={{ mb: 6 }}>

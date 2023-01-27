@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useAuth } from 'src/hooks/useAuth'
 import NewReviewWidget from 'src/views/ui/cards/basic/NewReviewWidget'
+import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 
 const FeedList = () => {
 
@@ -28,52 +29,44 @@ const FeedList = () => {
 
     return (
         <Box >
-            {/* <Typography variant='h6'>Reviews By Carriers</Typography> */}
-
-            <NewReviewWidget />
-            {/* <Divider /> */}
+            {
+                !isMobile && <NewReviewWidget />
+            }
             {
                 feed.loading && feed.data.length === 0 ? (
                     <Box style={{textAlign:'center', marginTop:'2rem'}}>
                         <CircularProgress />
                     </Box>
                 ) : (
-                
-                        
-                        
-                            feed.data.length > 0 && <InfiniteScroll
-                                style={{width:'100%', }}
-                                dataLength={feed.data.length}
-                                next={()=>getNext()}
-                                hasMore={feed.data.length < feed.total}
-                                loader={
-                                    <Box style={{position:'relative', height:'100px'}}>
-                                        <Box style={{position:'absolute', top:0, left:0, display:'flex', justifyContent:'center', alignItems:'center', width:'100%', height:'100%'}}>
-                                            <CircularProgress size={32} />
-                                        </Box>
-                                    </Box>
-                                    
-                                }
-                                endMessage={
-                                    <p style={{ textAlign: 'center' }}>
-                                        <b>No more reviews to show right now!</b>
-                                    </p>
-                                }
-                            >
-                            {
-                                feed.data.map(x => <Grid style={{width:'100%', marginTop:'1rem'}} item>
-                                    <ReviewCard
-                                        feedMode={true}
-                                        data={x}
-                                    >
-                                        </ReviewCard>
-                                </Grid>)
-}
-                            </InfiniteScroll>
-                        
-                        
-                      
-                   
+                    feed.data.length > 0 && <InfiniteScroll
+                        style={{width:'100%', }}
+                        dataLength={feed.data.length}
+                        next={()=>getNext()}
+                        hasMore={feed.data.length < feed.total}
+                        loader={
+                            <Box style={{position:'relative', height:'100px'}}>
+                                <Box style={{position:'absolute', top:0, left:0, display:'flex', justifyContent:'center', alignItems:'center', width:'100%', height:'100%'}}>
+                                    <CircularProgress size={32} />
+                                </Box>
+                            </Box>
+
+                        }
+                        endMessage={
+                            <p style={{ textAlign: 'center' }}>
+                                <b>No more reviews to show right now!</b>
+                            </p>
+                        }
+                    >
+                        {
+                            feed.data.map(x => <Grid style={{width:'100%', marginTop:'1rem'}} item>
+                                <ReviewCard
+                                    feedMode={true}
+                                    data={x}
+                                >
+                                    </ReviewCard>
+                            </Grid>)
+                        }
+                    </InfiniteScroll>
                 )
             }
         </Box>
