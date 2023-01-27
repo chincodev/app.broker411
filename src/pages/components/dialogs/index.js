@@ -7,7 +7,7 @@ import CardSnippet from 'src/@core/components/card-snippet'
 
 // ** Demo Components Imports
 import DialogForm from 'src/views/components/dialogs/DialogForm'
-import DialogAlert from 'src/views/components/dialogs/DialogAlert'
+
 import DialogSizes from 'src/views/components/dialogs/DialogSizes'
 import DialogSimple from 'src/views/components/dialogs/DialogSimple'
 import DialogsScroll from 'src/views/components/dialogs/DialogsScroll'
@@ -48,7 +48,7 @@ const Dialog = () => {
           <Typography sx={{ mb: 4 }}>
             Show an alert to the user to convey something or make the user choose from the given options.
           </Typography>
-          <DialogAlert />
+        
         </CardSnippet>
       </Grid>
       <Grid item xs={12} md={6}>
