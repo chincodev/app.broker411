@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import Grid from '@mui/material/Grid'
-import { Button, Card, CircularProgress, IconButton, MenuItem, Pagination, Select, TextField, Tooltip, Typography } from '@mui/material'
+import { Button, Card, CircularProgress, FormControlLabel, IconButton, MenuItem, Pagination, Select, Switch, TextField, Tooltip, Typography } from '@mui/material'
 import urlManager from '../../../../../utils/urlManager'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
@@ -34,12 +34,94 @@ const Img = styled('img')(({ theme }) => ({
 	}
 }))
 
+
+const changeStatus = async (newValues, status) => {
+	try {
+		const values = {
+			pickup_earliest_date: newValues.pickup_earliest_date,
+			pickup_latest_date: newValues.pickup_latest_date,
+			pickup_hours_start: newValues.pickup_hours_start,
+			pickup_hours_end: newValues.pickup_hours_end,
+			delivery_hours_start: newValues.delivery_hours_start,
+			delivery_hours_end: newValues.delivery_hours_end,
+			origin_city_id: newValues.origin_city_id,
+			destination_city_id: newValues.destination_city_id,
+			full_partial: newValues.full_partial,
+			weight: newValues.weight,
+			length: newValues.length,
+			comments: newValues.comments,
+			commodity: newValues.commodity,
+			contact_phone:  newValues.contact_phone,
+			contact_email: newValues.contact_email,
+			rate: newValues.rate,
+			categories: newValues.categories.map(x => x.id),
+			is_enabled: status
+		  }
+		await loadService.update(newValues.id, values)
+	} catch (er) {
+		console.log(er);
+	}
+} 
+
 const LoadsList = (props) => {
+
+	const router = useRouter()
 
 	const defaultColumns = [
 		{
 			flex: 0.2,
-			minWidth: 150,
+			minWidth: 90,
+			field: 'is_enabled',
+			headerName: 'Status',
+			renderCell: ({ row }) => {
+				
+				let [ is_enabled, setIs_enabled ] = useState(row.is_enabled)
+
+				useEffect(() => {
+					changeStatus(row, is_enabled);
+					// eslint-disable-next-line react-hooks/exhaustive-deps
+				  }, [is_enabled])
+			  return (
+				
+					
+						<Switch checked={is_enabled} size={'small'} onChange={(e) => 
+							setIs_enabled(!is_enabled)
+							// changeStatus(row.id, !row.is_enabled)
+						}  />
+					
+				
+			  )
+			}
+		},
+		 {
+		 	flex: 0.2,
+		 	minWidth: 60,
+		 	field: 'REF',
+		 	headerName: 'ID',
+		 	renderCell: ({ row }) => {
+		 	  return (
+		 		<Typography noWrap variant='body2'>
+		 		  {row.id}
+		 		</Typography>
+		 	  )
+		 	}
+		 },
+		{
+			flex: 0.2,
+			minWidth: 100,
+			field: 'created_at',
+			headerName: 'Created',
+			renderCell: ({ row }) => {
+			  return (
+				<Typography noWrap variant='body2'>
+				  {moment(row.created_at).format('MM/DD/YY')}
+				</Typography>
+			  )
+			}
+		},
+		{
+			flex: 0.5,
+			minWidth: 120,
 			field: 'origin',
 			headerName: 'Origin',
 			renderCell: ({ row }) => {
@@ -51,8 +133,8 @@ const LoadsList = (props) => {
 			}
 		},
 		{
-			flex: 0.2,
-			minWidth: 150,
+			flex: 0.5,
+			minWidth: 120,
 			field: 'destination',
 			headerName: 'Destination',
 			renderCell: ({ row }) => {
@@ -65,7 +147,7 @@ const LoadsList = (props) => {
 		},
 		{
 			flex: 0.2,
-			minWidth: 80,
+			minWidth: 70,
 			field: 'full_partial',
 			headerName: 'F/P',
 			renderCell: ({ row }) => {
@@ -78,9 +160,9 @@ const LoadsList = (props) => {
 		},
 		{
 			flex: 0.2,
-			minWidth: 120,
+			minWidth: 100,
 			field: 'pickup_earliest_date',
-			headerName: 'Pickup Date',
+			headerName: 'Pickup',
 			renderCell: ({ row }) => {
 			  return (
 				<Typography noWrap variant='body2'>
@@ -91,26 +173,26 @@ const LoadsList = (props) => {
 		},
 		{
 			flex: 0.2,
-			minWidth: 120,
+			minWidth: 90,
 			field: 'Weight',
 			headerName: 'weight',
 			renderCell: ({ row }) => {
 			  return (
 				<Typography noWrap variant='body2'>
-				  {row.weight} {row.weight_unit_type}
+				  {row.weight} lb
 				</Typography>
 			  )
 			}
 		},
 		{
 			flex: 0.2,
-			minWidth: 120,
+			minWidth: 90,
 			field: 'length',
 			headerName: 'Length',
 			renderCell: ({ row }) => {
 			  return (
 				<Typography noWrap variant='body2'>
-				  {row.length} {row.length_unit_type}
+				  {row.length} ft
 				</Typography>
 			  )
 			}
@@ -128,33 +210,33 @@ const LoadsList = (props) => {
 			  )
 			}
 		},
-		{
-			flex: 0.5,
-			minWidth: 150,
-			field: 'contact_email',
-			headerName: 'Contact email',
-			renderCell: ({ row }) => {
+		// {
+		// 	flex: 0.5,
+		// 	minWidth: 140,
+		// 	field: 'contact_email',
+		// 	headerName: 'Contact email',
+		// 	renderCell: ({ row }) => {
 		
-			  return (
-				<Typography noWrap variant='body2'>
-				  {row.contact_email}
-				</Typography>
-			  )
-			}
-		},
-		{
-		  flex: 0.2,
-		  minWidth: 140,
-		  field: 'contact_phone',
-		  headerName: 'Contact phone',
-		  renderCell: ({ row }) => {
-			return (
-			  <Typography noWrap variant='body2'>
-				{row.contact_phone}
-			  </Typography>
-			)
-		  }
-		}
+		// 	  return (
+		// 		<Typography noWrap variant='body2'>
+		// 		  {row.contact_email}
+		// 		</Typography>
+		// 	  )
+		// 	}
+		// },
+		// {
+		//   flex: 0.2,
+		//   minWidth: 140,
+		//   field: 'contact_phone',
+		//   headerName: 'Contact phone',
+		//   renderCell: ({ row }) => {
+		// 	return (
+		// 	  <Typography noWrap variant='body2'>
+		// 		{row.contact_phone}
+		// 	  </Typography>
+		// 	)
+		//   }
+		// }
 	]
 
 	const deleteLoad = async (id) => {
@@ -166,9 +248,14 @@ const LoadsList = (props) => {
 			toast.success('Load #'+id+' have been removed')
 			reload()
 		} catch (er){
-			console.log(er);
+			await dispatch(setLoading(false))
+			if(er.errors && Array.isArray(er.errors)){
+				er.errors.map(x => toast.error(x.message))
+			}
 		}
 	}
+
+	const [ scopedLoadToEdit, setScopedLoadToEdit ] = useState(null)
 
 	const columns = [
 		...defaultColumns,
@@ -191,7 +278,10 @@ const LoadsList = (props) => {
 				</Box>
 			  </Tooltip>
 			  <Tooltip title='Edit Load'>
-				<IconButton size='small' sx={{ mr: 0.5 }} onClick={() => dispatch(deleteInvoice(row.id))}>
+				<IconButton size='small' sx={{ mr: 0.5 }} onClick={() => {
+					setScopedLoadToEdit(row)
+					setIsDialogOpen(true)
+				}}>
 				  <PencilOutline />
 				</IconButton>
 			  </Tooltip> 
@@ -252,8 +342,6 @@ const LoadsList = (props) => {
 		}
 	}, [])
 
-	const router = useRouter()
-
 	const [ isDialogOpen, setIsDialogOpen ] = useState(false)
 
 	const [scopedDialogToDelete, setScopedDialogToDelete] = useState(null)
@@ -273,6 +361,8 @@ const LoadsList = (props) => {
 				open={isDialogOpen}
 				setOpen={setIsDialogOpen}
 				reload={reload}
+				scopedLoadToEdit={scopedLoadToEdit}
+				setScopedLoadToEdit={setScopedLoadToEdit}
 			/>
 			{/* {
 				store.loading ? (
@@ -332,46 +422,58 @@ const LoadsList = (props) => {
       					      paginationMode="server"
       					      onSortModelChange={(e)=>{
       					        if(e['0']){
-      					          urlManager([
-      					            {
-      					              key: 'sort_field',
-      					              value: e['0']['field'],
-      					              type: 'replace'
-      					            },{
-      					              key: 'sort_order',
-      					              value: e['0']['sort'],
-      					              type: 'replace'
-      					            }
-      					          ])
+      					          urlManager({
+									params:[
+										{
+										  key: 'sort_field',
+										  value: e['0']['field'],
+										  type: 'replace'
+										},{
+										  key: 'sort_order',
+										  value: e['0']['sort'],
+										  type: 'replace'
+										}
+									],
+									router: router
+								  })
       					        } else {
-      					          urlManager([
-      					            {
-      					              key: 'sort_field',
-      					              value: '',
-      					              type: 'remove'
-      					            },{
-      					              key: 'sort_order',
-      					              value: '',
-      					              type: 'remove'
-      					            }
-      					          ])
+      					          urlManager({
+									params:[
+										{
+										  key: 'sort_field',
+										  value: '',
+										  type: 'remove'
+										},{
+										  key: 'sort_order',
+										  value: '',
+										  type: 'remove'
+										}
+									],
+									router: router
+								  })
       					        }
       					      }}
-      					      onPageChange={(newPage) => urlManager([
-      					        {
-      					          key: 'page_number',
-      					          value: newPage + 1,
-      					          type: 'replace'
-      					        }
-      					      ])}
+      					      onPageChange={(newPage) => urlManager({
+								params: [
+									{
+									  key: 'page_number',
+									  value: newPage + 1,
+									  type: 'replace'
+									}
+								],
+								router: router
+							  })}
       					      onPageSizeChange={
-      					        (newPageSize) => urlManager([
-      					          {
-      					            key: 'page_size',
-      					            value: newPageSize,
-      					            type: 'replace'
-      					          }
-      					        ])
+      					        (newPageSize) => urlManager({
+									params: [
+										{
+										  key: 'page_size',
+										  value: newPageSize,
+										  type: 'replace'
+										}
+									],
+									router: router
+								})
       					      }
       					      columns={columns}
       					      sx={{ '& .MuiDataGrid-columnHeaders': { borderRadius: 0 } }}

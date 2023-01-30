@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardActions, DialogActions, Divider, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, TextareaAutosize, TextField, Typography } from '@mui/material'
+import { Box, Button, Card, CardActions, CircularProgress, DialogActions, Divider, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, TextareaAutosize, TextField, Typography } from '@mui/material'
 import React, { forwardRef, useEffect, useState } from 'react'
 import DatePicker from '@mui/lab/DatePicker'
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
@@ -20,58 +20,37 @@ import { fetchData } from 'src/store/apps/field/index.js';
 import { useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
 import { setLoading } from 'src/store/apps/load/index.js';
-
+import Spinner from 'src/@core/components/spinner'
+import moment from 'moment';
 
 const citiesGetAll = cityService.list;
 
 const LoadForm = (props) => {
 
+    const { values, setValues, idToEdit } = props
+
     const { handleClose } = props
     const store = useSelector(state => state.load)
     const fields = useSelector(state => state.fields)
     const dispatch = useDispatch()
-    const [ pickup_earliest_date, setPickup_earliest_date ] = useState(null)
-    const [ pickup_latest_date, setPickup_latest_date ] = useState(null)
-    const [ pickup_hours_start, setPickup_hours_start ] = useState(null)
-    const [ pickup_hours_end, setPickup_hours_end ] = useState(null)
-    const [ delivery_hours_start, setDelivery_hours_start ] = useState(null)
-    const [ delivery_hours_end, setDelivery_hours_end ] = useState(null)
-    const [ origin_city_id, setOrigin_city_id ] = useState(null)
-    const [ destination_city_id, setDestination_city_id ] = useState(null)
-    const [ full_partial, setFull_partial ] = useState(null)
-    const [ weight, setWeight ] = useState(null)
-    const [ length, setLength ] = useState(null)
-    const [ comments, setComments ] = useState(null)
-    const [ commodity, setCommodity ] = useState(null)
-    const [ contact_phone, setContact_phone ] = useState(null)
-    const [ contact_email, setContact_email ] = useState(null)
-    const [ rate, setRate ] = useState(null)
-    const [ categories, setCategories ] = useState([])
 
+    
+
+    const handleValues = (field, value) => {
+        setValues({
+            ...values,
+            [field]: value
+        })
+    }
+    
     const { register, handleSubmit, watch, clearErrors, getValues, setError, formState: { errors } } = useForm();
+
+    
 
     const onSubmit = async (e) => {
       
         try {
-            let data = {
-                pickup_earliest_date,
-                pickup_latest_date,
-                pickup_hours_start,
-                pickup_hours_end,
-                delivery_hours_start,
-                delivery_hours_end,
-                origin_city_id,
-                destination_city_id,
-                full_partial,
-                weight,
-                length,
-                comments,
-                commodity,
-                contact_phone,
-                contact_email,
-                rate,
-                categories
-            }
+            let data = Object.assign({}, values)
 
             if(data.origin_city_id && data.origin_city_id.id){
                 data.origin_city_id = data.origin_city_id.id
@@ -80,14 +59,66 @@ const LoadForm = (props) => {
                 data.destination_city_id = data.destination_city_id.id
             }
 
-            let cleanedData = Object.fromEntries(Object.entries(data).filter(([_, v]) => v != null));
+            if(data.pickup_hours_start){
+                var duration = moment.duration(moment(data.pickup_hours_start).diff(moment().startOf('day')));
+                data.pickup_hours_start = duration.asMinutes()
+            }
+            if(data.pickup_hours_end){
+                var duration = moment.duration(moment(data.pickup_hours_end).diff(moment().startOf('day')));
+                data.pickup_hours_end = duration.asMinutes()
+            }
+            if(data.delivery_hours_start){
+                var duration = moment.duration(moment(data.delivery_hours_start).diff(moment().startOf('day')));
+                data.delivery_hours_start = duration.asMinutes()
+            }
+            if(data.delivery_hours_end){
+                var duration = moment.duration(moment(data.delivery_hours_end).diff(moment().startOf('day')));
+                data.delivery_hours_end = duration.asMinutes()
+            }
+
+            if(data.pickup_hours_start === ''){
+                data.pickup_hours_start = null
+            }
+            if(data.pickup_hours_end === ''){
+                data.pickup_hours_end = null
+            }
+            if(data.delivery_hours_start === ''){
+                data.delivery_hours_start = null
+            }
+            if(data.delivery_hours_end === ''){
+                data.delivery_hours_end = null
+            }
+
+            if(data.rate === ''){
+                data.rate = null
+            }
+            if(data.length === ''){
+                data.rate = null
+            }
+            if(data.weight === ''){
+                data.rate = null
+            }
+
+            let cleanedData = Object.fromEntries(Object.entries(data).filter(([_, v]) => (v != null || v != '')));
+
             dispatch(setLoading(true))
-            await loadService.create(cleanedData)
-            dispatch(setLoading(false))
-            toast.success('A new load have been added')
+
+            if(idToEdit > 0){
+                await loadService.update(idToEdit, cleanedData)
+                dispatch(setLoading(false))
+                toast.success('Load #'+idToEdit+' has been updated.')
+            } else {
+                await loadService.create(cleanedData)
+                dispatch(setLoading(false))
+                toast.success('A new load has been added.')
+            }
+
+            
+           
             props.reload()
             handleClose()
         } catch (er){
+         
             if(er.code === 422){
                 if(er.errors.length > 0){
                     er.errors.map(x => {
@@ -99,6 +130,7 @@ const LoadForm = (props) => {
                 }
             }
             console.log(er);
+            dispatch(setLoading(false))
             //setError("test", { type: "focus" }, { shouldFocus: true });
         }
     }
@@ -115,21 +147,25 @@ const LoadForm = (props) => {
             
     return (
         <>
+            {
+                fields.data.length > 0 ? 
+            
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                  
                     <Typography variant='body2' sx={{mb:2}}>Locations Information</Typography>
                     <Grid container spacing={5}>
                         <Grid item xs={12} md={6}>
-                        
+                            {console.log(values)}
                             <FormControl fullWidth>
                                 <AutocompleteAsynchronousRequest
                                     endpoint={citiesGetAll}
                                     label='Search Origin'
                                     disabled={store.loading}
                                     field='origin_city_id'
-                                    value={origin_city_id}
-                                    setValue={setOrigin_city_id}
+                                    value={values.origin_city_id}
+                                    setValue={(value) => handleValues('origin_city_id', value)}
+                                    onFocus={()=>clearErrors('origin_city_id')}
                                     errors={errors}
                                 />
                                 {errors.origin_city_id && <FormHelperText sx={{ color: 'error.main' }}>{errors.origin_city_id.message}</FormHelperText>}
@@ -142,10 +178,11 @@ const LoadForm = (props) => {
                                     endpoint={citiesGetAll}
                                     disabled={store.loading}
                                     label='Search Destination'
-                                    field='destination'
-                                    value={destination_city_id}
-                                    setValue={setDestination_city_id}
+                                    field='destination_city_id'
+                                    value={values.destination_city_id}
+                                    setValue={(value) => handleValues('destination_city_id', value)}
                                     errors={errors}
+                                    onFocus={()=>clearErrors('destination_city_id')}
                                 />
                                 {errors.destination_city_id && <FormHelperText sx={{ color: 'error.main' }}>{errors.destination_city_id.message}</FormHelperText>}
                             </FormControl>
@@ -153,13 +190,15 @@ const LoadForm = (props) => {
                         <Grid item xs={12} md={6}>
                             <FormControl fullWidth>
                                 <DatePicker
-                                    
+                                   
                                     label='Pickup Earliest Date'
                                     disabled={store.loading}
-                                    value={pickup_earliest_date}
-                                    onChange={newValue => setPickup_earliest_date(newValue)}
+                                    value={values.pickup_earliest_date}
+                                    onChange={newValue => handleValues('pickup_earliest_date', newValue)}
                                     renderInput={params => <TextField 
                                         {...params} 
+                                        onFocus={()=>clearErrors('pickup_earliest_date')}
+                                        size='small'
                                         error={Boolean(errors['pickup_earliest_date'])} 
                                     />}
                                 />
@@ -170,12 +209,14 @@ const LoadForm = (props) => {
                             <FormControl fullWidth>
                                 <DatePicker
                                     
-                                    label='Pickup Earliest Date'
+                                    label='Pickup Lastest Date'
                                     disabled={store.loading}
-                                    value={pickup_latest_date}
-                                    onChange={newValue => setPickup_latest_date(newValue)}
+                                    value={values.pickup_latest_date}
+                                    onChange={newValue => handleValues('pickup_latest_date', newValue)}
                                     renderInput={params => <TextField 
                                         {...params} 
+                                        onFocus={()=>clearErrors('pickup_latest_date')}
+                                        size='small'
                                         error={Boolean(errors['pickup_latest_date'])} 
                                     />}
                                 />
@@ -187,9 +228,9 @@ const LoadForm = (props) => {
                                 <TimePicker
                                     label="Pickup Hours Start"
                                     disabled={store.loading}
-                                    value={pickup_hours_start}
-                                    onChange={hour => setPickup_hours_start(hour)}
-                                    renderInput={(params) => <TextField {...params} error={Boolean(errors['pickup_hours_start'])}  />}
+                                    value={values.pickup_hours_start}
+                                    onChange={hour => handleValues('pickup_hours_start', hour)}
+                                    renderInput={(params) => <TextField onFocus={()=>clearErrors('pickup_hours_start')} size='small' {...params} error={Boolean(errors['pickup_hours_start'])}  />}
                                 />
                                 {errors.pickup_hours_start && <FormHelperText sx={{ color: 'error.main' }}>{errors.pickup_hours_start.message}</FormHelperText>}
                             </FormControl>
@@ -200,9 +241,9 @@ const LoadForm = (props) => {
                                 <TimePicker
                                     label="Pickup Hours End"
                                     disabled={store.loading}
-                                    value={pickup_hours_end}
-                                    onChange={hour => setPickup_hours_end(hour)}
-                                    renderInput={(params) => <TextField {...params} error={Boolean(errors['pickup_hours_end'])} />}
+                                    value={values.pickup_hours_end}
+                                    onChange={hour => handleValues('pickup_hours_end', hour)}
+                                    renderInput={(params) => <TextField onFocus={()=>clearErrors('pickup_hours_end')}  size='small' {...params} error={Boolean(errors['pickup_hours_end'])} />}
                                 />
                                 {errors.pickup_hours_end && <FormHelperText sx={{ color: 'error.main' }}>{errors.pickup_hours_end.message}</FormHelperText>}
                             </FormControl>
@@ -212,9 +253,9 @@ const LoadForm = (props) => {
                                 <TimePicker
                                     label="Delivery Hours Start"
                                     disabled={store.loading}
-                                    value={delivery_hours_start}
-                                    onChange={hour => setDelivery_hours_start(hour)}
-                                    renderInput={(params) => <TextField {...params} error={Boolean(errors['delivery_hours_start'])} />}
+                                    value={values.delivery_hours_start}
+                                    onChange={hour => handleValues('delivery_hours_start', hour)}
+                                    renderInput={(params) => <TextField onFocus={()=>clearErrors('delivery_hours_start')} size='small' {...params} error={Boolean(errors['delivery_hours_start'])} />}
                                 />
                                 {errors.delivery_hours_start && <FormHelperText sx={{ color: 'error.main' }}>{errors.delivery_hours_start.message}</FormHelperText>}
                             </FormControl>
@@ -224,9 +265,9 @@ const LoadForm = (props) => {
                                 <TimePicker
                                     disabled={store.loading}
                                     label="Delivery Hours End"
-                                    value={delivery_hours_end}
-                                    onChange={hour => setDelivery_hours_end(hour)}
-                                    renderInput={(params) => <TextField {...params} error={Boolean(errors['delivery_hours_end'])} />}
+                                    value={values.delivery_hours_end}
+                                    onChange={hour => handleValues('delivery_hours_end', hour)}
+                                    renderInput={(params) => <TextField onFocus={()=>clearErrors('delivery_hours_end')}  size='small' {...params} error={Boolean(errors['delivery_hours_end'])} />}
                                 />
                                 {errors.delivery_hours_end && <FormHelperText sx={{ color: 'error.main' }}>{errors.delivery_hours_end.message}</FormHelperText>}
                             </FormControl>
@@ -234,9 +275,10 @@ const LoadForm = (props) => {
                         <Grid item xs={12} md={6}>
                             <FormControl fullWidth>
                                 <TextField 
-                                    value={rate} 
-                                    onChange={(e)=>setRate(e.target.value)} 
-                                        
+                                    size='small'
+                                    value={values.rate} 
+                                    onChange={(e)=>handleValues('rate', e.target.value)} 
+                                    onFocus={()=>clearErrors('rate')}
                                     error={Boolean(errors['rate'])}
                                     disabled={store.loading}
                                     type='number' 
@@ -256,21 +298,23 @@ const LoadForm = (props) => {
 
                     
                        
-
+                                            {console.log(values)}
                         <Grid item xs={12} md={6}>
-                            <FormControl fullWidth>
-                                <InputLabel id='demo-simple-select-helper-label'>Load Type</InputLabel>
+                            <FormControl fullWidth  size="small">
+                                <InputLabel id='label-load-type'>Load Type</InputLabel>
                                 <Select 
+                                    labelId="label-load-type"
                                     multiple
-                                    value={categories} 
-                                    onChange={(e)=>setCategories(e.target.value)} 
+                                    value={values.categories} 
+                                    onChange={(e)=>handleValues('categories', e.target.value)} 
                                     fullWidth 
                                     disabled={store.loading}
-                                    label='Type' 
+                                    label='Load Type' 
                                     error={Boolean(errors['categories'])}
                                     defaultValue='' 
                                     id='demo-simple-select-helper' 
-                                    labelId='demo-simple-select-helper-label'
+                                    onFocus={()=>clearErrors('categories')}
+                                 
                                 >
                                     {
                                         fields.data.filter(x => x.context === 'load').map(x => 
@@ -283,18 +327,20 @@ const LoadForm = (props) => {
                         </Grid>  
 
                         <Grid item xs={12} md={6}>
-                            <FormControl fullWidth>
-                                <InputLabel id='demo-simple-select-helper-label2'>Full / Partial</InputLabel>
+                            <FormControl fullWidth  size="small">
+                                <InputLabel id='label-full-partial'>Full / Partial</InputLabel>
                                 <Select 
-                                    value={full_partial} 
-                                    onChange={(e)=>setFull_partial(e.target.value)} 
+                                    labelId="label-full-partial"
+                                    value={values.full_partial} 
+                                    onChange={(e)=>handleValues('full_partial', e.target.value)} 
                                     fullWidth 
                                     disabled={store.loading}
-                                    label='Type' 
+                                    label='Full / Partial' 
                                     error={Boolean(errors['full_partial'])}
                                     defaultValue='' 
                                     id='demo-simple-select-helper' 
-                                    labelId='demo-simple-select-helper-label'
+                              
+                                    onFocus={()=>clearErrors('full_partial')}
                                 >
                                     <MenuItem value={'full'}>Full</MenuItem>
                                     <MenuItem value={'partial'}>Partial</MenuItem>
@@ -305,13 +351,14 @@ const LoadForm = (props) => {
                         <Grid item xs={12} md={6}>
                             <FormControl fullWidth>
                                 <TextField 
-                         
+                                    size='small'
                                     type='number' 
                                     disabled={store.loading}
                                     error={Boolean(errors['length'])}
                                     label='Length' 
-                                    value={length}
-                                    onChange={e => setLength(e.target.value)}
+                                    value={values.length}
+                                    onChange={e => handleValues('length', e.target.value)}
+                                    onFocus={()=>clearErrors('length')}
                                 />
                                 {errors.length && <FormHelperText sx={{ color: 'error.main' }}>{errors.length.message}</FormHelperText>}
                             </FormControl>
@@ -319,13 +366,14 @@ const LoadForm = (props) => {
                         <Grid item xs={12} md={6}>
                             <FormControl fullWidth>
                                 <TextField 
-               
+                                    size='small'
                                     type='number' 
                                     disabled={store.loading}
                                     label='Weight' 
                                     error={Boolean(errors['weight'])}
-                                    value={weight}
-                                    onChange={e => setWeight(e.target.value)}
+                                    value={values.weight}
+                                    onChange={e => handleValues('weight', e.target.value)}
+                                    onFocus={()=>clearErrors('weight')}
                                 />
                                 {errors.weight && <FormHelperText sx={{ color: 'error.main' }}>{errors.weight.message}</FormHelperText>}
                             </FormControl>
@@ -338,6 +386,7 @@ const LoadForm = (props) => {
                         <Grid item xs={12} md={12}>
                             <FormControl fullWidth>
                                 <TextField
+                                    size='small'
                                     multiline
                                     disabled={store.loading}
                                     rows={2}
@@ -345,8 +394,9 @@ const LoadForm = (props) => {
                                     id='textarea-filled'
                                     placeholder='Commodity'
                                     label='Commodity'
-                                    value={commodity} 
-                                    onChange={(e)=>setCommodity(e.target.value)} 
+                                    value={values.commodity} 
+                                    onChange={(e)=>handleValues('commodity', e.target.value)} 
+                                    onFocus={()=>clearErrors('commodity')}
                                 />
                                 {errors.commodity && <FormHelperText sx={{ color: 'error.main' }}>{errors.commodity.message}</FormHelperText>}
                             </FormControl>
@@ -354,15 +404,17 @@ const LoadForm = (props) => {
                         <Grid item xs={12} md={12}>
                             <FormControl fullWidth>
                                 <TextField
+                                    size='small'
                                     disabled={store.loading}
                                     multiline
                                     error={Boolean(errors['comments'])}
-                                    rows={3}
+                                    rows={2}
                                     id='textarea-filled'
                                     placeholder='Comments'
                                     label='Comments'
-                                    value={comments} 
-                                    onChange={(e)=>setComments(e.target.value)} 
+                                    value={values.comments} 
+                                    onChange={(e)=>handleValues('comments', e.target.value)} 
+                                    onFocus={()=>clearErrors('comments')}
                                 />
                                 {errors.comments && <FormHelperText sx={{ color: 'error.main' }}>{errors.comments.message}</FormHelperText>}
                             </FormControl>
@@ -372,13 +424,15 @@ const LoadForm = (props) => {
                             <CleaveWrapper>
                                 <FormControl  fullWidth>
                                     <Cleave
+                                        size='small'
                                         disabled={store.loading}
-                                        value={contact_phone} 
-                                        onChange={(e)=>setContact_phone(e.target.value)} 
+                                        value={values.contact_phone} 
+                                        onChange={(e)=>handleValues('contact_phone', e.target.value)} 
                                         id='phone-number' 
                                         placeholder='Contact Phone' 
                                         options={{ phone: true, phoneRegionCode: 'US' }} 
                                         error={true}
+                                        onFocus={()=>clearErrors('contact_phone')}
                                     />
                                     {errors.contact_phone && <FormHelperText sx={{ color: 'error.main' }}>{errors.contact_phone.message}</FormHelperText>}
                                 </FormControl>
@@ -389,25 +443,30 @@ const LoadForm = (props) => {
                             <FormControl fullWidth>
                                 <TextField 
                                     disabled={store.loading}
+                                    size='small'
                                     type='email' 
                                     label='Contact Email' 
                                     error={Boolean(errors['contact_email'])}
-                                    value={contact_email} 
-                                    onChange={(e)=>setContact_email(e.target.value)} 
-                                    onBlur={()=>clearErrors('contact_email')}
+                                    value={values.contact_email} 
+                                    onChange={(e)=>handleValues('contact_email', e.target.value)} 
+                                    onFocus={()=>clearErrors('contact_email')}
                                 />
                                 {errors.contact_email && <FormHelperText sx={{ color: 'error.main' }}>{errors.contact_email.message}</FormHelperText>}
                             </FormControl>
                         </Grid>
                     </Grid>
-                    <Divider sx={{pt:3, pb:4}}/>
-                    <DialogActions className='dialog-actions-dense'>
+                    <br />
+                    {/* <Divider sx={{pt:3, pb:4}}/> */}
+                    <DialogActions sx={{p:0}}>
                         <Button disabled={store.loading} color='error' onClick={handleClose}>Cancel</Button>
-                        <Button disabled={store.loading} color='secondary' onClick={handleClose}>Reset</Button>
-                        <Button disabled={store.loading} type='submit'>Save</Button>
+                        <Button disabled={store.loading} color='secondary' onClick={()=>{
+                            setValues(props.initialData)
+                        }}>Reset</Button>
+                        <Button disabled={store.loading || Object.keys(errors).length > 0} type='submit'>Save</Button>
                     </DialogActions>
                 </form>
-            </LocalizationProvider> 
+            </LocalizationProvider>  : <Box sx={{p:5, display:'flex', alignItems:'center', justifyContent:'center'}}><CircularProgress /></Box>
+}
         </>
     )
 }

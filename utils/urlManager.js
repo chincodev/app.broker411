@@ -14,6 +14,7 @@ export default function (props) {
         	currentUrlParams.delete(x.key)
       	}
     })
+	
     router.push(
 		router.pathname+'?'+currentUrlParams.toString(), 
 		router.asPath ? router.asPath.split('?')[0]+'?'+currentUrlParams.toString() : undefined, 

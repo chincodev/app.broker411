@@ -25,6 +25,7 @@ const AutocompleteAsynchronousRequest = (props) => {
     value,
     setValue,
     errors,
+    onFocus,
     field
   } = props
 
@@ -88,7 +89,10 @@ const AutocompleteAsynchronousRequest = (props) => {
       disabled={disabled}
       value={value}
       loading={loading}
-      onChange={(event, value) => setValue(value)}
+      onChange={(event, value) => setValue({
+        ...value,
+        text: value.name
+      })}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
       id='autocomplete-asynchronous-request'
@@ -97,23 +101,31 @@ const AutocompleteAsynchronousRequest = (props) => {
         <li {...props}>{option.name}</li>
       )}
       // isOptionEqualToValue={(option, value) => option.title === value.title}
-      renderInput={params => (
-        <TextField
-          {...params}
-          error={Boolean(errors[field])}
-          onChange={(e) => setSearch(e.target.value)}
-          label={label}
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <Fragment>
-                {loading ? <CircularProgress color='inherit' size={20} /> : null}
-                {params.InputProps.endAdornment}
-              </Fragment>
-            )
-          }}
-        />
-      )}
+      renderInput={params => {
+     
+        return(
+          
+            <TextField
+              {...params}
+              size='small'
+              error={Boolean(errors[field])}
+              onChange={(e) => setSearch(e.target.value)}
+              label={label}
+              onFocus={()=>onFocus()}
+           
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <Fragment>
+                    {loading ? <CircularProgress color='inherit' size={20} /> : null}
+                    {params.InputProps.endAdornment}
+                  </Fragment>
+                )
+              }}
+            />
+          
+        )}
+      }
     />  </>
   )
 }

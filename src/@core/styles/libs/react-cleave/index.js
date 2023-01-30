@@ -4,7 +4,7 @@ import Box from '@mui/material/Box'
 
 const CleaveWrapper = styled(Box)(({ theme }) => ({
   '& input': {
-    height: 56,
+    height: 40,
     width: '100%',
     borderWidth: 1,
     lineHeight: 1.5,

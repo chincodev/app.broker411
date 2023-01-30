@@ -9,7 +9,7 @@ import { loadService } from 'services/load.service'
 export const getLoads = createAsyncThunk('appLoads/getLoads', async (params = '', { getState, dispatch }) => {
 
   try {
-    await dispatch(setLoading())
+    await dispatch(setLoading(true))
     const response = await loadService.get(params)
     return response
   } catch (er){
@@ -36,8 +36,8 @@ export const deleteLoad = createAsyncThunk('appLoads/deleteLoad', async (id, { g
   return response.data
 })
 
-export const setLoading = createAsyncThunk('appLoads/setLoading', async (id, { dispatch }) => {
-  return true
+export const setLoading = createAsyncThunk('appLoads/setLoading', async (value, { dispatch }) => {
+  return value
 })
 
 export const appLoadsSlice = createSlice({
@@ -71,7 +71,7 @@ export const appLoadsSlice = createSlice({
       }
     }),
     builder.addCase(setLoading.fulfilled, (state, action) => {
-      state.loading = true
+      state.loading = action.payload
     })
 
   

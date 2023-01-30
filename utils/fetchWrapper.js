@@ -70,14 +70,18 @@ function handleResponse(response) {
     }
     return response.text().then(text => {
         let data = text && JSON.parse(text);
-
+      
         if (!response.ok) {
-            if(data.data){
-                data = data.data
+          
+            if(data.errors){
+                return Promise.reject({errors:data.errors, code: response.status});
+            } else if(data.message){
+                return Promise.reject({errors:[{message: data.message}], code: response.status});
+            } else if(data.data && data.data.message ){
+                return Promise.reject({errors:[{message: data.data.message}], code: response.status});
+            } else {
+                return Promise.reject({errors:[{message:'Something Went Wrong.'}], code: response.status});
             }
-            let errors = data.errors && data.errors.length > 0 ? data.errors : data.data && data.data.message ? [{message:data.data.message}] : [{message:response.statusText}]
-            console.log(errors)
-            return Promise.reject({errors, code: response.status});
         }
         return data;
     });
