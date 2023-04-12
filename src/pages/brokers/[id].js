@@ -6,7 +6,6 @@ import tokenServer from '../../../utils/tokenServer'
 import BusinessViewPage from 'src/views/apps/business/view/BusinessViewPage'
 
 const UserView = ({ id, data, code }) => {
-    console.log(data)
     return <BusinessViewPage id={id} data={data} code={code} />
 }
 

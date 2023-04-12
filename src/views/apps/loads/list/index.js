@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import Grid from '@mui/material/Grid'
@@ -76,10 +76,14 @@ const LoadsList = (props) => {
 			renderCell: ({ row }) => {
 				
 				let [ is_enabled, setIs_enabled ] = useState(row.is_enabled)
-
+				const isFirstRun = useRef(true);
 				useEffect(() => {
+					
+					if (isFirstRun.current) {
+						isFirstRun.current = false;
+						return;
+					}
 					changeStatus(row, is_enabled);
-					// eslint-disable-next-line react-hooks/exhaustive-deps
 				  }, [is_enabled])
 			  return (
 				

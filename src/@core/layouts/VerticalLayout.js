@@ -21,6 +21,9 @@ import ScrollToTop from 'src/@core/components/scroll-to-top'
 
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
+import LoadDrawer from 'src/layouts/LoadDrawer'
+import { isEmpty } from 'lodash'
+import { useSelector } from 'react-redux'
 
 const VerticalLayoutWrapper = styled('div')({
   height: '100%',
@@ -49,7 +52,7 @@ const ContentWrapper = styled('main')(({ theme }) => ({
 const VerticalLayout = props => {
   // ** Props
   const { hidden, settings, children, scrollToTop } = props
-
+  const load = useSelector(state => state.load)
   // ** Vars
   const { skin, navHidden, contentWidth } = settings
   const { navigationSize, disableCustomizer, collapsedNavigationSize } = themeConfig
@@ -103,7 +106,11 @@ const VerticalLayout = props => {
           <DatePickerWrapper sx={{ zIndex: 11 }}>
             <Box id='react-datepicker-portal'></Box>
           </DatePickerWrapper>
+          <LoadDrawer />
         </MainContentWrapper>
+        
+         
+        
       </VerticalLayoutWrapper>
 
       {/* {disableCustomizer || hidden ? null : <Customizer />} */}

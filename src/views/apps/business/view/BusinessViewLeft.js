@@ -26,6 +26,7 @@ import LinearProgress from '@mui/material/LinearProgress'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import DialogContentText from '@mui/material/DialogContentText'
 import toast from 'react-hot-toast'
+import Icon from 'src/@core/components/icon'
 // ** Icons Imports
 import Check from 'mdi-material-ui/Check'
 import Circle from 'mdi-material-ui/Circle'
@@ -43,6 +44,7 @@ import AddBrokerDialog from 'src/layouts/AddBrokerDialog'
 import AddReviewDialog from 'src/layouts/AddReviewDialog'
 import ShowMoreDialog from 'src/layouts/ShowMoreDialog'
 import { Avatar } from '@mui/material'
+import { BellOff, NotificationClearAll } from 'mdi-material-ui'
 
 // ** Styled <sup> component
 const Sup = styled('sup')(({ theme }) => ({
@@ -276,6 +278,24 @@ const UserViewLeft = ({ business, setBusiness }) => {
             {
               ['owner', 'representative'].includes(auth.user.role.name) ? (
                 <CardActions sx={{ display: 'flex', justifyContent: 'center', flexDirection:'column' }}>
+                  <div style={{marginBottom:'10px'}}>
+                    <Button
+                      color={'secondary'}
+                      variant={'contained'}
+                      startIcon={<Icon icon='mdi:bell-off' fontSize={20} />}
+                    >
+                      Follow
+                    </Button>
+                  </div>
+                  <div style={{marginBottom:'10px'}}>
+                    <Button
+                      color={'secondary'}
+                      variant={'contained'}
+                      startIcon={<Icon icon='mdi:message-text' fontSize={20} />}
+                    >
+                      Message
+                    </Button>
+                  </div>
                   <ShowMoreDialog business={business}  />
                   <AddReviewDialog business={business}  />
                   

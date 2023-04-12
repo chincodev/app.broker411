@@ -17,6 +17,7 @@ import CardContent from '@mui/material/CardContent'
 import Fade from '@mui/material/Fade'
 import DialogContent from '@mui/material/DialogContent'
 import toast from 'react-hot-toast'
+import Icon from 'src/@core/components/icon'
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
 import Check from 'mdi-material-ui/Check'
@@ -102,8 +103,8 @@ const ShowMoreDialog = (props) => {
 
 
   return (
-    <Box style={{marginBottom:'10px'}}>
-<Button color='secondary' fullWidth onClick={()=>setShow(true)} variant='contained'>
+    <Box>
+<Button startIcon={<Icon icon='mdi:information' fontSize={20} />} color='secondary' fullWidth onClick={()=>setShow(true)} variant='contained'>
                     More Info
                   
                   </Button>
@@ -127,7 +128,7 @@ const ShowMoreDialog = (props) => {
           }}
         >
        
-          <IconButton size='small' onClick={handleClose} sx={{ position: 'absolute', right: '1rem', top: '1rem' }}>
+          <IconButton  size='small' onClick={handleClose} sx={{ position: 'absolute', right: '1rem', top: '1rem' }}>
             <Close />
           </IconButton>
           <Box sx={{ mb: 3, textAlign: 'center' }}>

@@ -93,11 +93,19 @@ const LoadForm = (props) => {
                 data.rate = null
             }
             if(data.length === ''){
-                data.rate = null
+                data.length = null
             }
             if(data.weight === ''){
-                data.rate = null
+                data.weight = null
             }
+
+            if(data.contact_phone === ''){
+                delete data.contact_phone
+            }
+            if(data.contact_email === ''){
+                delete data.contact_email
+            }
+
 
             let cleanedData = Object.fromEntries(Object.entries(data).filter(([_, v]) => (v != null || v != '')));
 
@@ -209,7 +217,7 @@ const LoadForm = (props) => {
                             <FormControl fullWidth>
                                 <DatePicker
                                     
-                                    label='Pickup Lastest Date'
+                                    label='Pickup Latest Date'
                                     disabled={store.loading}
                                     value={values.pickup_latest_date}
                                     onChange={newValue => handleValues('pickup_latest_date', newValue)}
@@ -432,7 +440,10 @@ const LoadForm = (props) => {
                                         placeholder='Contact Phone' 
                                         options={{ phone: true, phoneRegionCode: 'US' }} 
                                         error={true}
-                                        onFocus={()=>clearErrors('contact_phone')}
+                                        onFocus={()=>{
+                                            clearErrors('contact_phone')
+                                            clearErrors('contact_email')
+                                        }}
                                     />
                                     {errors.contact_phone && <FormHelperText sx={{ color: 'error.main' }}>{errors.contact_phone.message}</FormHelperText>}
                                 </FormControl>
@@ -449,7 +460,10 @@ const LoadForm = (props) => {
                                     error={Boolean(errors['contact_email'])}
                                     value={values.contact_email} 
                                     onChange={(e)=>handleValues('contact_email', e.target.value)} 
-                                    onFocus={()=>clearErrors('contact_email')}
+                                    onFocus={()=>{
+                                        clearErrors('contact_phone')
+                                        clearErrors('contact_email')
+                                    }}
                                 />
                                 {errors.contact_email && <FormHelperText sx={{ color: 'error.main' }}>{errors.contact_email.message}</FormHelperText>}
                             </FormControl>

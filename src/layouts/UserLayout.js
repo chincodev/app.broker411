@@ -24,6 +24,7 @@ import { useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import { RobotAngry } from 'mdi-material-ui'
 import ReportFormDialog from './ReportFormDialog'
+import LoadDrawer from './LoadDrawer'
 
 const UserLayout = ({ children }) => {
   // ** Hooks
@@ -44,6 +45,7 @@ const UserLayout = ({ children }) => {
   const router = useRouter()
 
   return (
+    <>
     <Layout
       hidden={hidden}
       settings={settings}
@@ -78,11 +80,14 @@ const UserLayout = ({ children }) => {
           })}
     >
       <ReviewFormDialog />
+      
       <ReportFormDialog />
       <ReviewDialogWrapper id={router.query.reviewId ? router.query.reviewId : null} />
       {children}
 
     </Layout>
+    
+    </>
   )
 }
 

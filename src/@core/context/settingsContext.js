@@ -17,7 +17,7 @@ const initialSettings = {
   contentWidth: themeConfig.contentWidth,
   toastPosition: themeConfig.toastPosition,
   verticalNavToggleType: themeConfig.verticalNavToggleType,
-  skin: themeConfig.layout === 'horizontal' && themeConfig.skin === 'semi-dark' ? 'default' : themeConfig.skin,
+  skin: 'dark',
   appBar: themeConfig.layout === 'horizontal' && themeConfig.appBar === 'hidden' ? 'fixed' : themeConfig.appBar
 }
 
@@ -78,12 +78,13 @@ export const SettingsProvider = ({ children, pageSettings }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageSettings])
   useEffect(() => {
-    if (settings.layout === 'horizontal' && settings.skin === 'semi-dark') {
-      saveSettings({ ...settings, skin: 'default' })
-    }
+    // if (settings.layout === 'horizontal' && settings.skin === 'semi-dark') {
+    //   saveSettings({ ...settings, skin: 'default' })
+    // }
     if (settings.layout === 'horizontal' && settings.appBar === 'hidden') {
       saveSettings({ ...settings, appBar: 'fixed' })
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [settings.layout])
 
@@ -92,6 +93,7 @@ export const SettingsProvider = ({ children, pageSettings }) => {
     setSettings(updatedSettings)
   }
 
+  console.log(themeConfig);
   return <SettingsContext.Provider value={{ settings, saveSettings }}>{children}</SettingsContext.Provider>
 }
 

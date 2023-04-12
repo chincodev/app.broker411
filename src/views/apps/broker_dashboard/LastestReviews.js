@@ -209,7 +209,7 @@ const LastestReviews = () => {
   return (
     <Card style={{position:'relative'}}>
         <CardHeader
-            title='Lastest Reviews'
+            title='Latest Reviews'
             // subheader='Commercial networks'
             titleTypographyProps={{ variant: 'h6' }}
             subheaderTypographyProps={{ variant: 'caption', sx: { color: 'text.disabled' } }}

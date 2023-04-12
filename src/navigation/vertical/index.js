@@ -61,8 +61,7 @@ const navigation = () => {
     return [
       {
         sectionTitle: 'Menu'
-      },
-      {
+      },{
         title: 'Home',
         icon: HomeOutline,
         path: '/'

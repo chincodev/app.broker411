@@ -13,7 +13,7 @@ const themeConfig = {
   layout: 'vertical' /* vertical | horizontal */,
   mode: 'dark' /* light | dark */,
   direction: 'ltr' /* ltr | rtl */,
-  skin: 'semi-dark' /* default | bordered | semi-dark /*! Note: semi-dark value will only work for Vertical Layout */,
+  skin: 'dark' /* default | bordered | semi-dark /*! Note: semi-dark value will only work for Vertical Layout */,
   contentWidth: 'boxed' /* full | boxed */,
   footer: 'static' /* fixed | static | hidden */,
   // ** Routing Configs
@@ -23,7 +23,7 @@ const themeConfig = {
   menuTextTruncate: true /* true | false */,
   navSubItemIcon: Circle /* Icon Element */,
   verticalNavToggleType: 'accordion' /* accordion | collapse /*! Note: This is for Vertical navigation menu only */,
-  navCollapsed: false /* true | false /*! Note: This is for Vertical navigation menu only */,
+  navCollapsed: true /* true | false /*! Note: This is for Vertical navigation menu only */,
   navigationSize: 260 /* Number in PX(Pixels) /*! Note: This is for Vertical navigation menu only */,
   collapsedNavigationSize: 68 /* Number in PX(Pixels) /*! Note: This is for Vertical navigation menu only */,
   afterVerticalNavMenuContentPosition: 'fixed' /* fixed | static */,

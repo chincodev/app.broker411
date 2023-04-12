@@ -15,6 +15,7 @@ import axios from 'axios'
 import BusinessViewLeft from 'src/views/apps/business/view/BusinessViewLeft'
 import BusinessViewRight from 'src/views/apps/business/view/BusinessViewRight'
 import { Button, Card, CardContent, CardHeader, Typography } from '@mui/material'
+import UserViewHeader from './UserViewHeader'
 
 const UserView = ({ id, data, code }) => {
 
@@ -62,12 +63,23 @@ const UserView = ({ id, data, code }) => {
 
   return (
     <Grid container spacing={6}>
-  
-      <Grid item xs={12} md={4} lg={3}>
-        <BusinessViewLeft business={business} setBusiness={setBusiness} />
-      </Grid>
-      <Grid item xs={12} md={8} lg={9}>
-        <BusinessViewRight business={business} setBusiness={setBusiness} />
+        <Grid item xs={12} md={12} lg={12}>
+          <UserViewHeader 
+            business={business} 
+            setBusiness={setBusiness} 
+          />
+        </Grid>
+      {/* <Grid item xs={12} md={4} lg={3}>
+        <BusinessViewLeft 
+          business={business} 
+          setBusiness={setBusiness} 
+          />
+      </Grid> */}
+      <Grid item xs={12} md={12} lg={12}>
+        <BusinessViewRight 
+          business={business} 
+          setBusiness={setBusiness} 
+        />
       </Grid>
     </Grid>
   )

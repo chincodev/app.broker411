@@ -102,7 +102,7 @@ const LoadFormDialog = (props) => {
             TransitionComponent={Transition}
         >
            
-            <DialogTitle id='form-dialog-title'>{!isEmpty(scopedLoadToEdit) ? 'Edit' : 'add'} Load</DialogTitle>
+            <DialogTitle id='form-dialog-title'>{!isEmpty(scopedLoadToEdit) ? 'Edit' : 'Add'} Load</DialogTitle>
             <DialogContent>
                 {/* <IconButton size='small' onClick={()=>{
                    props.setIsDialogOpen(false)

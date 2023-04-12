@@ -40,6 +40,7 @@ const Drawer = props => {
 
   // ** Vars
   const { skin, navCollapsed } = settings
+  console.log(navCollapsed);
 
   const drawerColor = () => {
     if (skin === 'semi-dark' && theme.palette.mode === 'light') {

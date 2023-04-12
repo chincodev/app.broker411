@@ -118,6 +118,7 @@ const Navigation = props => {
 
   return (
     <Drawer {...props}>
+      {console.log(props)}
       <VerticalNavHeader {...props} />
       {beforeVerticalNavMenuContent && beforeVerticalNavMenuContentPosition === 'fixed'
         ? beforeVerticalNavMenuContent(props)

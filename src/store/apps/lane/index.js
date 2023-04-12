@@ -3,14 +3,14 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 // ** Axios Imports
 import axios from 'axios'
 import toast from 'react-hot-toast'
-import { loadService } from 'services/load.service'
+import { laneService } from 'services/lane.service'
 
 // ** Fetch Reports
-export const getLoads = createAsyncThunk('appLoads/getLoads', async (params = '', { getState, dispatch }) => {
+export const getLanes = createAsyncThunk('appLanes/getLanes', async (params = '', { getState, dispatch }) => {
 
   try {
-    await dispatch(setLoading(true))
-    const response = await loadService.get(params)
+    await dispatch(setLaneing(true))
+    const response = await laneService.get(params)
     return response
   } catch (er){
     console.log(er);
@@ -18,7 +18,7 @@ export const getLoads = createAsyncThunk('appLoads/getLoads', async (params = ''
   }
 })
 
-export const addLoad = createAsyncThunk('appLoads/addLoad', async (data, { getState, dispatch }) => {
+export const addLane = createAsyncThunk('appLanes/addLane', async (data, { getState, dispatch }) => {
   const response = await axios.post('/apps/reports/add-report', {
     data
   })
@@ -27,11 +27,11 @@ export const addLoad = createAsyncThunk('appLoads/addLoad', async (data, { getSt
   return response.data
 })
 
-export const showLoadSidebar = createAsyncThunk('appLoads/showLoad', async (data, { getState, dispatch }) => {
+export const showLaneSidebar = createAsyncThunk('appLanes/showLane', async (data, { getState, dispatch }) => {
   return data
 })
 
-export const deleteLoad = createAsyncThunk('appLoads/deleteLoad', async (id, { getState, dispatch }) => {
+export const deleteLane = createAsyncThunk('appLanes/deleteLane', async (id, { getState, dispatch }) => {
   const response = await axios.delete('/apps/reports/delete', {
     data: id
   })
@@ -40,18 +40,18 @@ export const deleteLoad = createAsyncThunk('appLoads/deleteLoad', async (id, { g
   return response.data
 })
 
-export const setLoading = createAsyncThunk('appLoads/setLoading', async (value, { dispatch }) => {
+export const setLaneing = createAsyncThunk('appLanes/setLaneing', async (value, { dispatch }) => {
   return value
 })
 
-export const appLoadsSlice = createSlice({
-  name: 'appLoads',
+export const appLanesSlice = createSlice({
+  name: 'appLanes',
   initialState: {
     data: [],
     reviewToReportId: null,
     profile:{},
     loading: true,
-    showLoadSidebar:null,
+    showLaneSidebar:null,
     total: null,
     params: {},
     allData: [],
@@ -61,7 +61,7 @@ export const appLoadsSlice = createSlice({
   },
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(getLoads.fulfilled, (state, action) => {
+    builder.addCase(getLanes.fulfilled, (state, action) => {
      
       if(action.payload){
         state.data = action.payload.data
@@ -75,11 +75,11 @@ export const appLoadsSlice = createSlice({
         state.loading = false
       }
     }),
-    builder.addCase(setLoading.fulfilled, (state, action) => {
+    builder.addCase(setLaneing.fulfilled, (state, action) => {
       state.loading = action.payload
     })
-    builder.addCase(showLoadSidebar.fulfilled, (state, action) => {
-      state.showLoadSidebar = action.payload
+    builder.addCase(showLaneSidebar.fulfilled, (state, action) => {
+      state.showLaneSidebar = action.payload
     })
 
   
@@ -94,4 +94,4 @@ export const appLoadsSlice = createSlice({
   }
 })
 
-export default appLoadsSlice.reducer
+export default appLanesSlice.reducer
