@@ -99,7 +99,7 @@ const navigation = () => {
       },{
         title: 'Bond Check',
         icon: Check,
-        path: '/bond'
+        path: '/bonds'
       }
     ]
   } else {

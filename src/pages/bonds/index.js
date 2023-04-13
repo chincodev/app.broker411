@@ -33,7 +33,7 @@ const BondCheck = (props) => {
             setActionsLoading(true)
 
             let _data = await bondService.find(id)
-            console.log(_data);
+            setData(_data);
             setActionsLoading(false)
             // setTimeout(() => {
 
