@@ -213,12 +213,12 @@ const ReviewCard = ({ data, feedMode = false, reload }) => {
                       
                       
                     </div>}
-                      sx={{ height: 48 }}>
+                      sx={{ height: 48}}>
 
                       </CustomChip>
             
                       {
-                        feedMode && <><Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled', marginTop:'2px' }}>Review by<br /><strong>{data.user.business.legal_name}</strong></Typography></>
+                        feedMode && <><Typography variant='body2' sx={{ marginLeft:'1rem', fontSize: '0.8rem', color: 'text.disabled', marginTop:'2px' }}>Review by<br /><strong>{data.user.business.legal_name}</strong></Typography></>
                       }
                       </div>
             {

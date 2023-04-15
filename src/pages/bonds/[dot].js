@@ -17,24 +17,15 @@ import queryString from 'query-string'
 import ProgressLinearControlledUncontrolled from 'src/layouts/components/ProgressBar'
 import BondShow from 'src/views/apps/bond_check/show'
 
-const StyledLink = styled('a')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    textDecoration: 'none',
-    
-}))
 
 
 const BondCheck = (props) => {
-    return <BondShow {...props} hideTop={false} page={'bond-check'}  />
+    return <BondShow {...props} hideTop={true} page={'bonds'}  />
 }
 
-BondCheck.getLayout = page => <BlankLayout>{page}</BlankLayout>
-BondCheck.guestGuard = false
-BondCheck.authGuard = false
+
 
 export default BondCheck
-
 
 export async function getServerSideProps(context){
     const { 
