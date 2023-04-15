@@ -49,7 +49,7 @@ const Feed = () => {
                     )
                 }
                 <Grid item xs={12} sm={12} md={5} lg={5} order={{ md: 3, xs: 2 }}>
-                    <LoadsEarlySignWidget />
+                    {/* <LoadsEarlySignWidget /> */}
                     <TopBrokersWidget />
                 </Grid>
                 <Grid item xs={12} sm={12} md={7} lg={7} order={{ md: 2, xs: 3 }}>

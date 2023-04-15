@@ -17,11 +17,15 @@ import queryString from 'query-string'
 import Icon from 'src/@core/components/icon'
 import ShowMoreDialog from 'src/layouts/ShowMoreDialog'
 import AddReviewDialog from 'src/layouts/AddReviewDialog'
-import { CircularProgress, Divider, List, Menu } from '@mui/material'
+import { CircularProgress, Divider, List, Menu, Rating } from '@mui/material'
 import { getInitials } from 'src/@core/utils/get-initials'
 import { user_businessService } from 'services/user_business.service'
 import { blue, green } from '@mui/material/colors'
 import toast from 'react-hot-toast'
+import { useAuth } from 'src/hooks/useAuth'
+import { isEmpty } from 'lodash'
+import { Router } from 'mdi-material-ui'
+import { useRouter } from 'next/router'
 
 const ProfilePicture = styled('img')(({ theme }) => ({
   width: 120,
@@ -35,11 +39,15 @@ const ProfilePicture = styled('img')(({ theme }) => ({
 
 const UserViewHeader = (props) => {
 
+  const auth = useAuth()
+  
+
   const { business } = props
   const [data, setData] = useState({})
   const [ follow, setFollow ] = useState(false)
   const [ loadingFollow, setLoadingFollow ] = useState(true)
   const designationIcon = data?.designationIcon || 'mdi:briefcase-outline'
+  const router = useRouter()
 
   const renderUserAvatar = () => {
     if (business) {
@@ -109,7 +117,9 @@ const UserViewHeader = (props) => {
 	}
 
 	useEffect(() => {	
-		getUser_businesses()
+    if(!isEmpty(auth.user)){
+      getUser_businesses()
+    }
 	}, [])
 
 	
@@ -150,6 +160,7 @@ const UserViewHeader = (props) => {
           justifyContent: { xs: 'center', md: 'flex-start' }
         }}
       >
+        
         {renderUserAvatar()}
         <Box
           sx={{
@@ -173,6 +184,7 @@ const UserViewHeader = (props) => {
                 sx={{
                   display: 'flex',
                   mt: 4, 
+                  mb: 4,
                   flexDirection: 'column',
                   flexWrap: 'wrap',
                   justifyContent: ['center', 'flex-start']
@@ -203,42 +215,62 @@ const UserViewHeader = (props) => {
                     <Typography sx={{ color: 'text.secondary', fontWeight: 600 }}>{business.registration_date || '-'}</Typography>
                   </Box>
                 }
+
+                {
+                  business.reviewCount ? <Box style={{display:'flex', alignItems:'center'}}>
+                      <Rating size="small" readOnly max={10} value={business.avgRating} name='simple-controlled'  /> 
+                      &nbsp;
+                      <small>({business.reviewCount})</small>
+                  </Box> : ''
+                }
                 
                
               </Box>
             </Box>
-            <Box style={{ marginBottom:'0.5rem', display:'flex', justifyContent:{sm:'center', md:'start'}}}>
+            <Box style={{display:'flex', justifyContent:{sm:'center', md:'start'}}}>
               <ShowMoreDialog business={business}  />&nbsp;
-                  <AddReviewDialog business={business}  />
+                  <AddReviewDialog 
+                    business={business}  
+                    noUser={()=>router.replace({
+                        pathname: '/login',
+                        query: { returnUrl: router.asPath }
+                      })}
+                />
             </Box>
             
             
           </Box>
-          <div style={{marginBottom:'0.5rem'}}>
-            <Button
-              color={loadingFollow ? 'secondary' : (follow && follow.email_notifications_on_reviews ? 'primary' : 'secondary')}
-              variant={'contained'}
-			  disabled={loadingFollow}
-              startIcon={<Icon icon={`mdi:bell${follow && follow.email_notifications_on_reviews ? '-ring' : '-off'}`} fontSize={20} />}
-                onClick={() => handleUpdateFollow(follow && follow.email_notifications_on_reviews ? !follow.email_notifications_on_reviews : true)}
-            >
-				{
-                      loadingFollow ? (<>Loading...</>) : (
-						follow && follow.email_notifications_on_reviews  ? 'FOLLOWING' : 'FOLLOW'
-					)
-                }
-              
-            </Button>
-            &nbsp;
-            <Button
-              color={'secondary'}
-              onClick={()=>alert('Coming soon...')}
-              variant={'contained'}
-              startIcon={<Icon icon='mdi:message-text' fontSize={20} />}
-            >
-              Message
-            </Button>
-          </div>
+
+            {
+                !isEmpty(auth.user) && <div style={{marginTop:'0.5rem'}}>
+                    <Button
+                        color={loadingFollow ? 'secondary' : (follow && follow.email_notifications_on_reviews ? 'primary' : 'secondary')}
+                        variant={'contained'}
+		                disabled={loadingFollow}
+                        startIcon={<Icon icon={`mdi:bell${follow && follow.email_notifications_on_reviews ? '-ring' : '-off'}`} fontSize={20} />}
+                        onClick={() => handleUpdateFollow(follow && follow.email_notifications_on_reviews ? !follow.email_notifications_on_reviews : true)}
+                    >
+		        	    {
+                            loadingFollow ? (
+                                <>Loading...</>
+                            ) : (
+		        	    		follow && follow.email_notifications_on_reviews  ? 'FOLLOWING' : 'FOLLOW'
+		        	    	)
+                        }
+                    </Button>
+                    &nbsp;
+                    <Button
+                        color={'secondary'}
+                        onClick={()=>alert('Coming soon...')}
+                        variant={'contained'}
+                        startIcon={<Icon icon='mdi:message-text' fontSize={20} />}
+                    >
+                        Message
+                    </Button>
+                </div>
+            }
+
+          
           {/* <ShowMoreDialog business={business}  />
           <AddReviewDialog business={business}  /> */}
         </Box>

@@ -42,6 +42,8 @@ import { businessService } from 'services/business.service'
 import { ViewListOutline } from 'mdi-material-ui'
 import DialogTabBrokerMc from './components/create-business-tabs/DialogTabBrokerMc'
 import DialogTabBrokerDetails from './components/create-business-tabs/DialogReviewForm'
+import { isEmpty } from 'lodash'
+import { useAuth } from 'src/hooks/useAuth'
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} {...props} />
@@ -53,7 +55,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 const AddReviewDialog = (props) => {
 
   const { business, btnText } = props
-
+  const auth = useAuth()
   // ** States
   const [show, setShow] = useState(false)
   const [ actionsLoading, setActionsLoading ] = useState(false)
@@ -72,7 +74,7 @@ const AddReviewDialog = (props) => {
 
   return (
     <Box style={{marginLeft:0}}>
-<Button color='primary'  onClick={()=>setShow(true)} variant='contained'>
+<Button color='primary'  onClick={()=>isEmpty(auth.user) && props.noUser ? props.noUser() : setShow(true)} variant='contained'>
                 
                     { props.btnText ? props.btnText : 'Leave a Review'}
                   </Button>
