@@ -62,7 +62,7 @@ import { autocompleteIconObj } from './autocompleteIconObj'
 import { businessService } from 'services/business.service'
 import { Laptop } from 'mdi-material-ui'
 import toast from 'react-hot-toast'
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, Radio, RadioGroup } from '@mui/material'
 
 const defaultSuggestionsData = [
   {
@@ -309,6 +309,7 @@ const AutocompleteComponent = ({ hidden, settings }) => {
   
   const [ loading, setLoading ] = useState(false)
   const [ searched, setSearched ] = useState(false)
+  const [ search_field, setSearch_field ] = useState('us_dot_number')
 
   const getBrokers = async (debounced_search) => {
     try {
@@ -322,6 +323,8 @@ const AutocompleteComponent = ({ hidden, settings }) => {
       console.log(er)
     }
   }
+
+
 
   const showDialog = () => {
     let sign = prompt("Type the DOT Number here:");
@@ -432,17 +435,26 @@ const AutocompleteComponent = ({ hidden, settings }) => {
         ) : null}
         <Dialog open={openDialog} onClose={() => setOpenDialog(false)} style={{height:''}} aria-labelledby='form-dialog-title'>
         <DialogTitle id='form-dialog-title'>Search</DialogTitle>
-        <DialogContent>
-          <DialogContentText sx={{ mb: 3 }}>
+        <DialogContent >
+          {/* <DialogContentText sx={{ mb: 3 }}>
             Enter the DOT number of the broker you want to search
-          </DialogContentText>
-          <TextField value={dotSearch} onChange={(e)=>setDotSeach(e.target.value)} id='name' autoFocus fullWidth type='number' label='DOT Number' />
+          </DialogContentText> */}
+          <RadioGroup
+            row
+            value={search_field}
+            onChange={e => setSearch_field(e.target.value)}
+            sx={{ '& .MuiFormControlLabel-label': { fontSize: '.875rem', color: 'text.secondary' } }}
+          >
+            <FormControlLabel value='us_dot_number' label='US DOT Number' control={<Radio />} />
+            <FormControlLabel value='mc_mx_ff_numbers' label='MC/MX Number' control={<Radio />} />
+          </RadioGroup>
+          <TextField sx={{mt:2}} value={dotSearch} onChange={(e)=>setDotSeach(e.target.value)} id='name' autoFocus fullWidth type='number' label='DOT Number' />
         </DialogContent>
         <DialogActions className='dialog-actions-dense'>
           <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
           <Button disabled={!!!dotSearch} onClick={(e)=>{
             setDotSeach('')
-            router.push('/brokers/[id]', '/brokers/'+dotSearch)
+            router.push('/brokers/[id]', '/brokers/'+dotSearch+'?search_field_type='+search_field)
             setOpenDialog(false)
           }}>Search</Button>
         </DialogActions>

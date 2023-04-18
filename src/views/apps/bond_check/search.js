@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
-import { CardContent, Typography, Card, TextField, Button, CardHeader, Container } from '@mui/material'
+import { CardContent, Typography, Card, TextField, Button, CardHeader, Container, FormControlLabel, RadioGroup, Radio } from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress'
 import { green } from '@mui/material/colors'
 import { useRouter } from 'next/router'
@@ -50,6 +50,9 @@ const BondCheck = (props) => {
             setError(true)
         }
     }
+
+
+    const [ search_field, setSearch_field ] = useState('us_dot_number')
 
 
 
@@ -104,11 +107,22 @@ const BondCheck = (props) => {
                         >
                             Check Broker Bond Information
                         </Typography>
-                        <Typography 
+                        {/* <Typography 
                             variant='body2'
                         >
                             Easily search brokers by DOT number
-                        </Typography>
+                        </Typography> */}
+
+                        {/* <RadioGroup
+            row
+            value={search_field}
+            onChange={e => setSearch_field(e.target.value)}
+            sx={{justifyContent:'center', '& .MuiFormControlLabel-label': { fontSize: '.875rem', color: 'text.secondary' } }}
+          >
+            <FormControlLabel value='us_dot_number' label='US DOT Number' control={<Radio />} />
+            <FormControlLabel value='mc_mx_ff_numbers' label='MC/MX Number' control={<Radio />} />
+          </RadioGroup> */}
+
                         <TextField 
                             value={search} 
                             onChange={(e) => setSearch(e.target.value)}

@@ -39,8 +39,8 @@ function update(id, params) {
     return fetchWrapper.put(`${baseUrl}businesses/${id}`, params);
 }
 
-function find_broker_in_fmcsa(dot, token) {
-    return fetchWrapper.get(`${baseUrl}businesses/broker_fmcsa/${dot}`, token);
+function find_broker_in_fmcsa(dot, token, query) {
+    return fetchWrapper.get(`${baseUrl}businesses/broker_fmcsa/${dot}?${query}`, token);
 }
 
 function find_carrier_in_fmcsa(dot) {
